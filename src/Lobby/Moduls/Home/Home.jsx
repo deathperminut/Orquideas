@@ -17,6 +17,8 @@ import Aguamarina from '../../../assets/images/aguamarina.png';
 
 
 export default function Home() {
+
+    const navigate=useNavigate();
     React.useEffect(() => {
         const intervalId = setInterval(() => {
           const date = new Date();
@@ -77,7 +79,7 @@ export default function Home() {
           </div>
         </div>
         <div className='row row-cols-auto d-flex flex-wrap justify-content-center align-items-center align-self-center justify-content-sm-center align-items-sm-center align-self-sm-center justify-content-md-center align-items-md-center align-self-md-center justify-content-lg-start align-items-lg-center align-self-lg-center justify-content-xl-start align-items-xl-center align-self-xl-center justify-content-xxl-start align-items-xxl-center align-self-xxl-center g-4 d-none d-sm-none d-md-flex d-lg-flex d-xl-flex d-xxl-flex mt-2'>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Amarillo} className='card-img' alt="" />
@@ -88,7 +90,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Cafe} className='card-img' alt="" />
@@ -99,7 +101,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Azul} className='card-img' alt="" />
@@ -110,7 +112,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Rojo} className='card-img' alt="" />
@@ -121,7 +123,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-'>
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Verde} className='card-img' alt="" />
@@ -132,7 +134,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-'>
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Naranja} className='card-img' alt="" />
@@ -143,7 +145,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-'>
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Aguamarina} className='card-img' alt="" />
@@ -154,7 +156,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col' onClick={()=>navigate('/Lobby/SelectClass')}>
             <div id="card-portfolio" className='w-100 cursor-'>
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Violeta} className='card-img' alt="" />
@@ -170,7 +172,7 @@ export default function Home() {
           <div className='col-12'>
             <div className="swiper swiper-container-portfolio">
               <div className="swiper-wrapper">
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Amarillo} className='card-img' alt="" />
@@ -181,7 +183,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Cafe} className='card-img' alt="" />
@@ -192,7 +194,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Azul} className='card-img' alt="" />
@@ -203,7 +205,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Rojo} className='card-img' alt="" />
@@ -214,7 +216,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Verde} className='card-img' alt="" />
@@ -225,7 +227,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Naranja} className='card-img' alt="" />
@@ -236,7 +238,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Aguamarina} className='card-img' alt="" />
@@ -247,7 +249,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>navigate('/Lobby/SelectClass')} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Violeta} className='card-img' alt="" />

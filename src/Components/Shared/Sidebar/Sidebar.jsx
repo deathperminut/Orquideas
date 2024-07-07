@@ -48,18 +48,18 @@ export default function Sidebar() {
                     </div>
                     <ul className='nav d-flex flex-column'>
                     <li className='nav-item'>
-                        <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })} to='/dashboard/portfolio'>
+                        <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })} to='/Lobby/Profile'>
                         <p className='m-0 align-items-center align-self-center fs-5-   abbreviated- tx-decoration-'><img className='logo-medical-sidebar-' src={Profile} alt="" /></p>
                         <p className='m-0 ms-4 align-items-center align-self-center fs-5-  unabbreviated- lh-sm fontLight'>Perfil</p></NavLink>
                     </li>
                     <li className='nav-item'>
-                        <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })}  to='/dashboard/receptionAndAdmissions'>
+                        <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })}  to='/Lobby/Home'>
                         <p className='m-0 align-items-center align-self-center fs-5-   abbreviated- tx-decoration-'><img className='logo-medical-sidebar-' src={Home} alt="" /></p>
                         <p className='m-0 ms-4 align-items-center align-self-center fs-5-  unabbreviated- lh-sm fontLight'>Home</p>
                         </NavLink>
                     </li>
                     <li className='nav-item'>
-                        <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })} to='/dashboard/medicalStaff'>
+                        <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })} to='/Lobby/Admin'>
                         <p className='m-0 align-items-center align-self-center fs-5- ff-monse-regular-  abbreviated- tx-decoration-'><img className='logo-medical-sidebar-' src={Admin} alt="" /></p>
                         <p className='m-0 ms-4 align-items-center align-self-center fs-5-  unabbreviated- lh-sm fontLight'>Admin</p>
                         </NavLink>

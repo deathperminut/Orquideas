@@ -40,7 +40,8 @@ export default function Navbar() {
                                 <div className='list-group border-0 rounded-0'>
                                 <NavLink className='nav-link list-group-item list-group-item-action border-0 rounded-0' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-black-)', background: isActive ? '#2d1937' : 'var(--color-white-)', })} to='/Lobby/Profile'><span className='lh-1 fs-5- fontSemiBold'>Perfil</span>
                                 </NavLink>
-                                <a href="htt" className='list-group-item list-group-item-action border-0 rounded-0 txt-sm-static fs-5- fontSemiBold tx-black-'>Cerrar sesión</a>
+                                <NavLink className='nav-link list-group-item list-group-item-action border-0 rounded-0' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-black-)', background: isActive ? '#2d1937' : 'var(--color-white-)', })} to='/Auth/AuthLogin'><span className='lh-1 fs-5- fontSemiBold'>Cerrar Sesión</span>
+                                </NavLink>
                                 </div>
                             </div>
                             </div>

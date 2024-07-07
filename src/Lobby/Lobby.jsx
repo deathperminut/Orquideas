@@ -10,6 +10,8 @@ import { Navigate, Route, Routes, NavLink } from "react-router-dom"
 import Admin from './Moduls/Admin/Admin';
 import Home from './Moduls/Home/Home';
 import Profile from './Moduls/Profile/Profile';
+import SelectClass from './Moduls/SelectClass/SelectClass';
+import SelectModul from './Moduls/SelectModul/SelectModul';
 
 export default function Lobby() {
 
@@ -27,6 +29,8 @@ export default function Lobby() {
                 <Route path="" element={ <Navigate to="Home" /> }/>
                 <Route path="Home/*" element={<Home/>} />
                 <Route path="Profile/*" element={<Profile/>} />
+                <Route path="SelectModul/*" element={<SelectModul/>} />
+                <Route path="SelectClass/*" element={<SelectClass/>} />
                 <Route path="Admin/*" element={<Admin/>} />
                 </Routes>
             </div>
