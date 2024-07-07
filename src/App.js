@@ -6,7 +6,7 @@ import {Navigate,Route,Routes} from 'react-router-dom';
 /* COMPONENTS */
 import Auth from './Auth/Auth';
 import LandingPage from './LandingPage/LandingPage';
-import MainApp from './MainApp/MainApp';
+import Lobby from './Lobby/Lobby';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path='' element = {<Navigate to='/Auth'></Navigate>}></Route>
         <Route path='/Auth/*' element={<Auth></Auth>}></Route>
         <Route path='/LandingPage/*' element={<LandingPage></LandingPage>}></Route>
-        <Route path='/MainApp/*' element={<MainApp></MainApp>}></Route>
+        <Route path='/Lobby/*' element={<Lobby></Lobby>}></Route>
       </Routes>
     </React.Fragment>
   );

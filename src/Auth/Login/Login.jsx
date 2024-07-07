@@ -1,5 +1,5 @@
-import React from 'react'
-import './Login.css'
+import React from 'react';
+import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
@@ -28,7 +28,7 @@ export default function Login() {
                       </div>
                     </div>
                     <div className='ContainerButton'>
-                      <div className='Button_1'>
+                      <div className='Button_1' onClick={()=>navigate('/Lobby')}>
                                   <span className='text_button_1'>Ingresar</span>
                       </div>
                       <div onClick={()=>navigate('/Auth/AuthRegister')} className='Button_2' style={{'marginTop':'20px'}}>
