@@ -56,6 +56,7 @@
   display: flex;
   flex-direction: row;
   padding: 10px;
+  margin-bottom: 20px;
 }
 .ImageContainerClass{
   width: 80px;
@@ -484,6 +485,7 @@
     .dateClass{
       display: none;
     }
+    
     .lastModuleContainer{
       width: 100%;
       padding: 20px;
