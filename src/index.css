@@ -2195,6 +2195,7 @@
   
   .form-floating>.form-control-plaintext~label,
   .form-floating>.form-control:focus~label,
+  .form-floating>.form-control:not(:placeholder-shown)~label,
   .form-floating>.form-select~label {
     font-size: 14px !important;
     color: #000 !important;
@@ -2203,7 +2204,9 @@
   }
   
   .form-floating>.form-control-plaintext:focus,
-  .form-floating>.form-control:focus {
+  .form-floating>.form-control-plaintext:not(:placeholder-shown),
+  .form-floating>.form-control:focus,
+  .form-floating>.form-control:not(:placeholder-shown) {
     padding-top: 1.2rem !important;
     padding-bottom: 0.625rem !important;
     padding-left: 2.7rem;
@@ -2308,6 +2311,7 @@
   
   #internal-form .form-floating>.form-control-plaintext~label,
   #internal-form .form-floating>.form-control:focus~label,
+  #internal-form .form-floating>.form-control:not(:placeholder-shown)~label,
   #internal-form .form-floating>.form-select~label {
     font-size: 14px !important;
     color: var(--color-quaternary-gray-) !important;
@@ -2415,6 +2419,7 @@
   
   #internal-form-modals .form-floating>.form-control-plaintext~label,
   #internal-form-modals .form-floating>.form-control:focus~label,
+  #internal-form-modals .form-floating>.form-control:not(:placeholder-shown)~label,
   #internal-form-modals .form-floating>.form-select~label {
     font-size: 14px !important;
     color: var(--color-quaternary-gray-) !important;
@@ -2621,6 +2626,7 @@
   
   #internal-date- .form-floating>.form-control-plaintext~label,
   #internal-date- .form-floating>.form-control:focus~label,
+  #internal-date- .form-floating>.form-control:not(:placeholder-shown)~label,
   #internal-date- .form-floating>.form-select~label {
     font-size: 14px !important;
     color: var(--color-quaternary-gray-) !important;
@@ -2628,6 +2634,7 @@
   
   #internal-date- .form-floating>.form-control-plaintext~label,
   #internal-date- .form-floating>.form-control:focus~label,
+  #internal-date- .form-floating>.form-control:not(:placeholder-shown)~label,
   #internal-date- .form-floating>.form-select~label {
     font-size: 14px !important;
     color: var(--color-quaternary-gray-) !important;
@@ -2636,7 +2643,9 @@
   }
   
   #internal-date- .form-floating>.form-control-plaintext:focus,
-  #internal-date- .form-floating>.form-control:focus {
+  #internal-date- .form-floating>.form-control-plaintext:not(:placeholder-shown),
+  #internal-date- .form-floating>.form-control:focus,
+  #internal-date- .form-floating>.form-control:not(:placeholder-shown) {
     padding-top: 0.625rem !important;
     padding-bottom: 0.625rem !important;
     padding-left: 2.5rem;
