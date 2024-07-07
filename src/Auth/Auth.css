@@ -1,0 +1,51 @@
+.ContainerAuth{
+    width: 100%;
+    max-width: 1200px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: row;
+    
+}
+.DecorationContainer{
+    min-width:100px;
+    width: 30%;
+    min-height: 500px;
+    box-shadow: var(--box-shadow-4-);
+}
+.LoginContainer{
+    width: 75%;
+    background-color: white;
+    border-top-left-radius:10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: var(--box-shadow-4-);
+}
+
+.BackContainer{
+    position: absolute;
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    border: 1px solid #000;
+    left: 60px;
+    top:150px
+}
+
+/*
+responsive
+*/
+
+@media (min-width: 0px) and (max-width: 550px) {
+    .DecorationContainer{
+        display: none;
+    }
+    .LoginContainer{
+        width: 100%;
+        background-color: white;
+        border-top-left-radius:10px;
+        border-bottom-left-radius: 10px;
+        box-shadow: var(--box-shadow-4-);
+    }
+
+
+}
