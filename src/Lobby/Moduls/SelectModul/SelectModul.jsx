@@ -2,14 +2,15 @@ import React from 'react';
 import './SelectModul.css';
 import Amarillo from '../../../assets/images/modulImage.png';
 import Flores from '../../../assets/images/flores.png';
-
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function SelectModul() {
-    return (
+        const navigate=useNavigate();
+        return (
         <div className='dataModulContainer'>
                 <div className='DataInfoModulContainer'>
                         <div className='ContainerImageModul_2'>
-                            <img src={Amarillo} className='card-img' alt="" />
+                                <img src={Amarillo} className='card-img' alt="" />
                         </div>
                         <div className='ContainerInfoModul'>
                                 <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>
@@ -19,7 +20,7 @@ export default function SelectModul() {
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
                 <div className='ClassesContainerFluid'>
-                                                <div className='divClass_2 bs-2-'>
+                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
                                                         <div className='ImageContainerClass'>
                                                             <img src={Flores} className='card-img' alt="" />
                                                         </div>
@@ -28,7 +29,7 @@ export default function SelectModul() {
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
+                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
                                                         <div className='ImageContainerClass'>
                                                             <img src={Flores} className='card-img' alt="" />
                                                         </div>
@@ -37,7 +38,7 @@ export default function SelectModul() {
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
+                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
                                                         <div className='ImageContainerClass'>
                                                             <img src={Flores} className='card-img' alt="" />
                                                         </div>
@@ -46,7 +47,7 @@ export default function SelectModul() {
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
+                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
                                                         <div className='ImageContainerClass'>
                                                             <img src={Flores} className='card-img' alt="" />
                                                         </div>
@@ -55,7 +56,7 @@ export default function SelectModul() {
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
+                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
                                                         <div className='ImageContainerClass'>
                                                             <img src={Flores} className='card-img' alt="" />
                                                         </div>
@@ -64,7 +65,7 @@ export default function SelectModul() {
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
+                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
                                                         <div className='ImageContainerClass'>
                                                             <img src={Flores} className='card-img' alt="" />
                                                         </div>

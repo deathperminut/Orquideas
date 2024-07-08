@@ -1,0 +1,188 @@
+.navBarClass{
+    width: 100%;
+    height: 60px;
+    /* background-color: rgba(231, 182, 233, 0.193); */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.progressContainer{
+    width: 110px;
+    margin-right: 30px;
+}
+
+.classNumber{
+    width: 35px;
+    height: 35px;
+    background-color: #662d9115;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    transition: 1s;
+    cursor: pointer;
+}
+.classNumber:hover{
+    transform: scale(1.1);
+}
+.CourseContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+}
+.chatCourseContainer{
+    width: 30%;
+    min-height: 633px;
+    background-color: #FFF;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+.comentaryContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    padding: 10px;
+    overflow-y: scroll;
+}
+.activityCourseContainer{
+    width: 70%;
+    min-height: 700px;
+    background-color: #FFF;
+    border-right: 1px solid rgb(246, 242, 242);
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+}
+.ButtonSend{
+    width: 35px;
+    height: 35px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 22px;
+    transition: 1s;
+    cursor:pointer
+}
+.Name{
+    font-size: 13px;
+}
+.Comment{
+    font-size: 13px;
+}
+.ButtonSend:hover{
+    background-color: rgb(231, 231, 231);
+    transform: scale(1.1);
+}
+
+.Comentario{
+    width: 100%;
+    margin-top: 20px;
+    min-height: 90px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    display: flex;
+    padding:8px;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.activity{
+    width: 100%;
+    height: 600px;
+    background-color:#662d911b ;
+}
+.linkContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.iconContainer{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: rgb(207, 207, 207);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+.divClass_3{
+    width: 80%;
+    max-width: 800px;
+    height: 100px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: 1s;
+    margin-left: 20px;
+}
+.divClass_3:hover{
+    background-color: rgba(244, 244, 244, 0.556);
+}
+
+
+@media (min-width: 0px) and (max-width: 359.98px) {
+    
+    .CourseContainer{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .chatCourseContainer{
+        width: 100%;
+        min-height: 700px;
+        background-color: #FFF;
+        display: none;
+    }
+    .activityCourseContainer{
+        width: 100%;
+        min-height: 700px;
+        background-color: #FFF;
+        border-right: 1px solid rgb(246, 242, 242);
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+}
+
+@media (min-width: 360px) and (max-width: 675.98px) {
+    .CourseContainer{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .chatCourseContainer{
+        width: 100%;
+        min-height: 700px;
+        background-color: #FFF;
+        display: none;
+    }
+    .activityCourseContainer{
+        width: 100%;
+        min-height: 700px;
+        background-color: #FFF;
+        border-right: 1px solid rgb(246, 242, 242);
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+    }
+}

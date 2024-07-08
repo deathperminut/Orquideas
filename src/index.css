@@ -1317,7 +1317,7 @@
   
   ::-webkit-scrollbar-thumb {
     background-color: var(--color-secondary-purple-) !important;
-    border: 2px solid var(--color-secondary-purple-) !important;
+    border: 2px solid #525252 !important;
   }
   
   /* ---------------------------------------------------
@@ -3578,8 +3578,8 @@
   }
   
   .table-responsive::-webkit-scrollbar-thumb {
-    background-color: var(--color-secondary-purple-) !important;
-    border: 2px solid var(--color-secondary-purple-) !important;
+    background-color: #000 !important;
+    border: 2px solid #000 !important;
     border-radius: 1.875rem;
     -webkit-border-radius: 1.875rem;
     -moz-border-radius: 1.875rem;
