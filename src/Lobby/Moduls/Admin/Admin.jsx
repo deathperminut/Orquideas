@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './Admin.css';
 import { Navigate, NavLink, useLocation, Route, Routes } from "react-router-dom"
 import ScrollToTop from "react-scroll-to-top";
-import DatePicker from "react-multi-date-picker";
 import Swiper, { Pagination, Manipulation, FreeMode } from 'swiper';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
@@ -19,6 +18,8 @@ import circleCafe from '../../../assets/images/circleCafe.png';
 import circleVioleta from '../../../assets/images/circleVioleta.png';
 import Users from './Users/Users';
 import IndexModuls from './IndexModuls/IndexModuls';
+
+
 
 export default function Admin() {
 
