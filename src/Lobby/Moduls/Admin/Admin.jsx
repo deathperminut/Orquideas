@@ -154,7 +154,7 @@ export default function Admin() {
           <div className='col-12'>
             <div className="swiper swiper-container-indicators">
               <div className="swiper-wrapper">
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(1)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -167,7 +167,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -180,7 +180,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -193,7 +193,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -206,7 +206,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -219,7 +219,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -232,7 +232,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -245,7 +245,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
@@ -258,7 +258,7 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
