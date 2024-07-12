@@ -9,6 +9,7 @@ import { IoIosClose } from "react-icons/io";
 import Accordion from 'react-bootstrap/Accordion';
 import Flores from '../../../../assets/images/flores.png';
 import { CiCircleCheck } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as echarts from 'echarts';
 import { CiCircleMore } from "react-icons/ci";
@@ -1824,15 +1825,17 @@ export default function IndexModuls() {
         
         <Offcanvas className="offcanvasBodyV2" show={show2} onHide={handleClose2}>
                 <div className='offcanvas-header pb-4 padding-40-'>
-                <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Información del usuario</h2>
+                <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Instituciones</h2>
                 <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
                 </div>
                 <div className='offcanvas-body '>
+                
                 <div className='container-fluid pt-0 pb-0 padding-40-'>
                     <div className='row'>
+                    <span className='fs-10- fontLight' >Crear institución</span>
                     <div className='col-12'>
                     <form action='' className='Form'>
-                            <span className='fs-10- fontLight' >Email</span>
+                            <span className='fs-10- fontLight' >Nombre</span>
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                             <div className='col-12'>
                                 <div className='form-floating inner-addon- left-addon-'>
@@ -1840,65 +1843,197 @@ export default function IndexModuls() {
                                 </div>
                             </div>
                             </div>
-                            <span className='fs-10- fontLight' >Nombre</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                <div className='col-12'>
-                                    <div className='form-floating inner-addon- left-addon-'>
-                                    <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                    </div>
+                            <div className='ContainerButton_2'>
+                                <div className='Button_2' style={{'marginTop':'20px'}}>
+                                            <span className='text_button_2'>Crear</span>
                                 </div>
                             </div>
-                            <span className='fs-10- fontLight' >Identificación</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                <div className='col-12'>
-                                    <div className='form-floating inner-addon- left-addon-'>
-                                    <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                    </div>
-                                </div>
+                            <div className='TableUsersContainer bs-2-' style={{'marginBottom':'20px'}}>
+                                    <div className='row mt-4 mb-4'>
+                                            <div className='table-responsive table-general-'>
+                                            <table className='table table-sm table-striped table-no-border- align-middle'>
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" className='th-width-md-'>
+                                                    <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                                        <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
+                                                    </div>
+                                                    </th>
+                                                    <th scope="col" className='th-width-sm-'>
+                                                    <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                                        <span className='fs-5- fontSemiBold fw-bold color-purple'>Eliminar</span>
+                                                    </div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td className='align-middle'>
+                                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
+                                                        </td>
+                                                        <td className='align-middle'>
+                                                                <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                                    <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            </div>
+                                    </div> 
                             </div>
-                            
-                            <span className='fs-10- fontLight'>Contraseña</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- right-addon-'>
-                                <input type="password" className='form-control' id='password' placeholder="Ingrese su contraseña" />
-                                </div>
-                            </div>
-                            </div>
-                            <span className='fs-10- fontLight' >Institución</span>
+                            <span className='fs-10- fontLight' style={{'marginTop':'20px'}}>Institución</span>
                             <div className='inner-addon- left-addon-'>
                                 <Select options={options} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                             </div>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mt-3'>
-                              <div className='col-12 d-flex flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-column flex-xxl-column justify-content-between align-items-center align-self-center mb-2'>
-                                <p className='m-0 me-0 me-sm-3 me-md-3 me-lg-3 me-xl-3 me-xxl-3 mb-3 lh-sm text-center fs-5- fontLight- fw-normal tx-light-black-'>¿Desea activar este usuario <br /> <span className='fs-6-'>(Si su selección es <strong>"Activarlo"</strong> el usuario tendra acceso a la plataforma)</span></p>
-                                <div className='d-flex flex-row justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start align-items-center align-self-center'>
-                                  <div className='checks-radios- me-1'>
-                                    <label>
-                                      <input  type="radio" name="radio"/>
-                                      <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Activar</span>
-                                    </label>
-                                  </div>
-                                  <div className='checks-radios- me-1'>
-                                    <label>
-                                      <input   type="radio" name="radio"/>
-                                      <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Desactivar</span>
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
                             <div className='ContainerButton_2'>
                                 <div className='Button_2' style={{'marginTop':'20px'}}>
-                                            <span className='text_button_2'>Actualizar</span>
+                                            <span className='text_button_2'>Agregar</span>
                                 </div>
+                            </div>
+                            <div className='listInstitucions'>
+                                    <div className='Institucions'>
+                                            <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                            </div>
+                                            <span className='fontLight'>Universidad nacional</span>
+                                    </div>
+                                    <div className='Institucions'>
+                                            <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                            </div>
+                                            <span className='fontLight'>Universidad nacional</span>
+                                    </div>
+                                    <div className='Institucions'>
+                                            <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                            </div>
+                                            <span className='fontLight'>Universidad nacional</span>
+                                    </div>
+                                    <div className='Institucions'>
+                                            <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                            </div>
+                                            <span className='fontLight'>Universidad nacional</span>
+                                    </div>
+                                    <div className='Institucions'>
+                                            <div className='col-auto'>
+                                                                    <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                    <MdDeleteOutline />
+                                                                    </button>
+                                            </div>
+                                            <span className='fontLight'>Universidad nacional</span>
+                                    </div>
                             </div>
                         </form>
                     </div>
                     </div>
                 </div>
                 </div>
-            </Offcanvas>
+        </Offcanvas>
         </>
     )
 }

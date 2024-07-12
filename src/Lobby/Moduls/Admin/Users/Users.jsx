@@ -497,7 +497,7 @@ export default function Users() {
                 </div> 
             </div>
         </div>
-        <Offcanvas className="offcanvasBodyV2" show={show2} onHide={handleClose2}>
+        <Offcanvas className="" show={show2} onHide={handleClose2}>
                 <div className='offcanvas-header pb-4 padding-40-'>
                 <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Información del usuario</h2>
                 <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
