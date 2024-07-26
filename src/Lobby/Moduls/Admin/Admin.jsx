@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import $ from 'jquery';
 import { HiOutlineUsers } from "react-icons/hi";
+import { HiOutlineNewspaper } from "react-icons/hi2";
 import circleAmarillo from '../../../assets/images/circleAmarillo.png';
 import circleRojo from '../../../assets/images/circleRed.png';
 import circleVerde from '../../../assets/images/greenCircle.png';
@@ -18,6 +19,7 @@ import circleCafe from '../../../assets/images/circleCafe.png';
 import circleVioleta from '../../../assets/images/circleVioleta.png';
 import Users from './Users/Users';
 import IndexModuls from './IndexModuls/IndexModuls';
+import NewsModul from './NewsModul/NewsModul';
 import Violeta from '../../../assets/images/Violeta2.png';
 import Azul from '../../../assets/images/Azul22.png';
 import Rojo from '../../../assets/images/Magenta22.png';
@@ -167,9 +169,22 @@ export default function Admin() {
                       <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
                         <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
                           'wrapper-icon-indicator-adverse-events-'}`}>
-                           <HiOutlineUsers  color='#FFF' size={50}/>
+                            <HiOutlineUsers  color='#FFF' size={50}/>
                         </div>
                         <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Usuarios</p>
+                      </NavLink>
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>setState(3)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
+                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
+                          'wrapper-icon-indicator-adverse-events-'}`}>
+                           <HiOutlineNewspaper  color='#FFF' size={50}/>
+                        </div>
+                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Noticias</p>
                       </NavLink>
                     </div>
                   </div>
@@ -240,7 +255,17 @@ export default function Admin() {
                 {state == 1 ?  
                 <Users></Users>
                 :
+                <></>
+                }
+                {state == 2 ? 
                 <IndexModuls></IndexModuls>
+                :
+                <></>
+                }
+                {state == 3 ? 
+                <NewsModul></NewsModul>
+                :
+                <></>
                 }
           </div>
         </div>
