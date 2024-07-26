@@ -18,7 +18,14 @@ import circleCafe from '../../../assets/images/circleCafe.png';
 import circleVioleta from '../../../assets/images/circleVioleta.png';
 import Users from './Users/Users';
 import IndexModuls from './IndexModuls/IndexModuls';
-
+import Violeta from '../../../assets/images/Violeta2.png';
+import Azul from '../../../assets/images/Azul22.png';
+import Rojo from '../../../assets/images/Magenta22.png';
+import Verde from '../../../assets/images/Verde2.png';
+import Naranja from '../../../assets/images/Naranja2.png';
+import Amarillo from '../../../assets/images/Amarillo2.png';
+import Cafe from '../../../assets/images/Cafe22.png';
+import Aguamarina from '../../../assets/images/AguaMarina2.png';
 
 
 export default function Admin() {
@@ -170,104 +177,56 @@ export default function Admin() {
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleAmarillo} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Amarillo</p>
-                      </NavLink>
+                          <img src={Violeta} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleAzul} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Azul</p>
-                      </NavLink>
+                          <img src={Azul} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleCafe} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Café</p>
-                      </NavLink>
+                          <img src={Rojo} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleNaranja} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Naranja</p>
-                      </NavLink>
+                          <img src={Verde} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleAguaMarina} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Aguamarina</p>
-                      </NavLink>
+                          <img src={Naranja} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleRojo} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Rojo</p>
-                      </NavLink>
+                          <img src={Amarillo} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleVerde} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Verde</p>
-                      </NavLink>
+                          <img src={Cafe} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
-                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
-                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
-                          'wrapper-icon-indicator-adverse-events-'}`}>
-                           <img src={circleVioleta} className='card-img' alt="" />
-                        </div>
-                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Violeta</p>
-                      </NavLink>
+                        <img src={Aguamarina} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>

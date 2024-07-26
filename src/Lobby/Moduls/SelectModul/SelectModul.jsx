@@ -1,8 +1,9 @@
 import React from 'react';
 import './SelectModul.css';
 import Amarillo from '../../../assets/images/modulImage.png';
-import Flores from '../../../assets/images/flores.png';
+import Flores from '../../../assets/images/circleVioleta.png';
 import { NavLink, useNavigate } from 'react-router-dom';
+import Violeta from '../../../assets/images/Violeta2.png';
 
 export default function SelectModul() {
         const navigate=useNavigate();
@@ -10,7 +11,7 @@ export default function SelectModul() {
         <div className='dataModulContainer'>
                 <div className='DataInfoModulContainer'>
                         <div className='ContainerImageModul_2'>
-                                <img src={Amarillo} className='card-img' alt="" />
+                                <img src={Violeta} className='card-img' alt="" />
                         </div>
                         <div className='ContainerInfoModul'>
                                 <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>

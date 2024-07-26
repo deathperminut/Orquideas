@@ -17,7 +17,7 @@ export default function Auth() {
                     <div className='DecorationContainer'>
                             <Routes>
                                 <Route path='' element = {<Navigate to='AuthLogin'></Navigate>}></Route>
-                                <Route path='AuthLogin/*' element={<img src={background} width={'100%'} height={'100%'}></img>}></Route>
+                                <Route path='AuthLogin/*' element={<img src={backgroundRegister} width={'100%'} height={'100%'}></img>}></Route>
                                 <Route path='AuthRegister/*' element={<img src={backgroundRegister} width={'100%'} height={'100%'}></img>}></Route>
                                 <Route path='AuthRecovery/*' element={<img src={backgroundRegister} width={'100%'} height={'100%'}></img>}></Route>
                                 <Route path='AuthCompleteRecovery/*' element={<img src={backgroundRegister} width={'100%'} height={'100%'}></img>}></Route>

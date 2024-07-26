@@ -6,7 +6,8 @@ import Select, { components } from 'react-select'
 import makeAnimated from 'react-select/animated';
 import DatePicker from "react-multi-date-picker"
 import Amarillo from '../../../assets/images/modulImage.png';
-import Flores from '../../../assets/images/flores.png';
+import Violeta from '../../../assets/images/Violeta2.png';
+import Flores from '../../../assets/images/circleVioleta.png';
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
  */
@@ -383,7 +384,7 @@ export default function Profile() {
                             <div className='col-12'>
                                     <div className='lastModuleContainer'>
                                               <div className='ContainerImageModul'>
-                                                  <img src={Amarillo} className='card-img' alt="" />
+                                                  <img src={Violeta} className='card-img' alt="" />
                                               </div>
                                               <div className='ContainerInfoModul'>
                                                       <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>
