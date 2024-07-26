@@ -157,7 +157,7 @@ export default function SelectClass() {
                     <div className='chatCourseContainer bs-2-'>
                         <span className='fontSemiBold color-purple'>Foro</span>
                         <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                            <textarea className='form-control fontLight' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                            <textarea className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                         </div>
                         <div className='ButtonSend bs-2-'>
                                 <IoMdSend></IoMdSend>
