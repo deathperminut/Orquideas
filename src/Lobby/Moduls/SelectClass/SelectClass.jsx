@@ -4,7 +4,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import { MdSkipNext } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import { IoLinkSharp } from "react-icons/io5";
-import Flores from '../../../assets/images/flores.png';
+import Flores from '../../../assets/images/circleVioleta.png';
 
 export default function SelectClass() {
 

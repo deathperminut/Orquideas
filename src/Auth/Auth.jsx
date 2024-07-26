@@ -1,7 +1,7 @@
 import React from 'react'
 import './Auth.css'
 import background from '../assets/images/backgroundLogin.png'
-import backgroundRegister from '../assets/images/backgroundRegister.png'
+import backgroundRegister from '../assets/images/NuevoFondo.png'
 // ROUTERS
 import {Navigate,Route,Routes,useNavigate} from 'react-router-dom';
 // COMPONENTS
