@@ -12,7 +12,7 @@ function App() {
   return (
     <React.Fragment>
       <Routes>
-        <Route path='' element = {<Navigate to='/Auth'></Navigate>}></Route>
+        <Route path='' element = {<Navigate to='/LandingPage'></Navigate>}></Route>
         <Route path='/Auth/*' element={<Auth></Auth>}></Route>
         <Route path='/LandingPage/*' element={<LandingPage></LandingPage>}></Route>
         <Route path='/Lobby/*' element={<Lobby></Lobby>}></Route>

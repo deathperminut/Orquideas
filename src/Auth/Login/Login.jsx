@@ -38,6 +38,9 @@ export default function Login() {
                     <div   onClick={()=>navigate('/Auth/AuthRecovery')} className='ContainerButton'>
                         <span className='fs-10- fontLight textStyle-1' >Olvide mi contraseña</span>
                     </div>
+                    <div   onClick={()=>navigate('/LandingPage')} className='ContainerButton'>
+                        <span className='fs-10- fontLight textStyle-1' >Lobby</span>
+                    </div>
                   </form>
     </div>
   )

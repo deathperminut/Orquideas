@@ -16,8 +16,7 @@ import SelectModul from './Moduls/SelectModul/SelectModul';
 
 export default function Lobby() {
 
-        
-
+    
     
     return (
         <React.Fragment>
