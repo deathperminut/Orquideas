@@ -15,7 +15,7 @@ import * as echarts from 'echarts';
 import { CiCircleMore } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
 import $ from "jquery"
-
+import { IoMdPhotos } from "react-icons/io";
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
  */
@@ -548,6 +548,17 @@ export default function NewsModul() {
                             <div className='row'>
                             <div className='col-12'>
                                 <form action='' className='Form'>
+                                    <div className='ContainerForm'>
+                                        <div className='ContainerPhoto'>
+                                            <IoMdPhotos size={40} className='fa icon-add-image'></IoMdPhotos>
+                                            <input className='position-absolute bottom-0 end-0 file-input-photo-'
+                                            type="file" />
+                                            <button
+                                            className='btn bg-transparent d-flex flex-row justify-content-center align-items-center align-self-center rounded-pill p-2 position-absolute bottom-0 end-0 btn-white- bs-'
+                                            type="button">
+                                            </button>
+                                        </div>
+                                    </div>
                                     <span className='fs-10- fontLight' >Titulo</span>
                                     <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                     <div className='col-12'>
@@ -582,6 +593,17 @@ export default function NewsModul() {
                             <div className='row'>
                             <div className='col-12'>
                                 <form action='' className='Form'>
+                                    <div className='ContainerForm'>
+                                        <div className='ContainerPhoto'>
+                                            <IoMdPhotos size={40} className='fa icon-add-image'></IoMdPhotos>
+                                            <input className='position-absolute bottom-0 end-0 file-input-photo-'
+                                            type="file" />
+                                            <button
+                                            className='btn bg-transparent d-flex flex-row justify-content-center align-items-center align-self-center rounded-pill p-2 position-absolute bottom-0 end-0 btn-white- bs-'
+                                            type="button">
+                                            </button>
+                                        </div>
+                                    </div>
                                     <span className='fs-10- fontLight' >Titulo</span>
                                     <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                     <div className='col-12'>
