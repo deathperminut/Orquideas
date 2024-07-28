@@ -12,8 +12,7 @@ import Recovery from './Recovery/Recovery';
 
 export default function Auth() {
     return (
-        <div className='Body flex-column align-center bg-purple'>
-                <div className='ContainerAuth bg-purple_light'>
+        <div className='ContainerAuth bg-purple_light'>
                     <div className='DecorationContainer'>
                             <Routes>
                                 <Route path='' element = {<Navigate to='AuthLogin'></Navigate>}></Route>
@@ -34,8 +33,6 @@ export default function Auth() {
                                 <Route path='AuthCompleteRecovery/*' element={<CompleteRecovery></CompleteRecovery>}></Route>
                             </Routes>
                     </div>
-                </div>
-                
         </div>
     )
 }
