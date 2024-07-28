@@ -573,7 +573,7 @@ export default function Users() {
                     </div>
                 </div>
                 </div>
-            </Offcanvas>
+        </Offcanvas>
         </>
         
     )
