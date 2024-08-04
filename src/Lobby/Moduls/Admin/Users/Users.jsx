@@ -248,6 +248,13 @@ const options = [
 { value: "Institucion 4", label: "Institucion 4" }
 ];
 
+const options2 = [
+  { value: "Admin", label: "Admin" },
+  { value: "Gestor de contenido", label: "Gestor de contenido" },
+  { value: "Gestor de cursos", label: "Gestor de cursos" },
+  { value: "Estudiante", label: "Estudiante" }
+  ];
+
 export default function Users() {
 
     const [show2, setShow2] = React.useState(false);
@@ -543,6 +550,10 @@ export default function Users() {
                             <span className='fs-10- fontLight' >Institución</span>
                             <div className='inner-addon- left-addon-'>
                                 <Select options={options} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                            </div>
+                            <span className='fs-10- fontLight' >Rol</span>
+                            <div className='inner-addon- left-addon-'>
+                                <Select options={options2} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                             </div>
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mt-3'>
                               <div className='col-12 d-flex flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-column flex-xxl-column justify-content-between align-items-center align-self-center mb-2'>
