@@ -1,0 +1,6 @@
+Django
+djangorestframework
+djangorestframework.authtoken
+drf-yasg
+django-extensions
+Pillow
