@@ -1,8 +1,8 @@
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from .models import UserProfile
-from .serializers import UserSerializer
+from .models import UserProfile, Institution
+from .serializers import UserSerializer, InstitutionSerializer
 
 class CreateUserView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
@@ -16,3 +16,14 @@ class CreateUserView(generics.CreateAPIView):
 class UserListView(generics.ListAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
+
+
+class InstitutionListView(generics.ListAPIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionSerializer
+
+
+class InstitutionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionSerializer
+
