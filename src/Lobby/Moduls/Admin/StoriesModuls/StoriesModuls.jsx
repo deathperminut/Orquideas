@@ -16,6 +16,10 @@ import { CiCircleMore } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
 import $ from "jquery"
 import { IoMdPhotos } from "react-icons/io";
+import Swal from 'sweetalert2';
+import { AppContext } from '../../../../Context';
+import Preloader from '../../../../Components/Shared/Preloader/Preloader';
+import { GetNews } from '../../../../Services/News/News';
 
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
@@ -274,6 +278,74 @@ export default function StoriesModuls() {
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
+    /* APP CONTEXT */
+    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext} =  React.useContext(AppContext);
+
+    /* USE STATES */
+
+    let [preloader,setPreloader] = React.useState(false);
+    let [listNews,setListNews] = React.useState([]);
+    let [supporList,setSupportList] = React.useState([]);
+    let [filter,setFilter] = React.useState([]);
+
+    /* useEFFECTS */
+    React.useEffect(()=>{
+        loadData();
+    },[])
+
+    const loadData=async()=>{
+
+        // CARGAMOS LAS NOTICIAS
+        setPreloader(true);
+        let result =  undefined;
+        result =  await GetNews().catch((error)=>{
+            console.log(error);
+            setPreloader(false);
+            Swal.fire({
+                icon: 'info',
+                title: 'Problemas para cargar las historias'
+            })
+        })
+
+        if(result){
+            setPreloader(false);
+            setListNews(result.data.filter((obj)=>obj.category == "Historia"))
+            setSupportList(result.data.filter((obj)=>obj.category == "Historia"))
+        }
+
+    }
+
+    const GetDateFormat=(isoDateString)=>{
+
+        // Crea un objeto Date a partir de la cadena de fecha ISO 8601
+        let date = new Date(isoDateString);
+
+        // Obtén el año, mes y día
+        let year = date.getUTCFullYear();
+        let month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
+        let day = String(date.getUTCDate()).padStart(2, '0');
+
+        // Formatea la fecha en YYYY-MM-DD
+        let formattedDate = `${year}-${month}-${day}`;
+
+        return formattedDate
+
+    }
+
+
+    const ReadInput=(event)=>{
+        
+        if(event.target.value == ""){
+          setSupportList([...listNews]);
+          setFilter(event.target.value);
+        }else{
+          // FILTRAMOS POR EL VALOR DE EMAIL O NOMBRE O IDENTIFICACIÓN
+          let filter_ = listNews.filter((obj)=> obj.title.toLowerCase().includes(event.target.value.toLowerCase()))
+          setSupportList(filter_);
+          setFilter(event.target.value);
+        }
+      }
+
 
 
     return (
@@ -293,7 +365,7 @@ export default function StoriesModuls() {
                                 <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                 <div className='col-12'>
                                     <div className='form-floating inner-addon- right-addon-'>
-                                    <input type="text" className='form-control' id='password' placeholder="" />
+                                    <input value={filter} onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
                                     </div>
                                 </div>
                                 </div>
@@ -329,214 +401,36 @@ export default function StoriesModuls() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Descuentos módulo violeta</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>2024-08-26</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <MdOutlineDelete />
-                                                </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                {supporList.map((obj,index)=>{
+                                        return (
+                                            <tr key={index}>
+                                                <td className='align-middle'>
+                                                <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.title}</p>
+                                                </td>
+                                                <td className='align-middle'>
+                                                <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetDateFormat(obj?.created_at)}</p>
+                                                </td>
+                                                <td className='align-middle'>
+                                                    <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                        <div className='col-auto'>
+                                                        <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                <FaRegEdit />
+                                                        </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className='align-middle'>
+                                                    <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                        <div className='col-auto'>
+                                                        <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                <MdOutlineDelete />
+                                                        </button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
                                 </tbody>
                             </table>
                             </div>
