@@ -1,7 +1,7 @@
 import React from 'react'
 import './LandingPage.css'
 import {useNavigate} from 'react-router-dom';
-import Swal from 'sweetalert2';
+import Preloader from '../Components/Shared/Preloader/Preloader';
 import { CiCircleCheck } from "react-icons/ci";
 import Flores from '../assets/images/circleVioleta.png';
 import Slider from "react-slick";
@@ -26,15 +26,51 @@ import Aguamarina from '../assets/images/AguaMarina2.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
-
+import Swal from 'sweetalert2';
 // IMAGENES PRUEBA SWIPER
 import Imagen1 from '../assets/images/NewsImage1.jpg';
 import Imagen2 from '../assets/images/NewsImage2.jpg';
 import Imagen3 from '../assets/images/NewsImage3.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GetNews } from '../Services/News/News';
 
 export default function LandingPage() {
+
+    // PRELOADER
+
+    let [preloader,setPreloader] =  React.useState(false);
+    let [news,setNews] = React.useState([]);
+    let [stories,setStories] = React.useState([]);
+
+    // REACT USE EFFECT
+
+    React.useEffect(()=>{
+        // Cargamos los datos de las noticias
+        LoadNews();
+    },[])
+
+    const LoadNews=async()=>{
+
+        // CARGAMOS LAS NOTICIAS
+        setPreloader(true);
+        let result =  undefined;
+        result =  await GetNews().catch((error)=>{
+            console.log(error);
+            setPreloader(false);
+            Swal.fire({
+                icon: 'info',
+                title: 'Problemas para cargar las noticias e historias'
+            })
+        })
+
+        if(result){
+            console.log("NEWS CARGADAS: ",result.data);
+            setPreloader(false);
+            setNews(result.data.filter((obj)=>obj.category == "Noticia"))
+            setStories(result.data.filter((obj)=>obj.category == "Historia"))
+        }
+    }
 
     const [isVisible, setIsVisible] = React.useState(false);
     const navigate=useNavigate();
@@ -95,7 +131,15 @@ export default function LandingPage() {
 
     return (
         <>
+        {
+                preloader ?
+                <>
+                <Preloader></Preloader>
+                </>
+                :
 
+                <></>
+        }
         <div className='body'>
         <div style={{width:'100%',minHeight:'100%',display:'flex',flexDirection:'column'}}>
                     <div className='carouselBody' >
@@ -300,61 +344,26 @@ export default function LandingPage() {
                                 spaceBetween: 50,
                                 },
                             }}  
-                            onSlideChange={() => console.log('slide change')}
-                            onSwiper={(swiper) => console.log(swiper)}
                             >
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen1} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen2} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen1} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen2} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
+                            {news.map((obj,index)=>{
+                                return(
+                                    <SwiperSlide className='NewsSwiper'>
+                                        <div className='SwiperImage'>
+                                                <img src={obj?.image} className='ImageLanding'></img>
+                                        </div>
+                                        <div className='SwiperText'>
+                                                <p className='TitleNews fontSemiBold color-purple'>
+                                                    {obj?.title}
+                                                </p>
+                                                <p className='InfoNews fontLight'>
+                                                    {obj?.content}
+                                                </p>
+                                        </div>
+                                    </SwiperSlide>
+                                )
+                            })}
+                            
+                            
                         </Swiper>
                     </div>
 
@@ -382,61 +391,24 @@ export default function LandingPage() {
                                 spaceBetween: 50,
                                 },
                             }}  
-                            onSlideChange={() => console.log('slide change')}
-                            onSwiper={(swiper) => console.log(swiper)}
                             >
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen1} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen3} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen1} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
-                            <SwiperSlide className='NewsSwiper'>
-                                <div className='SwiperImage'>
-                                        <img src={Imagen3} className='ImageLanding'></img>
-                                </div>
-                                <div className='SwiperText'>
-                                        <p className='TitleNews fontSemiBold color-purple'>
-                                            Descubre nuestros nuevos descuentos
-                                        </p>
-                                        <p className='InfoNews fontLight'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque
-                                        </p>
-                                </div>
-                            </SwiperSlide>
+                            {stories.map((obj,index)=>{
+                                return(
+                                    <SwiperSlide className='NewsSwiper'>
+                                        <div className='SwiperImage'>
+                                                <img src={obj?.image} className='ImageLanding'></img>
+                                        </div>
+                                        <div className='SwiperText'>
+                                                <p className='TitleNews fontSemiBold color-purple'>
+                                                    {obj?.title}
+                                                </p>
+                                                <p className='InfoNews fontLight'>
+                                                    {obj?.content}
+                                                </p>
+                                        </div>
+                                    </SwiperSlide>
+                                )
+                            })}
                         </Swiper>
                     </div>
                     

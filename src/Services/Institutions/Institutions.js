@@ -11,5 +11,11 @@ const GetInstitutions=async ()=>{
     return await axios.get(path);
 }
 
+const UpdateInstitution=async (body)=>{
+    
+    const path  = environment.api + environment.editInstitution + body.id + '/';
+    return await axios.put(path,body);
+}
 
-export {GetInstitutions}
+
+export {GetInstitutions,UpdateInstitution}

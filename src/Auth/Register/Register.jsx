@@ -1,10 +1,14 @@
 import React from 'react'
 import './Register.css'
 import { useNavigate } from 'react-router-dom';
-
 import Select, { components } from 'react-select'
 import makeAnimated from 'react-select/animated';
-import DatePicker from "react-multi-date-picker"
+import DatePicker from "react-multi-date-picker";
+import Swal from 'sweetalert2';
+import Preloader from '../../Components/Shared/Preloader/Preloader';
+import { GetInstitutions, UpdateInstitution } from '../../Services/Institutions/Institutions';
+import { RegisterUser } from '../../Services/Users/Users';
+
 
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
@@ -254,55 +258,202 @@ export default function Register() {
 
     const navigate=useNavigate();
 
+    let [userInfo,setUserInfo] = React.useState(
+      {
+        "email":"",
+        "name":"",
+        "identification":"",
+        "password":""
+      }
+    )
+
+    let [institutions,setInstitutions] = React.useState([]);
+    let [preloader,setPreloader] = React.useState(false);
+    let [institution,setInstitution] = React.useState({"value":"","label":""});
+
+
+    React.useEffect(()=>{
+        // LOAD INSTITUTIONS
+        LoadInstitutions();
+    },[])
+
+    let LoadInstitutions=async()=>{
+
+      let result =  undefined;
+      setPreloader(true);
+      result = await GetInstitutions().catch((error)=>{
+        console.log(error);
+        setPreloader(false);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas para cargar las instituciones'
+        })
+      })
+
+      if(result){
+        console.log("INSTITUCIONES: ",result.data);
+        setPreloader(false);
+        setInstitutions(result.data.map((obj,index)=>{
+          return(
+            {...obj,['label']:obj?.name,['value']:obj?.id}
+          )
+        }))
+      }
+
+    }
+
+    const ReadInput=(event,type)=>{
+
+      setUserInfo({...userInfo,[type]:event.target.value})
+
+    }
+
+    const ReadSelect=(event)=>{
+
+      setInstitution(event);
+
+    }
+
+    const GenerateRegister=async()=>{
+
+      console.log("USUARIO A REGISTRAR: ",userInfo,institution)
+
+      // PRIMERO VALIDAMOS QUE LA INSTITUCIÓN NO SEA ORQUIDEAS
+      if (institution.label == '' && institution.value == ''){
+
+        Swal.fire({
+          icon: 'info',
+          title: 'Debes seleccionar la institución a la cual perteneces'
+        })
+        
+      }else if(userInfo?.email == "" || userInfo?.identification == "" || userInfo?.name == "" || userInfo?.password == "" ){
+
+        //TODOS LOS CAMPOS SON OBLIGATORIOS
+        Swal.fire({
+          icon: 'info',
+          title: 'Completa todos los campos para realizar el registro'
+        })
+
+      }else{
+        // REALIZAMOS EL REGISTRO
+        let result =  undefined;
+        setPreloader(true);
+        result =  await RegisterUser({'email':userInfo['email'],'first_name':userInfo['identification'],'last_name':userInfo['name'],'password':userInfo['password']}).catch((error)=>{
+          console.log(error);
+          if(error?.response?.data?.email[0] == "user profile with this email already exists."){
+            setPreloader(false);
+            Swal.fire({
+              icon: 'info',
+              title: 'El correo ya se encuentra en uso, no es posible crear una cuenta con dicho email'
+            })
+          }else{
+            setPreloader(false);
+            Swal.fire({
+              icon: 'info',
+              title: 'Error al generar el registro'
+            })
+          }
+          
+        })
+
+        if(result){
+          
+            console.log("USUARIO REGISTRADO: ",result.data);
+            setPreloader(false);
+            // ACTUALIZAMOS LAS CARACTERISTICAS DE LA INSTITUCIÓN AGREGANDO EL ID DEL NUEVO USUARIO
+            
+            let users = [...institution['users']];
+            users.push(result.data.id) // AGREGAMOS EL ID DEL USUARIO
+            setPreloader(true);
+            let answer =  await UpdateInstitution({...institution,['users']:users}).catch((error)=>{
+              console.log(error);
+              setPreloader(false);
+              Swal.fire({
+                icon: 'info',
+                title: 'Error al completar registro 2'
+              })
+            })
+            if(answer){
+              console.log("actualizado: ",answer.data);
+              setPreloader(false);
+              Swal.fire({
+                icon: 'success',
+                title: 'El registro fue éxitoso'
+              }).then(
+                (response)=>{
+                  if(response?.isConfirmed){
+                    navigate('/Auth/AuthLogin')
+                  }else{
+                    navigate('/Auth/AuthLogin')
+                  }
+                }
+              )
+
+            }
+            
+        }
+        
+      }
+          
+    }
 
     return (
-            <div className='FormContainer'>
-                <span className='fontSemiBold title_2' >Crear Cuenta</span>
-                <form action='' className='Form'>
-                        <span className='fs-10- fontLight' >Email</span>
-                        <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                        <div className='col-12'>
-                            <div className='form-floating inner-addon- left-addon-'>
-                            <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                            </div>
-                        </div>
-                        </div>
-                        <span className='fs-10- fontLight' >Nombre</span>
-                        <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- left-addon-'>
-                                <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                </div>
-                            </div>
-                        </div>
-                        <span className='fs-10- fontLight' >Identificación</span>
-                        <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- left-addon-'>
-                                <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <span className='fs-10- fontLight'>Contraseña</span>
-                        <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                        <div className='col-12'>
-                            <div className='form-floating inner-addon- right-addon-'>
-                            <input type="password" className='form-control' id='password' placeholder="Ingrese su contraseña" />
-                            </div>
-                        </div>
-                        </div>
-                        <span className='fs-10- fontLight' >Institución</span>
-                        <div className='inner-addon- left-addon-'>
-                            <Select options={options} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
-                        </div>
-                        <div className='ContainerButton_2'>
-                            <div className='Button_2' style={{'marginTop':'20px'}}>
-                                        <span className='text_button_2'>Registrar</span>
-                            </div>
-                            <span onClick={()=>navigate('/Auth/AuthLogin')} className='fs-10- fontLight textStyle-2' >Volver</span>
-                        </div>
-                    </form>
-        </div>
+          <div className='FormContainer'>
+                  {
+                          preloader ?
+                          <>
+                          <Preloader></Preloader>
+                          </>
+                          :
+
+                          <></>
+                  }
+                  <span className='fontSemiBold title_2' >Crear Cuenta</span>
+                  <form action='' className='Form'>
+                          <span className='fs-10- fontLight' >Email</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                          <div className='col-12'>
+                              <div className='form-floating inner-addon- left-addon-'>
+                              <input type="text" value={userInfo?.email} onChange={(event)=>ReadInput(event,'email')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                              </div>
+                          </div>
+                          </div>
+                          <span className='fs-10- fontLight' >Nombre</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input type="text" value={userInfo?.name} onChange={(event)=>ReadInput(event,'name')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  </div>
+                              </div>
+                          </div>
+                          <span className='fs-10- fontLight' >Identificación</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input type="text" value={userInfo?.identification} onChange={(event)=>ReadInput(event,'identification')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <span className='fs-10- fontLight'>Contraseña</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                          <div className='col-12'>
+                              <div className='form-floating inner-addon- right-addon-'>
+                              <input type="password" value={userInfo?.password} onChange={(event)=>ReadInput(event,'password')}  className='form-control' id='password' placeholder="Ingrese su contraseña" />
+                              </div>
+                          </div>
+                          </div>
+                          <span className='fs-10- fontLight' >Institución</span>
+                          <div className='inner-addon- left-addon-'>
+                              <Select options={institutions} value={institution} onChange={ReadSelect} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                          </div>
+                          <div className='ContainerButton_2'>
+                              <div onClick={GenerateRegister} className='Button_2' style={{'marginTop':'20px'}}>
+                                          <span className='text_button_2'>Registrar</span>
+                              </div>
+                              <span onClick={()=>navigate('/Auth/AuthLogin')} className='fs-10- fontLight textStyle-2' >Volver</span>
+                          </div>
+                  </form>
+          </div>
     )
 }
