@@ -12,7 +12,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #e0c0ef25;
+    background-color: #c99af21b;
 }
 
 .ContainerImageModul_2{
@@ -54,7 +54,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #e0c0ef25;
     }
     
 
@@ -70,7 +69,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #e0c0ef25;
     }
 
 }

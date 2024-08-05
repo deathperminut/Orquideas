@@ -33,6 +33,10 @@ export const environment = {
 
     // rols
 
-    getRols:'users/roles/'
+    getRols:'users/roles/',
+
+    // MODULS
+
+    getModuls:'modules/'
 
 }

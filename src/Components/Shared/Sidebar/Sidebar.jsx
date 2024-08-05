@@ -6,9 +6,13 @@ import Orquidea from '../../../assets/images/Orquidea.png';
 import Home from '../../../assets/images/home.png';
 import Profile from '../../../assets/images/user.png';
 import Admin from '../../../assets/images/admin.png';
+import { AppContext } from '../../../Context';
 
 export default function Sidebar() {
 
+    // APPCONTEXT
+    let {userData} =  React.useContext(AppContext);
+    
     React.useEffect(()=>{
             $(document).ready(function () {
                 $('#sidebarCollapse').on('click', function () {
@@ -58,12 +62,17 @@ export default function Sidebar() {
                         <p className='m-0 ms-4 align-items-center align-self-center fs-5-  unabbreviated- lh-sm fontLight'>Home</p>
                         </NavLink>
                     </li>
+                    {userData?.role != 4 ? 
                     <li className='nav-item'>
                         <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })} to='/Lobby/Admin'>
                         <p className='m-0 align-items-center align-self-center fs-5- ff-monse-regular-  abbreviated- tx-decoration-'><img className='logo-medical-sidebar-' src={Admin} alt="" /></p>
                         <p className='m-0 ms-4 align-items-center align-self-center fs-5-  unabbreviated- lh-sm fontLight'>Admin</p>
                         </NavLink>
                     </li>
+                    :
+                    <></>
+                    }
+                    
                     </ul>
                 </div>
                 </div>
