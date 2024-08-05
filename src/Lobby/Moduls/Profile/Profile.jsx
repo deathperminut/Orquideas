@@ -5,13 +5,19 @@ import $ from 'jquery';
 import Select, { components } from 'react-select'
 import makeAnimated from 'react-select/animated';
 import DatePicker from "react-multi-date-picker"
-import Amarillo from '../../../assets/images/modulImage.png';
-import Violeta from '../../../assets/images/Violeta2.png';
 import Flores from '../../../assets/images/circleVioleta.png';
 import { AppContext } from '../../../Context';
 import Swal from 'sweetalert2';
 import Preloader from '../../../Components/Shared/Preloader/Preloader';
 import { UpdateUser } from '../../../Services/Users/Users';
+import Violeta from '../../../assets/images/Violeta2.png';
+import Azul from '../../../assets/images/Azul22.png';
+import Rojo from '../../../assets/images/Magenta22.png';
+import Verde from '../../../assets/images/Verde2.png';
+import Naranja from '../../../assets/images/Naranja2.png';
+import Amarillo from '../../../assets/images/Amarillo2.png';
+import Cafe from '../../../assets/images/Cafe22.png';
+import Aguamarina from '../../../assets/images/AguaMarina2.png';
 
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
@@ -336,6 +342,26 @@ export default function Profile() {
       }
     }
 
+    const ObtainModulInstitution=()=>{
+
+      let insti =  GetIns();
+      console.log("INSTITUCIÓN SELECCIONADA: ",insti)
+      let moduls_ = insti.allowed_modules
+      console.log("ALLOWED SELECCIONADA: ",moduls_)
+      if(moduls_.length !== 0){
+
+        let modulId =  moduls_[0];
+
+        console.log("ALLOWED dSELECCIONADA: ",moduls,)
+        return moduls.filter((obj)=> obj.id == modulId)[0];
+
+      }else{
+        return null
+      }
+      
+
+    }
+
     return (
         <React.Fragment>
           {
@@ -439,26 +465,69 @@ export default function Profile() {
                                 <div className='col-12'>
                                         <div className='lastModuleContainer'>
                                                   <div className='ContainerImageModul'>
-                                                      <img src={Violeta} className='card-img' alt="" />
+                                                    {ObtainModulInstitution()?.id == 1 ?
+                                                    <img src={Amarillo} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 2 ?
+                                                    <img src={Cafe} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 3 ?
+                                                    <img src={Azul} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 4 ?
+                                                    <img src={Rojo} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 5 ?
+                                                    <img src={Verde} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 6 ?
+                                                    <img src={Naranja} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 7 ?
+                                                    <img src={Aguamarina} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {ObtainModulInstitution()?.id == 8 ?
+                                                    <img src={Violeta} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
                                                   </div>
                                                   <div className='ContainerInfoModul'>
-                                                          <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>
-                                                          <p className='fontLight description_moduls'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,</p>
+                                                          <span className='fontSemiBold' style={{'fontSize':'30px'}}>{ObtainModulInstitution()?.title}</span>
+                                                          <p className='fontLight description_moduls'>{ObtainModulInstitution()?.description}</p>
                                                   </div>
                                         </div>
                                         <div className='classroomContainer'>
-                                                  <div className='divClass bs-2-'>
-                                                            {/* <div className='ImageContainerClass'>
-                                                                <img src={Flores} className='card-img' alt="" />
-                                                            </div> */}
+                                                  {/* <div className='divClass bs-2-'>
                                                             <div className='TextContainerClass'>
                                                                     <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
                                                                     <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                             </div>
-                                                  </div>
+                                                  </div> */}
                                                   <div className='ContainerButton' >
                                                     <div className='Button_1' >
-                                                                <span className='text_button_1'>Continuar</span>
+                                                                <span className='text_button_1'>Ver</span>
                                                     </div>
                                                   </div>
                                                   
