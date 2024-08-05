@@ -333,7 +333,7 @@ export default function Profile() {
           setPreloader(false);
           console.log("datos usuario: ",result.data);
           // seteamos la variable de userData
-          setUserData({...userData,['email']:result.data.emal,['first_name']:result.data.first_name,['last_name']:result.data.last_name})
+          setUserData({...userData,['email']:result.data.email,['first_name']:result.data.first_name,['last_name']:result.data.last_name})
           Swal.fire({
             icon: 'success',
             title: 'Actualizado con éxito'
