@@ -47,7 +47,11 @@ export default function Navbar() {
             })
             if(result){
                 console.log("roles: ",result.data);
-                setRoles(result.data);
+                setRoles(result.data.map((obj)=>{
+                    return (
+                        {...obj,['value']:obj.id,['label']:obj.name}
+                    )
+                }));
                 // traemos la información de los modulos
                 GetInstitutionData();
             }
@@ -66,7 +70,11 @@ export default function Navbar() {
             })
             if(result){
                 console.log("Institución: ",result.data);
-                setInstitution(result.data);
+                setInstitution(result.data.map((obj)=>{
+                    return (
+                        {...obj,['value']:obj.id,['label']:obj.name}
+                    )
+                }));
                 GetModulsData();
             }
     }

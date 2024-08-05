@@ -5,6 +5,12 @@ import Select, { components } from 'react-select'
 import makeAnimated from 'react-select/animated';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { IoIosClose } from "react-icons/io";
+import { AppContext } from '../../../../Context';
+import Swal from 'sweetalert2';
+import Preloader from '../../../../Components/Shared/Preloader/Preloader';
+import { GetUser } from '../../../../Services/Users/Users';
+
+
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
  */
@@ -256,13 +262,85 @@ const options2 = [
   ];
 
 export default function Users() {
-
+    
+    // AppContext
+    
+    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext} =  React.useContext(AppContext);
+    
+    // use State
     const [show2, setShow2] = React.useState(false);
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
+    let [preloader,setPreloader] = React.useState(false);
+    let [listUsers,setListUsers] = React.useState([]);
+    let [supportList,setSupportList] = React.useState([]);
+    let [filter,setFilter] = React.useState("");
+    let [selectUser,setSelectUser] = React.useState(null);
+    // Obtenemos la lista de usuarios
+    React.useEffect(()=>{
+      // loadUsers
+      loadUsers();
+    },[])
+
+    let loadUsers=async()=>{
+
+      // obtenemos los usuarios
+      let result =  undefined;
+      setPreloader(true);
+      result =  await GetUser().catch((error)=>{
+        console.log(error);
+        setPreloader(false);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas al cargar usuarios'
+        })
+      });
+
+      if(result){
+        setPreloader(false);
+        console.log(result.data);
+        setListUsers([...result.data]);
+        setSupportList([...result.data]);
+      }
+
+    }
+
+    const ReadInput=(event)=>{
+        
+      if(event.target.value == ""){
+        setSupportList([...listUsers]);
+        setFilter(event.target.value);
+      }else{
+        // FILTRAMOS POR EL VALOR DE EMAIL O NOMBRE O IDENTIFICACIÓN
+        let filter_ = listUsers.filter((obj)=> obj.email.toLowerCase().includes(event.target.value) || obj.last_name.toLowerCase().includes(event.target.value) || obj.first_name.toLowerCase().includes(event.target.value))
+        setSupportList(filter_);
+        setFilter(event.target.value);
+      }
+    }
+
+    const GetInsti=(idUser)=>{
+      let filter_ = institution.filter((obj)=> obj.users.includes(idUser))
+      return filter_[0]
+    }
+
+    const TraducirRol=(idRol)=>{
+
+      let filter_ = roles.filter((obj)=> obj.id == idRol)
+      return filter_[0]
+
+    }
 
     return (
         <>
+          {
+                          preloader ?
+                          <>
+                          <Preloader></Preloader>
+                          </>
+                          :
+
+                          <></>
+          }
           <div className='dataModulContainer'>
             <span className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Gestión de usuarios</span>
             <div className='FormContainer'>
@@ -272,17 +350,7 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                             <div className='col-12'>
                                 <div className='form-floating inner-addon- right-addon-'>
-                                <input type="text" className='form-control' id='password' placeholder="" />
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div className='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                        <span className='fs-10- fontLight'>Institución</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- right-addon-'>
-                                <input type="text" className='form-control' id='password' placeholder="Institución" />
+                                <input value={filter} onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
                                 </div>
                             </div>
                             </div>
@@ -297,18 +365,28 @@ export default function Users() {
                             <tr>
                                 <th scope="col" className='th-width-md-'>
                                 <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Nombre completo</span>
+                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Email</span>
+                                </div>
+                                </th>
+                                <th scope="col" className='th-width-md-'>
+                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Nombre</span>
                                 </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
                                 <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Número de identificación</span>
+                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Identificación</span>
                                 </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
                                 <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
                                     <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
                                 </div>
+                                </th>
+                                <th scope="col" className='th-width-sm-'>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Rol</span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
                                 <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
@@ -318,186 +396,39 @@ export default function Users() {
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                {supportList.map((obj,index)=>{
+                                  return(
+                                    <tr key={index}>
                                     <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
+                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.email}</p>
                                     </td>
                                     <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
+                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.last_name}</p>
                                     </td>
                                     <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
+                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.first_name}</p>
+                                    </td>
+                                    <td className='align-middle'>
+                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetInsti(obj?.id).name}</p>
+                                    </td>
+                                    <td className='align-middle'>
+                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{TraducirRol(obj?.role).name}</p>
                                     </td>
                                     <td className='align-middle'>
                                             <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
                                                 <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                <button onClick={()=>{
+                                                  setSelectUser({...obj});
+                                                  handleShow2();
+                                                  }} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
                                                         <FaRegEdit />
                                                 </button>
                                                 </div>
                                             </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button  onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button  onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr><tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                            <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                <div className='col-auto'>
-                                                <button onClick={handleShow2} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                        <FaRegEdit />
-                                                </button>
-                                                </div>
-                                            </div>
-                                    </td>
-                                </tr>
+                                  )
+                                })}
                             </tbody>
                         </table>
                         </div>
@@ -518,7 +449,7 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                             <div className='col-12'>
                                 <div className='form-floating inner-addon- left-addon-'>
-                                <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                <input value={selectUser?.email} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                 </div>
                             </div>
                             </div>
@@ -526,7 +457,7 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                 <div className='col-12'>
                                     <div className='form-floating inner-addon- left-addon-'>
-                                    <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                    <input value={selectUser?.last_name} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                     </div>
                                 </div>
                             </div>
@@ -534,26 +465,25 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                 <div className='col-12'>
                                     <div className='form-floating inner-addon- left-addon-'>
-                                    <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                    <input value={selectUser?.first_name} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                     </div>
                                 </div>
                             </div>
-                            
-                            <span className='fs-10- fontLight'>Contraseña</span>
+                            {/* <span className='fs-10- fontLight'>Contraseña</span>
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- right-addon-'>
-                                <input type="password" className='form-control' id='password' placeholder="Ingrese su contraseña" />
-                                </div>
-                            </div>
-                            </div>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- right-addon-'>
+                                  <input type="password" className='form-control' id='password' placeholder="Ingrese su contraseña" />
+                                  </div>
+                              </div>
+                            </div> */}
                             <span className='fs-10- fontLight' >Institución</span>
                             <div className='inner-addon- left-addon-'>
-                                <Select options={options} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                <Select options={roles} value={{'value':GetInsti(selectUser?.id)?.id,'label':GetInsti(selectUser?.id)?.name}} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                             </div>
                             <span className='fs-10- fontLight' >Rol</span>
                             <div className='inner-addon- left-addon-'>
-                                <Select options={options2} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                <Select options={institution} value={{'value':TraducirRol(selectUser?.role)?.id,'label':TraducirRol(selectUser?.role)?.name}} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                             </div>
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mt-3'>
                               <div className='col-12 d-flex flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-column flex-xxl-column justify-content-between align-items-center align-self-center mb-2'>
@@ -561,14 +491,14 @@ export default function Users() {
                                 <div className='d-flex flex-row justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start align-items-center align-self-center'>
                                   <div className='checks-radios- me-1'>
                                     <label>
-                                      <input  type="radio" name="radio"/>
-                                      <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Activar</span>
+                                      <input checked={selectUser?.is_active} type="radio" name="radio"/>
+                                      <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Activado</span>
                                     </label>
                                   </div>
                                   <div className='checks-radios- me-1'>
                                     <label>
-                                      <input   type="radio" name="radio"/>
-                                      <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Desactivar</span>
+                                      <input checked={!selectUser?.is_active}  type="radio" name="radio"/>
+                                      <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Desactivado</span>
                                     </label>
                                   </div>
                                 </div>
