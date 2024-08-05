@@ -34,6 +34,7 @@ import Imagen3 from '../assets/images/NewsImage3.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GetNews } from '../Services/News/News';
+import { getModuls } from '../Services/Moduls/Moduls';
 
 export default function LandingPage() {
 
@@ -42,13 +43,32 @@ export default function LandingPage() {
     let [preloader,setPreloader] =  React.useState(false);
     let [news,setNews] = React.useState([]);
     let [stories,setStories] = React.useState([]);
-
+    let [moduls,setModuls]  = React.useState([]);
+    let [selectModul,setSelectModul] = React.useState(null);
     // REACT USE EFFECT
 
     React.useEffect(()=>{
         // Cargamos los datos de las noticias
         LoadNews();
+        LoadModuls();
     },[])
+
+
+    const LoadModuls=async()=>{
+        let result =  undefined;
+        result =  await getModuls().catch((error)=>{
+            console.log(error);
+            setPreloader(false);
+            Swal.fire({
+                icon: 'info',
+                title: 'Error al traer información de los módulos'
+            })
+        })
+        if(result){
+            console.log("Modulos: ",result.data);
+            setModuls(result.data);
+        }
+    }
 
     const LoadNews=async()=>{
 
@@ -128,6 +148,15 @@ export default function LandingPage() {
 
     const notify = (text) => toast(text);
 
+    const FilterModul=()=>{
+        let filter_ =  moduls.filter((obj)=> obj.id  == selectModul);
+        if(filter_.length !== 0){
+            return filter_[0];
+        }else{
+            return null;
+        }
+    }
+
 
     return (
         <>
@@ -181,7 +210,10 @@ export default function LandingPage() {
                                                         <span className='lineColor' style={{marginBottom:'20px'}}></span>
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
-                                                <div onClick={()=>handleShow2()} className='divsContainer'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(8);
+                                                    handleShow2()
+                                                    }} className='divsContainer'>
                                                     <div  className='buttonElement'>
                                                         <span className='white fontLight'>Ver</span>
                                                     </div>
@@ -200,7 +232,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(1);
+                                                    handleShow2()
+                                                    }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -218,7 +253,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(3);
+                                                    handleShow2()
+                                                    }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -236,7 +274,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(4);
+                                                    handleShow2()
+                                                    }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -254,7 +295,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(5);
+                                                    handleShow2()
+                                                    }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -272,7 +316,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(6);
+                                                    handleShow2()
+                                                    }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -290,7 +337,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div  onClick={()=>{
+                                                    setSelectModul(7);
+                                                    handleShow2()
+                                                    }} className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -308,7 +358,10 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div  className='buttonElement'>
+                                                <div onClick={()=>{
+                                                    setSelectModul(2);
+                                                    handleShow2()
+                                                    }} className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
                                                 </div>
                                                 </div>
@@ -442,14 +495,60 @@ export default function LandingPage() {
                 <div className='offcanvas-body '>
                 <div className='container-fluid pt-0 pb-0 padding-40-'>
                 <div className='dataModulContainer'>
-                <div className='DataInfoModulContainer'>
+                <div className='DataInfoModulContainer' style={{'backgroundColor':FilterModul()?.color}}>
                         <div className='ContainerImageModul_2'>
-                                <img src={Violeta} className='card-img' alt="" />
+                                                    {selectModul == 1 ?
+                                                    <img src={Amarillo} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 2 ?
+                                                    <img src={Cafe} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 3 ?
+                                                    <img src={Azul} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 4 ?
+                                                    <img src={Rojo} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 5 ?
+                                                    <img src={Verde} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 6 ?
+                                                    <img src={Naranja} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 7 ?
+                                                    <img src={Aguamarina} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 8 ?
+                                                    <img src={Violeta} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
                         </div>
                         <div className='ContainerInfoModul'>
-                                <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>
-                                <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>Publicado el 11 de marzo de 2024</span>
-                                <p className='fontLight description_moduls'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,</p>
+                                <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>{FilterModul()?.title}</span>
+                                <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{''}</span>
+                                <p className='fontLight description_moduls'>{FilterModul()?.description}</p>
                         </div>
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
