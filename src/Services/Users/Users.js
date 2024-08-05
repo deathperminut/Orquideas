@@ -26,10 +26,10 @@ const GetUser=async ()=>{
     return await axios.get(path);
 }
 
-const UpdateUser=async (body)=>{
+const UpdateUser=async (body,id)=>{
     
 
-    const path  = environment.api + environment.editUser+body.id+'/';
+    const path  = environment.api + environment.editUser+id+'/';
     return await axios.put(path,body);
     
 

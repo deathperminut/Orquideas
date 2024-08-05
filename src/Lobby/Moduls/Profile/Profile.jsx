@@ -8,6 +8,11 @@ import DatePicker from "react-multi-date-picker"
 import Amarillo from '../../../assets/images/modulImage.png';
 import Violeta from '../../../assets/images/Violeta2.png';
 import Flores from '../../../assets/images/circleVioleta.png';
+import { AppContext } from '../../../Context';
+import Swal from 'sweetalert2';
+import Preloader from '../../../Components/Shared/Preloader/Preloader';
+import { UpdateUser } from '../../../Services/Users/Users';
+
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
  */
@@ -252,6 +257,18 @@ const options = [
 ];
 
 export default function Profile() {
+    
+    // AppContext
+    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext} =  React.useContext(AppContext);
+    // use States
+    let [preloader,setPreloader] = React.useState(false);
+    let [data,setData] = React.useState({
+      'email':userData.email,
+      'first_name':userData.first_name,
+      'last_name':userData.last_name,
+      'role':userData?.role,
+      'password':userData?.password
+    });
 
     React.useEffect(() => {
         const intervalId = setInterval(() => {
@@ -276,149 +293,187 @@ export default function Profile() {
     
         return () => clearInterval(intervalId);
       }, []);
+    
+    const ReadInput=(event,target)=>{
+      setData({...data,[target]:event.target.value});
+    }
 
+    const GetIns=()=>{
+      let filter_ = institution.filter((obj)=> obj.users.includes(userData?.id))
+      return filter_[0]
+    }
+
+    const UpdateAccount=async()=>{
+      // update Account
+      // verificamos que no haya campos vacios
+      if(data?.email == "" || data?.first_name == "" || data?.last_name == "" || data?.password ==""){
+        Swal.fire({
+          icon: 'info',
+          title: 'No puedes dejar ningun campo vacio'
+        })
+      }else{ 
+        
+        let result = undefined;
+        setPreloader(true);
+        result =  await UpdateUser(data,userData?.id).catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+            icon: 'info',
+            title: 'Problemas para actualizar el usuario'
+          })
+        })
+        if(result){
+          setPreloader(false);
+          console.log("datos usuario: ",result.data);
+          // seteamos la variable de userData
+          setUserData({...userData,['email']:result.data.emal,['first_name']:result.data.first_name,['last_name']:result.data.last_name})
+          Swal.fire({
+            icon: 'success',
+            title: 'Actualizado con éxito'
+          })
+        }
+      }
+    }
 
     return (
         <React.Fragment>
-      <div className='container-fluid overflow-x-hidden'>
-        <div className='row'>
-          <div className='col-12'>
-            <h2 className='m-0 p-0 lh-sm fs-3- fontSemiBold color-purple'>Perfil</h2>
-          </div>
-        </div>
-        <div className='row mt-4'>
-          <div className='col-12'>
-            <div className='d-flex flex-row justify-content-start align-items-center align-self-center'>
-              &nbsp;
-              <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- dayOfWeek'></p>
-              &nbsp;
-              <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- dayOfMonth'></p>
-              &nbsp;
-              <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- monthOfYear'></p>
-              &nbsp;
-              <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- year'></p>
-              &nbsp;
-              <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black-'>/</p>
-              &nbsp;
-              <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- hour'></p>
+          {
+                          preloader ?
+                          <>
+                          <Preloader></Preloader>
+                          </>
+                          :
+
+                          <></>
+          }
+          <div className='container-fluid overflow-x-hidden'>
+            <div className='row'>
+              <div className='col-12'>
+                <h2 className='m-0 p-0 lh-sm fs-3- fontSemiBold color-purple'>Perfil</h2>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12'>
-              <div className='container-fluid overflow-x-hidden p-0'>
-                <div className='row g-4 mt-3'>
-                  <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-4'>
-                    <div id="card-appointment" className='card border-0 rounded-3 w-100 position-relative bs-2-'>
-                      <div className='card-header border-0 rounded-3'>
-                        <div className='row'>
-                          <div className='col-12'>
-                            <ul className='nav nav-pills d-flex flex-row justify-content-between' role="tablist">
-                              <li className='nav-item' role="presentation">
-                                <button className='nav-link active rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="requests-tab" data-bs-toggle="pill" data-bs-target="#requests" type="button" role="tab" aria-controls="requests" aria-selected="true"> <span className='fontSemiBold color-purple me-2'>Editar</span></button>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='ContainerFormProfile'>
-                        <form action='' className='Form'>
-                            <span className='fs-10- fontLight' >Email</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- left-addon-'>
-                                <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                </div>
-                            </div>
-                            </div>
-                            <span className='fs-10- fontLight' >Nombre</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                <div className='col-12'>
-                                    <div className='form-floating inner-addon- left-addon-'>
-                                    <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                    </div>
-                                </div>
-                            </div>
-                            <span className='fs-10- fontLight' >Identificación</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                <div className='col-12'>
-                                    <div className='form-floating inner-addon- left-addon-'>
-                                    <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <span className='fs-10- fontLight'>Contraseña</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- right-addon-'>
-                                <input type="password" className='form-control' id='password' placeholder="Ingrese su contraseña" />
-                                </div>
-                            </div>
-                            </div>
-                            <span className='fs-10- fontLight' >Institución</span>
-                            <div className='inner-addon- left-addon-'>
-                                <Select options={options} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
-                            </div>
-                            <div className='ContainerButton_2'>
-                                <div className='Button_2' style={{'marginTop':'20px'}}>
-                                            <span className='text_button_2'>Actualizar</span>
-                                </div>
-                            </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-8'>
-                    <div id="card-view" className='card border-0 rounded-3 w-100 bs-2-'>
-                      <div className='card-body w-100 min-h-'>
-                        <div className='container-fluid'>
-                          <div className='row mt-2'>
-                            <div className='col-12'>
-                              <h2 className='m-0 p-0 lh-sm fs-4- fontSemiBold fw-bold color-purple'>Ultima clase</h2>
-                            </div>
-                          </div>
-                          <div className='row mt-4 mb-4'>
-                            <div className='col-12'>
-                                    <div className='lastModuleContainer'>
-                                              <div className='ContainerImageModul'>
-                                                  <img src={Violeta} className='card-img' alt="" />
-                                              </div>
-                                              <div className='ContainerInfoModul'>
-                                                      <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>
-                                                      <p className='fontLight description_moduls'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,</p>
-                                              </div>
-                                    </div>
-                                    <div className='classroomContainer'>
-                                              <div className='divClass bs-2-'>
-                                                        <div className='ImageContainerClass'>
-                                                            <img src={Flores} className='card-img' alt="" />
-                                                        </div>
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                              </div>
-                                              <div className='ContainerButton'>
-                                                <div className='Button_1'>
-                                                            <span className='text_button_1'>Continuar</span>
-                                                </div>
-                                              </div>
-                                              
-                                    </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <div className='row mt-4'>
+              <div className='col-12'>
+                <div className='d-flex flex-row justify-content-start align-items-center align-self-center'>
+                  &nbsp;
+                  <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- dayOfWeek'></p>
+                  &nbsp;
+                  <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- dayOfMonth'></p>
+                  &nbsp;
+                  <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- monthOfYear'></p>
+                  &nbsp;
+                  <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- year'></p>
+                  &nbsp;
+                  <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black-'>/</p>
+                  &nbsp;
+                  <p className='m-0 p-0 lh-1 fs-5- fontSemiBold tx-black- hour'></p>
                 </div>
               </div>
+            </div>
+            <div className='row'>
+              <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12'>
+                  <div className='container-fluid overflow-x-hidden p-0'>
+                    <div className='row g-4 mt-3'>
+                      <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 col-xxl-4'>
+                        <div id="card-appointment" className='card border-0 rounded-3 w-100 position-relative bs-2-'>
+                          <div className='card-header border-0 rounded-3'>
+                            <div className='row'>
+                              <div className='col-12'>
+                                <ul className='nav nav-pills d-flex flex-row justify-content-between' role="tablist">
+                                  <li className='nav-item' role="presentation">
+                                    <button className='nav-link active rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="requests-tab" data-bs-toggle="pill" data-bs-target="#requests" type="button" role="tab" aria-controls="requests" aria-selected="true"> <span className='fontSemiBold color-purple me-2'>Editar</span></button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div className='ContainerFormProfile'>
+                            <form action='' className='Form'>
+                                <span className='fs-10- fontLight' >Email</span>
+                                <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                                <div className='col-12'>
+                                    <div className='form-floating inner-addon- left-addon-'>
+                                    <input type="text" value={data?.email} onChange={(event)=>ReadInput(event,'email')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                    </div>
+                                </div>
+                                </div>
+                                <span className='fs-10- fontLight' >Nombre</span>
+                                <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                                    <div className='col-12'>
+                                        <div className='form-floating inner-addon- left-addon-'>
+                                        <input type="text" value={data?.last_name} onChange={(event)=>ReadInput(event,'last_name')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className='fs-10- fontLight' >Identificación</span>
+                                <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                                    <div className='col-12'>
+                                        <div className='form-floating inner-addon- left-addon-'>
+                                        <input type="text" value={data?.first_name} onChange={(event)=>ReadInput(event,'first_name')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                <span className='fs-10- fontLight' >Institución</span>
+                                <div className='inner-addon- left-addon-'>
+                                    <Select isDisabled={true} options={[]} value={{'value':GetIns().name,label:GetIns()?.name}}  components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                </div>
+                                <div  className='ContainerButton_2'>
+                                    <div onClick={UpdateAccount} className='Button_2' style={{'marginTop':'20px'}}>
+                                                <span className='text_button_2'>Actualizar</span>
+                                    </div>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8 col-xxl-8'>
+                        <div id="card-view" className='card border-0 rounded-3 w-100 bs-2-'>
+                          <div className='card-body w-100 min-h-'>
+                            <div className='container-fluid'>
+                              <div className='row mt-4 mb-4'>
+                                <div className='col-12'>
+                                        <div className='lastModuleContainer'>
+                                                  <div className='ContainerImageModul'>
+                                                      <img src={Violeta} className='card-img' alt="" />
+                                                  </div>
+                                                  <div className='ContainerInfoModul'>
+                                                          <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>Módulo violeta</span>
+                                                          <p className='fontLight description_moduls'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula vene,</p>
+                                                  </div>
+                                        </div>
+                                        <div className='classroomContainer'>
+                                                  <div className='divClass bs-2-'>
+                                                            {/* <div className='ImageContainerClass'>
+                                                                <img src={Flores} className='card-img' alt="" />
+                                                            </div> */}
+                                                            <div className='TextContainerClass'>
+                                                                    <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
+                                                                    <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
+                                                            </div>
+                                                  </div>
+                                                  <div className='ContainerButton' >
+                                                    <div className='Button_1' >
+                                                                <span className='text_button_1'>Continuar</span>
+                                                    </div>
+                                                  </div>
+                                                  
+                                        </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </React.Fragment>
+        </React.Fragment>
     )
 }

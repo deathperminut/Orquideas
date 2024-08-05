@@ -51,7 +51,7 @@ export default function Login() {
       if(result){
         console.log(result.data);
         setPreloader(false);
-        setUserData(result.data);
+        setUserData({...result.data});
         navigate('/Lobby');
         Swal.fire({
           icon: 'success',
