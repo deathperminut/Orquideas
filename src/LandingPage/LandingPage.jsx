@@ -466,10 +466,10 @@ export default function LandingPage() {
                     </div>
                     
                     <div className='Footer'>
-                        <div onClick={()=>notify('Comunicate al email pruebas@gmail.com')} className='SocialContainer'>
+                        <div onClick={()=>notify('Comunicate al email contact@formacionorquideas.com')} className='SocialContainer'>
                                 <BiLogoGmail size={25}></BiLogoGmail>
                         </div>
-                        <div onClick={()=>notify('Contactame al 3162554803')} className='SocialContainer'>
+                        <div onClick={()=>notify('Contactame al 3014435952')} className='SocialContainer'>
                                 <FaPhoneSquareAlt size={25}></FaPhoneSquareAlt>
                         </div>
                         <ToastContainer position="top-right"

@@ -45,7 +45,7 @@ export default function Login() {
         setPreloader(false);
         Swal.fire({
           icon: 'info',
-          title: 'Se presento una falla al iniciar sesión comprueba tus credenciales'
+          title: 'Se presento una falla al iniciar sesión comprueba tus credenciales o verifique la activación de su usuario'
         })
       })
       if(result){

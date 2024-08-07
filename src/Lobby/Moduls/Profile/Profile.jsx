@@ -2,7 +2,8 @@ import React from 'react';
 import { Navigate, Route, Routes } from "react-router-dom"
 import './Profile.css';
 import $ from 'jquery';
-import Select, { components } from 'react-select'
+import Select, { components } from 'react-select';
+import {useNavigate} from 'react-router-dom';
 import makeAnimated from 'react-select/animated';
 import DatePicker from "react-multi-date-picker"
 import Flores from '../../../assets/images/circleVioleta.png';
@@ -263,9 +264,12 @@ const options = [
 ];
 
 export default function Profile() {
+
+     // setSelectModuls 
+    const navigate=useNavigate();
     
     // AppContext
-    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext} =  React.useContext(AppContext);
+    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext,setSelectModul} =  React.useContext(AppContext);
     // use States
     let [preloader,setPreloader] = React.useState(false);
     let [data,setData] = React.useState({
@@ -518,13 +522,10 @@ export default function Profile() {
                                                           <p className='fontLight description_moduls'>{ObtainModulInstitution()?.description}</p>
                                                   </div>
                                         </div>
-                                        <div className='classroomContainer'>
-                                                  {/* <div className='divClass bs-2-'>
-                                                            <div className='TextContainerClass'>
-                                                                    <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                    <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                            </div>
-                                                  </div> */}
+                                        <div onClick={()=>{
+                                          setSelectModul(ObtainModulInstitution());
+                                          navigate('/Lobby/SelectModul')
+                                        }} className='classroomContainer'>
                                                   <div className='ContainerButton' >
                                                     <div className='Button_1' >
                                                                 <span className='text_button_1'>Ver</span>

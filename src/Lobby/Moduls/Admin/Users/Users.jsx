@@ -8,7 +8,8 @@ import { IoIosClose } from "react-icons/io";
 import { AppContext } from '../../../../Context';
 import Swal from 'sweetalert2';
 import Preloader from '../../../../Components/Shared/Preloader/Preloader';
-import { GetUser } from '../../../../Services/Users/Users';
+import { GetUser, UpdateUser } from '../../../../Services/Users/Users';
+import { GetInstitutions, UpdateInstitution } from '../../../../Services/Institutions/Institutions';
 
 
 /**
@@ -329,6 +330,136 @@ export default function Users() {
       return filter_[0]
 
     }
+    // Seleccionamos institución
+    let [selectInsti,setSelectInsti] = React.useState(null);
+
+    // FUNCTIONS OFFCANVAS
+
+    const ReadInputSelect=(event,type)=>{
+      setSelectUser({...selectUser,[type]:event.target.value});
+    }
+
+    const ReadSelect=(event,type)=>{
+
+      if(type == "Insti"){
+        // Guardamos en una variable momentaneamente la institución seleccionada
+        setSelectInsti(event); // cambiamos a la nueva institución
+      }else{
+
+        setSelectUser({...selectUser,[type]:event.value});
+
+      }
+
+    }
+
+    const ReadCheckBox=(event,type)=>{
+
+      if(type == 'Activado'){
+
+        setSelectUser({...selectUser,['is_active']:true})
+
+      }else{
+
+        setSelectUser({...selectUser,['is_active']:false})
+
+      }
+
+    }
+
+    const Update=async()=>{
+      // PRIMERO OBTENEMOS LAS INSTITUCIONES QUE TIENEN ASOCIADO AL USUARIO EN ESTE MOMENTO
+      setPreloader(true);
+      let insti_filter = [...institution].filter((obj)=>obj.users.includes(selectUser?.id))
+      console.log("OBTENEMOS LA INSTITUCIÓN: ",selectUser?.id,insti_filter);
+      // ELIMINAMOS EL USUARIO DE CADA LISTA
+      for (var i = 0; i<insti_filter.length;i++){
+          const valueToRemove = selectUser?.id;
+          let lista_copia = [...insti_filter[i].users]
+          const index = [...insti_filter[i].users].indexOf(valueToRemove);
+          if (index > -1) {
+              lista_copia.splice(index, 1);
+          }
+          // FILTRAMOS EL USUARIO Y ACTUALIZAMOS LA INFORMACIÓN DE LA INSTITUCIÓN.
+          console.log("RESULTADOS: ",lista_copia);
+          let result =undefined;
+          result = await UpdateInstitution({...insti_filter[i],['users']:lista_copia}).catch((error)=>{
+            console.log("PROBLEMAS AL ACTUALIZAR DATOS: ",error);
+          })
+          if(result){
+            console.log("INSTITUCIÓN ACTUALIZADA CON ÉXITO",result.data);
+          }
+          
+      }
+
+      // UNA VEZ ACTUALIZADA, AHORA COLOCAMOS A LA INSTITUCIÓN QUE PERTENECE EL USUARIO
+      let instis = institution.filter((obj)=>obj?.id == selectInsti?.id);
+      let lista_usuarios = instis[0].users;
+      lista_usuarios.push(selectUser?.id);
+      // FILTRAMOS EL USUARIO Y ACTUALIZAMOS LA INFORMACIÓN DE LA INSTITUCIÓN.
+      let result =undefined;
+      console.log("ELEMENTO A ACTUALIZAR: ",{...selectInsti,['users']:lista_usuarios});
+      result = await  UpdateInstitution({...selectInsti,['users']:lista_usuarios}).catch((error)=>{
+        console.log("ERROR SEGUNDO ACTUALIZADO: ",error);
+        setPreloader(false);
+      })
+      if(result){
+        console.log("INSTITUCIÓN ACTUALIZADA CON ÉXITO",result.data);
+        GetInstitutionData();
+      }
+      // NOS VEMOS A TRAER TODAS LAS INSTITUCIONES DE BASE DE DATOS
+      
+      
+    }
+
+    const GetInstitutionData= async()=>{
+          let result =  undefined;
+          result =  await GetInstitutions().catch((error)=>{
+              console.log(error);
+              setPreloader(false);
+              Swal.fire({
+                  icon: 'info',
+                  title: 'Error al traer información de las instituciones'
+              })
+          })
+          if(result){
+              console.log("Institución: ",result.data);
+              setPreloader(false);
+              setInstitution(result.data.map((obj)=>{
+                  return (
+                      {...obj,['value']:obj.id,['label']:obj.name}
+                  )
+              }));
+              // ACTUALIZAMOS LA INFORMACIÓN DEL USUARIO:
+              UPDATEUSER();
+              // OBTENEMOS LAS INSTITUCIONES Y AHORA SI ACTUALIZAMOS EL USUARIO
+          }
+  }
+
+  const  UPDATEUSER =async()=>{
+    setPreloader(true);
+    let result =  undefined;
+    result = await UpdateUser(selectUser,selectUser?.id).catch((error)=>{
+      console.log("ERROR AL ACTUALIZAR USUARIO: ",error);
+      Swal.fire({
+        icon: 'info',
+        title: 'Problemas para actualizar el usuario'
+      })
+      setPreloader(false);
+    })
+    if(result){
+      setPreloader(false);
+      console.log("usuario actualizado con éxito: ",result.data);
+      loadUsers();
+      handleClose2();
+      Swal.fire({
+        icon: 'success',
+        title: 'Usuario actualizado con éxito'
+      })
+    }
+
+  }
+
+
 
     return (
         <>
@@ -418,6 +549,7 @@ export default function Users() {
                                             <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
                                                 <div className='col-auto'>
                                                 <button onClick={()=>{
+                                                  setSelectInsti(GetInsti(obj.id));
                                                   setSelectUser({...obj});
                                                   handleShow2();
                                                   }} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
@@ -449,7 +581,7 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                             <div className='col-12'>
                                 <div className='form-floating inner-addon- left-addon-'>
-                                <input value={selectUser?.email} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                <input value={selectUser?.email} onChange={(event)=>ReadInputSelect(event,'email')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                 </div>
                             </div>
                             </div>
@@ -457,7 +589,7 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                 <div className='col-12'>
                                     <div className='form-floating inner-addon- left-addon-'>
-                                    <input value={selectUser?.last_name} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                    <input value={selectUser?.last_name} onChange={(event)=>ReadInputSelect(event,'last_name')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                     </div>
                                 </div>
                             </div>
@@ -465,7 +597,7 @@ export default function Users() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                 <div className='col-12'>
                                     <div className='form-floating inner-addon- left-addon-'>
-                                    <input value={selectUser?.first_name} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                    <input value={selectUser?.first_name} onChange={(event)=>ReadInputSelect(event,'first_name')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                     </div>
                                 </div>
                             </div>
@@ -479,11 +611,11 @@ export default function Users() {
                             </div> */}
                             <span className='fs-10- fontLight' >Institución</span>
                             <div className='inner-addon- left-addon-'>
-                                <Select options={roles} value={{'value':GetInsti(selectUser?.id)?.id,'label':GetInsti(selectUser?.id)?.name}} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                <Select options={institution} value={{'value':selectInsti?.id,'label':selectInsti?.name}} onChange={(event)=>ReadSelect(event,'Insti')} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                             </div>
                             <span className='fs-10- fontLight' >Rol</span>
                             <div className='inner-addon- left-addon-'>
-                                <Select options={institution} value={{'value':TraducirRol(selectUser?.role)?.id,'label':TraducirRol(selectUser?.role)?.name}} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                <Select options={roles} value={{'value':TraducirRol(selectUser?.role)?.id,'label':TraducirRol(selectUser?.role)?.name}} onChange={(event)=>ReadSelect(event,'role')} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                             </div>
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mt-3'>
                               <div className='col-12 d-flex flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-column flex-xxl-column justify-content-between align-items-center align-self-center mb-2'>
@@ -491,20 +623,20 @@ export default function Users() {
                                 <div className='d-flex flex-row justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start align-items-center align-self-center'>
                                   <div className='checks-radios- me-1'>
                                     <label>
-                                      <input checked={selectUser?.is_active} type="radio" name="radio"/>
+                                      <input onChange={(event)=>ReadCheckBox(event,'Activado')} checked={selectUser?.is_active} type="radio" name="radio"/>
                                       <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Activado</span>
                                     </label>
                                   </div>
                                   <div className='checks-radios- me-1'>
                                     <label>
-                                      <input checked={!selectUser?.is_active}  type="radio" name="radio"/>
+                                      <input onChange={(event)=>ReadCheckBox(event,'Desactivado')} checked={!selectUser?.is_active}  type="radio" name="radio"/>
                                       <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>Desactivado</span>
                                     </label>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div className='ContainerButton_2'>
+                            <div onClick={Update} className='ContainerButton_2'>
                                 <div className='Button_2' style={{'marginTop':'20px'}}>
                                             <span className='text_button_2'>Actualizar</span>
                                 </div>
