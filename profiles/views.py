@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import UserProfile, Institution,Role
-from .serializers import UserSerializer, InstitutionSerializer,RoleSelializer
+from .serializers import UserSerializer,UserUpdateSerializer, InstitutionSerializer,RoleSelializer
 from rest_framework.permissions import AllowAny
 
 
@@ -31,13 +31,30 @@ class UserListView(generics.ListAPIView):
 # Vista para recuperar, actualizar y eliminar un artículo de noticias específico
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserProfile.objects.all()
-    serializer_class = UserSerializer
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return UserUpdateSerializer
+        return UserSerializer
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
 
 
 class InstitutionListView(generics.ListAPIView):
     queryset = Institution.objects.all()
     serializer_class = InstitutionSerializer
-
+    
 
 class InstitutionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Institution.objects.all()

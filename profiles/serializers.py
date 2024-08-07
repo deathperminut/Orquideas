@@ -3,6 +3,14 @@
 from rest_framework import serializers
 from .models import UserProfile, Institution,Role
 
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'email', 'first_name', 'last_name', 'role','is_active']
+
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
