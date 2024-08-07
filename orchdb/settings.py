@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'content.apps.ContentConfig',
     'modules.apps.ModulesConfig',
     'community.apps.CommunityConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "orchdb.urls"
@@ -169,4 +171,10 @@ AUTH_USER_MODEL = 'profiles.UserProfile'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Añade el origen de tu aplicación React
+]
 
