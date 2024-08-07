@@ -20,12 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-q517wtk1)r8u(e3s9j1h1j_*5va*4#0^64%4@n%6nzfgpeuu^8"
+SECRET_KEY = (
+    "django-insecure-q517wtk1)r8u(e3s9j1h1j_*5va*4#0^64%4@n%6nzfgpeuu^8"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     'drf_yasg',
     'django_extensions',
     'rest_framework',
@@ -140,6 +141,7 @@ import os
 
 try:
     from . import wing_debug_support
+
     del wing_debug_support
 except ImportError:
     if "WINGDB_ACTIVE" in os.environ:
@@ -173,8 +175,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Añade el origen de tu aplicación React
 ]
-

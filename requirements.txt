@@ -4,3 +4,4 @@ djangorestframework.authtoken
 drf-yasg
 django-extensions
 Pillow
+django-cors-headers
