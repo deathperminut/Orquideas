@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-
+from rest_framework.permissions import AllowAny  # Permite acceso sin autenticación
 
 
 class Role(models.Model):
