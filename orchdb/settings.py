@@ -20,12 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-q517wtk1)r8u(e3s9j1h1j_*5va*4#0^64%4@n%6nzfgpeuu^8"
+SECRET_KEY = (
+    "django-insecure-q517wtk1)r8u(e3s9j1h1j_*5va*4#0^64%4@n%6nzfgpeuu^8"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     'drf_yasg',
     'django_extensions',
     'rest_framework',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'content.apps.ContentConfig',
     'modules.apps.ModulesConfig',
     'community.apps.CommunityConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "orchdb.urls"
@@ -138,6 +141,7 @@ import os
 
 try:
     from . import wing_debug_support
+
     del wing_debug_support
 except ImportError:
     if "WINGDB_ACTIVE" in os.environ:
@@ -152,20 +156,11 @@ if "WINGDB_ACTIVE" in os.environ:
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-
-        # To use the DRF Web browsable API
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],  # No se usa ningún método de autenticación
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny',  # Permite acceso a todos, sin autenticación
     ],
-
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',  # Asegúrate de que este esté incluido
@@ -179,3 +174,7 @@ AUTH_USER_MODEL = 'profiles.UserProfile'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Añade el origen de tu aplicación React
+]

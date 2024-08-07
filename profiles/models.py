@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-
+from rest_framework.permissions import AllowAny  # Permite acceso sin autenticación
 
 
 class Role(models.Model):
@@ -53,7 +53,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 class Institution(models.Model):
     name = models.CharField(max_length=200)
     allowed_modules = models.ManyToManyField('modules.TrainingModule', related_name='allowed_institutions')
-    users = models.ManyToManyField(UserProfile, related_name='institutions')
+    users = models.ManyToManyField(UserProfile, related_name='institutions', blank=True)
 
     def __str__(self):
         return self.name
