@@ -268,7 +268,7 @@ const options = [
 export default function IndexModuls(props) {
     
     // REACT USE CONTEXT
-    let {selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
+    let {userData,selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
 
     const [show2, setShow2] = React.useState(false);
     let [preloader,setPreloader] = React.useState(false);
@@ -949,12 +949,17 @@ export default function IndexModuls(props) {
             <div className='ContainerNameModul'>
                 <p className='fontSemiBold color-purple' style={{'marginTop':'30px','fontSize':'30px'}}>{selectModulAdmin?.title}</p>
             </div>
+            {userData?.role == 1  ? 
             <div className='ContainerNameModul'>
                 <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Vincular institución</p>
                 <div className='ButtonEditModul bs-2-' onClick={handleShow2}>
                 <FaRegPlusSquare size={20}/>
                 </div>
             </div>
+            :
+            <></>
+            }
+            
             
             <div className='FormContainer'>
                       <div className='row gx-0 gx-sm-0 gx-md-4 gx-lg-4 gx-xl-4 gx-xxl-5' style={{'width':'100%'}}>

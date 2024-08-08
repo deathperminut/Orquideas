@@ -140,7 +140,7 @@ export default function Admin() {
       let [state,setState] = React.useState(1);
 
       // USE STATE
-      let {selectModulInstiAdmin,setSelectModulInstiAdmin,institution,moduls,selectModulAdmin,setSelectModulAdmin} = React.useContext(AppContext);
+      let {userData,selectModulInstiAdmin,setSelectModulInstiAdmin,institution,moduls,selectModulAdmin,setSelectModulAdmin} = React.useContext(AppContext);
 
       let [users,setUsers] = React.useState([]);
       let [preloader,setPreloader] = React.useState(false);
@@ -210,6 +210,8 @@ export default function Admin() {
           <div className='col-12'>
             <div className="swiper swiper-container-indicators">
               <div className="swiper-wrapper">
+                {userData?.role == 1 ? 
+                <>
                 <div onClick={()=>setState(1)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
@@ -352,6 +354,146 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
+                </>
+                :
+                <></>
+                }
+
+                {userData?.role == 2 ? 
+                <>
+                <div onClick={()=>setState(3)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
+                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
+                          'wrapper-icon-indicator-adverse-events-'}`}>
+                           <HiOutlineNewspaper  color='#FFF' size={50}/>
+                        </div>
+                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Noticias</p>
+                      </NavLink>
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>setState(4)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
+                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
+                          'wrapper-icon-indicator-adverse-events-'}`}>
+                           <LiaNewspaperSolid  color='#FFF' size={50}/>
+                        </div>
+                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Historias</p>
+                      </NavLink>
+                    </div>
+                  </div>
+                </div>
+                
+                </>
+                :
+                <></>
+                }
+                {userData?.role == 3 ? 
+                <>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 8)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(8)))
+                  setState(2);
+                  
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Violeta} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 3)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(3)))
+                  setState(2);
+                  
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Azul} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 4)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(4)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Rojo} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 5)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(5)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Verde} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 6)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(6)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Naranja} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 1)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(1)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Amarillo} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 2)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(2)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                          <img src={Cafe} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 7)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(7)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                        <img src={Aguamarina} className='card-img' alt="" />
+                    </div>
+                  </div>
+                </div>
+                </>
+                :
+                <></>
+                }
+                {userData?.role == 4 ? 
+                <></>
+                :
+                <></>
+                }
+                
               </div>
               <div className="swiper-lazy-preloader swiper-lazy-preloader-black d-none"></div>
             </div>
