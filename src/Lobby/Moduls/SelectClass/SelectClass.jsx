@@ -53,9 +53,21 @@ export default function SelectClass() {
                     <div className='classNumber bs-2-'>
                         <span className='fontLight'>{selectActivityIndex+1}</span>
                     </div>
-                    <div className='classNumber bs-2-'>
+                    {(selectActivityIndex+1) < selectModul?.foundations.length ? 
+                    <div onClick={()=>{
+                        let newIndex = selectActivityIndex+1;
+                        let newActivy = selectModul?.foundations.filter((obj,index) => index == newIndex);
+
+                        setSelectActivityIndex(selectActivityIndex+1);
+                        setSelectActivity(newActivy[0])
+                        
+                    }} className='classNumber bs-2-'>
                         <MdSkipNext className='fontLight'></MdSkipNext>
                     </div>
+                    :
+                    <></>
+                    }
+                    
             </div>
             <div className='CourseContainer '>
                     <div className='activityCourseContainer bs-2-'>
