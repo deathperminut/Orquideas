@@ -16,10 +16,11 @@ import { CiCircleMore } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
 import $ from "jquery"
 import { IoMdPhotos } from "react-icons/io";
-import Swal from 'sweetalert2';
 import { AppContext } from '../../../../Context';
 import Preloader from '../../../../Components/Shared/Preloader/Preloader';
-import { GetNews } from '../../../../Services/News/News';
+import Swal from 'sweetalert2';
+import { CreateNews, DeleteNew, EditNews, GetNews } from '../../../../Services/News/News';
+import { CreateInstitution } from '../../../../Services/Institutions/Institutions';
 
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
@@ -270,262 +271,568 @@ const options = [
 
 export default function StoriesModuls() {
 
-    const [show1, setShow1] = React.useState(false);
-    const handleClose1 = () => setShow1(false);
-    const handleShow1 = () => setShow1(true);
+  const [show1, setShow1] = React.useState(false);
+  const handleClose1 = () => setShow1(false);
+  const handleShow1 = () => setShow1(true);
 
-    const [show2, setShow2] = React.useState(false);
-    const handleClose2 = () => setShow2(false);
-    const handleShow2 = () => setShow2(true);
+  const [show2, setShow2] = React.useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
 
-    /* APP CONTEXT */
-    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext} =  React.useContext(AppContext);
+  /* APP CONTEXT */
+  let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,cleanContext} =  React.useContext(AppContext);
 
-    /* USE STATES */
+  /* USE STATES */
 
-    let [preloader,setPreloader] = React.useState(false);
-    let [listNews,setListNews] = React.useState([]);
-    let [supporList,setSupportList] = React.useState([]);
-    let [filter,setFilter] = React.useState([]);
+  let [preloader,setPreloader] = React.useState(false);
+  let [listNews,setListNews] = React.useState([]);
+  let [supporList,setSupportList] = React.useState([]);
+  let [filter,setFilter] = React.useState([]);
 
-    /* useEFFECTS */
-    React.useEffect(()=>{
-        loadData();
-    },[])
+  /* useEFFECTS */
+  React.useEffect(()=>{
+      loadData();
+  },[])
+  
+  async function createFile(URL){
+    let response = await fetch(URL);
+    let data = await response.blob();
+    let metadata = {
+      type: 'image/png'
+    };
+    let file = new File([data], "test.png", metadata);
+    return file;
 
-    const loadData=async()=>{
+}
 
-        // CARGAMOS LAS NOTICIAS
-        setPreloader(true);
-        let result =  undefined;
-        result =  await GetNews().catch((error)=>{
-            console.log(error);
-            setPreloader(false);
-            Swal.fire({
-                icon: 'info',
-                title: 'Problemas para cargar las historias'
-            })
+
+  const loadData=async()=>{
+      // loadData
+      
+      // CARGAMOS LAS NOTICIAS
+      setPreloader(true);
+      let result =  undefined;
+      result =  await GetNews().catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+              icon: 'info',
+              title: 'Problemas para cargar las historias'
+          })
+      })
+
+      if(result){
+          setPreloader(false);
+          // iteramos por cada noticia y obtenemos el archivo para cada imagen
+          let lista_news = result.data.filter((obj)=>obj.category == "Historia");
+          let list_new = []
+          for (var i = 0; i< lista_news.length;i++){
+            let result =  undefined
+            result = await  createFile(lista_news[i]?.image);
+            if(result){
+              list_new.push({...lista_news[i],['imageFile']:result})
+            }
+          }
+          console.log("FILES: ",list_new);
+          setListNews(list_new)
+          setSupportList(list_new)
+      }
+
+  }
+
+  const GetDateFormat=(isoDateString)=>{
+
+      // Crea un objeto Date a partir de la cadena de fecha ISO 8601
+      let date = new Date(isoDateString);
+
+      // Obtén el año, mes y día
+      let year = date.getUTCFullYear();
+      let month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
+      let day = String(date.getUTCDate()).padStart(2, '0');
+
+      // Formatea la fecha en YYYY-MM-DD
+      let formattedDate = `${year}-${month}-${day}`;
+
+      return formattedDate
+
+  }
+
+
+  const ReadInput=(event)=>{
+      
+      if(event.target.value == ""){
+        setSupportList([...listNews]);
+        setFilter(event.target.value);
+      }else{
+        // FILTRAMOS POR EL VALOR DE EMAIL O NOMBRE O IDENTIFICACIÓN
+        let filter_ = listNews.filter((obj)=> obj.title.toLowerCase().includes(event.target.value.toLowerCase()))
+        setSupportList(filter_);
+        setFilter(event.target.value);
+      }
+    }
+
+  let [FileCreate,setFileCreate] = React.useState(null);
+  const [image, setImage] = React.useState(null);
+
+
+  const ReadFile=(event,type)=>{
+    let file = event.target.files[0]
+    setPreloader(true);
+    console.log(event.target.files[0],type);
+    setFileCreate(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImage(e.target.result);
+      setPreloader(false);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  let [BodyNews,setBodyNews] = React.useState({
+    'title':'',
+    'LINK':'',
+    'category':'Historia',
+    'content':'',
+  })
+
+  let ReadInputNews=(event,type)=>{
+
+    setBodyNews({...BodyNews,[type]:event.target.value})
+
+  }
+
+  let createNew=async(event,type)=>{
+    // VERIFICAMOS LOS CAMPOS
+    if(BodyNews?.title === "" || BodyNews?.content === "" || FileCreate == null || BodyNews?.LINK === ""){
+
+      Swal.fire({
+        icon: 'info',
+        title: 'Debes completar todos los campos para cargar la historia'
+      })
+
+    }else{
+      // creamos el formdata
+
+      let form =  new FormData();
+      form.append('title',BodyNews?.title);
+      form.append('LINK',BodyNews?.LINK);
+      form.append('category',BodyNews?.category);
+      form.append('content',BodyNews?.content);
+      form.append('image',FileCreate);
+      form.append('author',userData?.id);
+      
+      // OBTENEMOS LOS DATOS
+      setPreloader(true);
+      let result =  undefined;
+      result = await  CreateNews(form).catch((error)=>{
+        console.log(error);
+        setPreloader(false);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas para crear la historia'
         })
+      })
 
-        if(result){
-            setPreloader(false);
-            setListNews(result.data.filter((obj)=>obj.category == "Historia"))
-            setSupportList(result.data.filter((obj)=>obj.category == "Historia"))
-        }
-
-    }
-
-    const GetDateFormat=(isoDateString)=>{
-
-        // Crea un objeto Date a partir de la cadena de fecha ISO 8601
-        let date = new Date(isoDateString);
-
-        // Obtén el año, mes y día
-        let year = date.getUTCFullYear();
-        let month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
-        let day = String(date.getUTCDate()).padStart(2, '0');
-
-        // Formatea la fecha en YYYY-MM-DD
-        let formattedDate = `${year}-${month}-${day}`;
-
-        return formattedDate
-
-    }
-
-
-    const ReadInput=(event)=>{
-        
-        if(event.target.value == ""){
-          setSupportList([...listNews]);
-          setFilter(event.target.value);
-        }else{
-          // FILTRAMOS POR EL VALOR DE EMAIL O NOMBRE O IDENTIFICACIÓN
-          let filter_ = listNews.filter((obj)=> obj.title.toLowerCase().includes(event.target.value.toLowerCase()))
-          setSupportList(filter_);
-          setFilter(event.target.value);
-        }
+      if(result){
+        setPreloader(false);
+        console.log("results: ",result.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Historia creada con éxito'
+        })
+        // LLAMAMOS LAS NOTICIAS
+        loadData();
+        // CERRAMOS EL OFFCANVAS Y REINICIAMOS VARIABLES
+        setBodyNews(
+          {
+            'title':'',
+            'LINK':'',
+            'category':'Historia',
+            'content':'',
+          }
+        )
+        setFileCreate(null);
+        setImage(null);
+        handleClose2();
       }
 
 
+    }
+  }
+
+  // PASAMOS AL APARTADO DE ACTUALIZAR
+  let [bodyEdit,setBodyEdit] = React.useState(null);
+
+  let ReadInputNewsEdit=(event,type)=>{
+
+    setBodyEdit({...bodyEdit,[type]:event.target.value})
+
+  }
+
+  const EditData=async()=>{
+
+    // VERIFICAMOS LOS CAMPOS
+    if(bodyEdit?.title === "" || bodyEdit?.content === "" || FileCreate == null || bodyEdit?.LINK === ""){
+
+      Swal.fire({
+        icon: 'info',
+        title: 'Debes completar todos los campos para cargar la historia'
+      })
+
+    }else{
+      // creamos el formdata
+
+      let form =  new FormData();
+      form.append('title',bodyEdit?.title);
+      form.append('LINK',bodyEdit?.LINK);
+      form.append('category',bodyEdit?.category);
+      form.append('content',bodyEdit?.content);
+      form.append('image',FileCreate);
+      form.append('author',userData?.id);
+      
+      // OBTENEMOS LOS DATOS
+      setPreloader(true);
+      let result =  undefined;
+      
+      result = await  EditNews(form,bodyEdit?.id).catch((error)=>{
+        console.log(error);
+        setPreloader(false);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas para crear la historia'
+        })
+      })
+
+      if(result){
+        setPreloader(false);
+        console.log("results: ",result.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Historia actualizada con éxito'
+        })
+        // LLAMAMOS LAS NOTICIAS
+        loadData();
+        // CERRAMOS EL OFFCANVAS Y REINICIAMOS VARIABLES
+        setBodyEdit(null)
+        setFileCreate(null);
+        setImage(null);
+        handleClose1();
+      }
+
+
+    }
+
+  }
+
+  // PROCESO DE ELIMINADO
+  let deleteData=async(body)=>{
+
+    setPreloader(true);
+    let result =  undefined;
+    result =  await DeleteNew(body?.id).catch((error)=>{
+        console.log(error);
+        setPreloader(false);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas para eliminar la historia'
+        })
+    })
+    if(result){
+      console.log(result.data);
+      setPreloader(false);
+      // volvemos a cargar los datos
+      loadData();
+      Swal.fire({
+        icon: 'success',
+        title: 'se elimino la historia correctamente'
+      })
+    }
+
+  }
+
 
     return (
-        <>
-            <div className='dataModulContainer'>
-                <div className='ContainerNameModul'>
-                    <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Agregar historia</p>
-                    <div className='ButtonEditModul bs-2-' onClick={handleShow2}>
-                    <FaRegPlusSquare size={20}/>
-                    </div>
-                </div>
-                
-                <div className='FormContainer'>
-                        <div className='row gx-0 gx-sm-0 gx-md-4 gx-lg-4 gx-xl-4 gx-xxl-5' style={{'width':'100%'}}>
-                            <div className='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                            <span className='fs-10- fontLight'>Buscar por título</span>
-                                <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                <div className='col-12'>
-                                    <div className='form-floating inner-addon- right-addon-'>
-                                    <input value={filter} onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div className='TableUsersContainer bs-2-'>
-                    <div className='row mt-4 mb-4'>
-                            <div className='table-responsive table-general-'>
-                            <table className='table table-sm table-striped table-no-border- align-middle'>
-                            <thead>
-                                <tr>
-                                    <th scope="col" className='th-width-md-'>
-                                    <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold color-purple'>Título</span>
-                                    </div>
-                                    </th>
-                                    <th scope="col" className='th-width-sm-'>
-                                    <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold color-purple'>Fecha de registro</span>
-                                    </div>
-                                    </th>
-                                    <th scope="col" className='th-width-sm-'>
-                                    <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold color-purple'>Editar</span>
-                                    </div>
-                                    </th>
-                                    <th scope="col" className='th-width-sm-'>
-                                    <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold color-purple'>Eliminar</span>
-                                    </div>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {supporList.map((obj,index)=>{
-                                        return (
-                                            <tr key={index}>
-                                                <td className='align-middle'>
-                                                <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.title}</p>
-                                                </td>
-                                                <td className='align-middle'>
-                                                <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetDateFormat(obj?.created_at)}</p>
-                                                </td>
-                                                <td className='align-middle'>
-                                                    <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                        <div className='col-auto'>
-                                                        <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                <FaRegEdit />
-                                                        </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className='align-middle'>
-                                                    <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                        <div className='col-auto'>
-                                                        <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                <MdOutlineDelete />
-                                                        </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                            </div>
-                    </div> 
-                </div>
-            </div>
-            <Offcanvas className="offcanvasBodyV2" show={show2} onHide={handleClose2}>
-                    <div className='offcanvas-header pb-4 padding-40-'>
-                        <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Nueva historia</h2>
-                        <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
-                    </div>
-                    <div className='offcanvas-body '>
-                        <div className='container-fluid pt-0 pb-0 padding-40-'>
-                            <div className='row'>
-                            <div className='col-12'>
-                                <form action='' className='Form'>
-                                    <div className='ContainerForm'>
-                                        <div className='ContainerPhoto'>
-                                            <IoMdPhotos size={40} className='fa icon-add-image'></IoMdPhotos>
-                                            <input className='position-absolute bottom-0 end-0 file-input-photo-'
-                                            type="file" />
-                                            <button
-                                            className='btn bg-transparent d-flex flex-row justify-content-center align-items-center align-self-center rounded-pill p-2 position-absolute bottom-0 end-0 btn-white- bs-'
-                                            type="button">
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <span className='fs-10- fontLight' >Titulo</span>
-                                    <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                    <div className='col-12'>
-                                        <div className='form-floating inner-addon- left-addon-'>
-                                        <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <span className='fontSemiBold color-purple'>Contenido</span>
-                                    <div style={{'height':'400px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                                        <textarea style={{'height':'400px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
-                                    </div>
-                                    <div className='ContainerButton_2'>
-                                        <div className='Button_2' style={{'marginTop':'20px'}}>
-                                                    <span className='text_button_2'>Crear</span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-            </Offcanvas>
+      <>
+      {
+              preloader ?
+              <>
+              <Preloader></Preloader>
+              </>
+              :
 
-            <Offcanvas className="offcanvasBodyV2" show={show1} onHide={handleClose1}>
-                    <div className='offcanvas-header pb-4 padding-40-'>
-                        <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Editar historia</h2>
-                        <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose1} size={30} className='fa icon-close'></IoIosClose>
-                    </div>
-                    <div className='offcanvas-body '>
-                        <div className='container-fluid pt-0 pb-0 padding-40-'>
-                            <div className='row'>
-                            <div className='col-12'>
-                                <form action='' className='Form'>
-                                    <div className='ContainerForm'>
-                                        <div className='ContainerPhoto'>
-                                            <IoMdPhotos size={40} className='fa icon-add-image'></IoMdPhotos>
-                                            <input className='position-absolute bottom-0 end-0 file-input-photo-'
-                                            type="file" />
-                                            <button
-                                            className='btn bg-transparent d-flex flex-row justify-content-center align-items-center align-self-center rounded-pill p-2 position-absolute bottom-0 end-0 btn-white- bs-'
-                                            type="button">
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <span className='fs-10- fontLight' >Titulo</span>
-                                    <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                                    <div className='col-12'>
-                                        <div className='form-floating inner-addon- left-addon-'>
-                                        <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <span className='fontSemiBold color-purple'>Contenido</span>
-                                    <div style={{'height':'400px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                                        <textarea style={{'height':'400px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
-                                    </div>
-                                    <div className='ContainerButton_2'>
-                                        <div className='Button_2' style={{'marginTop':'20px'}}>
-                                                    <span className='text_button_2'>Editar</span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-            </Offcanvas>
-        </>
+              <></>
+      }
+      <div className='dataModulContainer'>
+          <div className='ContainerNameModul'>
+              <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Agregar historia</p>
+              <div className='ButtonEditModul bs-2-' onClick={()=>{
+                setBodyNews(
+                  {
+                    'title':'',
+                    'LINK':'',
+                    'category':'Historia',
+                    'content':'',
+                  }
+                )
+                setFileCreate(null);
+                setImage(null);
+                handleShow2()
+                }}>
+              <FaRegPlusSquare size={20}/>
+              </div>
+          </div>
+          
+          <div className='FormContainer'>
+                  <div className='row gx-0 gx-sm-0 gx-md-4 gx-lg-4 gx-xl-4 gx-xxl-5' style={{'width':'100%'}}>
+                      <div className='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                      <span className='fs-10- fontLight'>Buscar por título</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                          <div className='col-12'>
+                              <div className='form-floating inner-addon- right-addon-'>
+                              <input value={filter} onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
+                              </div>
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+          </div>
+          <div className='TableUsersContainer bs-2-'>
+              <div className='row mt-4 mb-4'>
+                      <div className='table-responsive table-general-'>
+                      <table className='table table-sm table-striped table-no-border- align-middle'>
+                      <thead>
+                          <tr>
+                              <th scope="col" className='th-width-md-'>
+                              <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                  <span className='fs-5- fontSemiBold fw-bold color-purple'>Título</span>
+                              </div>
+                              </th>
+                              <th scope="col" className='th-width-sm-'>
+                              <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                  <span className='fs-5- fontSemiBold fw-bold color-purple'>Fecha de registro</span>
+                              </div>
+                              </th>
+                              <th scope="col" className='th-width-sm-'>
+                              <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                  <span className='fs-5- fontSemiBold fw-bold color-purple'>Editar</span>
+                              </div>
+                              </th>
+                              <th scope="col" className='th-width-sm-'>
+                              <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                  <span className='fs-5- fontSemiBold fw-bold color-purple'>Eliminar</span>
+                              </div>
+                              </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                              {supporList.map((obj,index)=>{
+                                  return (
+                                      <tr key={index}>
+                                          <td className='align-middle'>
+                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.title}</p>
+                                          </td>
+                                          <td className='align-middle'>
+                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetDateFormat(obj?.created_at)}</p>
+                                          </td>
+                                          <td className='align-middle'>
+                                              <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                  <div className='col-auto'>
+                                                  <button onClick={()=>{
+                                                    setBodyEdit(obj)
+                                                    setFileCreate(obj['imageFile']);
+                                                    // obtenemos el enlace
+                                                    setImage(obj['image']);
+                                                    handleShow1();
+                                                    }} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                          <FaRegEdit />
+                                                  </button>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                          <td className='align-middle'>
+                                              <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
+                                                  <div className='col-auto'>
+                                                  <button onClick={()=>deleteData(obj)} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                          <MdOutlineDelete />
+                                                  </button>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                      </tr>
+                                  )
+                              })}
+                              
+                          </tbody>
+                      </table>
+                      </div>
+              </div> 
+          </div>
+      </div>
+      <Offcanvas className="offcanvasBodyV2" show={show2} onHide={()=>{
+        setBodyNews(
+          {
+            'title':'',
+            'LINK':'',
+            'category':'Historia',
+            'content':'',
+          }
+        )
+        setFileCreate(null);
+        setImage(null);
+        handleClose2();
+        }}>
+              <div className='offcanvas-header pb-4 padding-40-'>
+                  <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Nueva historia</h2>
+                  <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
+              </div>
+              <div className='offcanvas-body '>
+                  <div className='container-fluid pt-0 pb-0 padding-40-'>
+                      <div className='row'>
+                      <div className='col-12'>
+                          <form action='' className='Form'>
+                              <div className='ContainerForm'>
+                                  {FileCreate == null ? 
+                                  <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                        <input onChange={(event)=>ReadFile(event)} type="file" id="fichero-tarifas" accept="image/*" class="input-file" value=""></input>
+                                        <span className='fontSemiBold'>Subir imagen</span>
+                                  </div>
+                                  :
+                                  <>
+                                  <div className='ContainerPhoto'>
+                                  
+                                  {image && (
+                                    <div 
+                                      id="imagePreview" 
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        backgroundImage: `url(${image})`,
+                                        border: '1px solid #ddd',
+                                      }}
+                                    ></div>
+                                  )}  
+                                  </div>
+                                  <div onClick={()=>{
+                                    setFileCreate(null);
+                                    setImage(null);
+                                  }} className='CloseButton'>
+                                  <IoIosClose size={30}></IoIosClose>
+                                  </div>
+                                  </>
+                                  
+                                  }
+                                  
+                                  
+                              </div>
+                              <span className='fs-10- fontLight' >Titulo</span>
+                              <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input value={BodyNews?.title} onChange={(event)=>ReadInputNews(event,'title')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  </div>
+                              </div>
+                              </div>
+                              <span className='fs-10- fontLight' >Enlace</span>
+                              <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input value={BodyNews?.LINK} onChange={(event)=>ReadInputNews(event,'LINK')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  </div>
+                              </div>
+                              </div>
+                              <span className='fontSemiBold color-purple'>Contenido</span>
+                              <div style={{'height':'400px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                  <textarea value={BodyNews?.content} onChange={(event)=>ReadInputNews(event,'content')} style={{'height':'400px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                              </div>
+                              <div className='ContainerButton_2'>
+                                  <div onClick={createNew} className='Button_2' style={{'marginTop':'20px'}}>
+                                              <span className='text_button_2'>Crear</span>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+      </Offcanvas>
+
+      <Offcanvas className="offcanvasBodyV2" show={show1} onHide={handleClose1}>
+              <div className='offcanvas-header pb-4 padding-40-'>
+                  <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Editar historia</h2>
+                  <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose1} size={30} className='fa icon-close'></IoIosClose>
+              </div>
+              <div className='offcanvas-body '>
+                  <div className='container-fluid pt-0 pb-0 padding-40-'>
+                      <div className='row'>
+                      <div className='col-12'>
+                          <form action='' className='Form'>
+                              <div className='ContainerForm'>
+                              {FileCreate == null ? 
+                                  <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                        <input onChange={(event)=>ReadFile(event)} type="file" id="fichero-tarifas" accept="image/*" class="input-file" value=""></input>
+                                        <span className='fontSemiBold'>Subir imagen</span>
+                                  </div>
+                                  :
+                                  <>
+                                  <div className='ContainerPhoto'>
+                                  
+                                  {image && (
+                                    <div 
+                                      id="imagePreview" 
+                                      style={{
+                                        width: '100px',
+                                        height: '100px',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        backgroundImage: `url(${image})`,
+                                        border: '1px solid #ddd',
+                                      }}
+                                    ></div>
+                                  )}  
+                                  </div>
+                                  <div onClick={()=>{
+                                    setFileCreate(null);
+                                    setImage(null);
+                                  }} className='CloseButton'>
+                                  <IoIosClose size={30}></IoIosClose>
+                                  </div>
+                                  </>
+                                  
+                                  }
+                              </div>
+                              <span className='fs-10- fontLight' >Titulo</span>
+                              <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input value={bodyEdit?.title} onChange={(event)=>ReadInputNewsEdit(event,'title')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  </div>
+                              </div>
+                              </div>
+                              <span className='fs-10- fontLight' >Enlace</span>
+                              <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input value={bodyEdit?.LINK} onChange={(event)=>ReadInputNewsEdit(event,'LINK')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  </div>
+                              </div>
+                              </div>
+                              <span className='fontSemiBold color-purple'>Contenido</span>
+                              <div style={{'height':'400px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                  <textarea value={bodyEdit?.content} onChange={(event)=>ReadInputNewsEdit(event,'content')} style={{'height':'400px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                              </div>
+                              <div className='ContainerButton_2'>
+                                  <div onClick={EditData} className='Button_2' style={{'marginTop':'20px'}}>
+                                              <span className='text_button_2'>Editar</span>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+      </Offcanvas>
+  </>
     )
 }
