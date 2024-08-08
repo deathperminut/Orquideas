@@ -94,10 +94,10 @@
     align-items: start;
 }
 
-.activity{
+.activityV2{
     width: 100%;
     height: 600px;
-    background-color:#662d911b ;
+    background-color:#8381851b ;
 }
 .linkContainer{
     width: 100%;
@@ -132,7 +132,16 @@
 .divClass_3:hover{
     background-color: rgba(244, 244, 244, 0.556);
 }
-
+.format_textActivity{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.81);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
 @media (min-width: 0px) and (max-width: 359.98px) {
     

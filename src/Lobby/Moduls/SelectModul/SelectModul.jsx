@@ -18,7 +18,7 @@ export default function SelectModul() {
         const navigate=useNavigate();
 
         // React.useContext
-        let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul} =  React.useContext(AppContext);
+        let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
         
         const convertDate=(fechaISO)=>{
                 // Convertir la cadena a un objeto Date
@@ -95,7 +95,7 @@ const fecha = new Date(fechaISO);
                                 
                         </div>
                         <div className='ContainerInfoModul'>
-                                <span className='fontSemiBold ' style={{'fontSize':'30px'}}>{selectModul?.title}</span>
+                                <span className='fontSemiBold ' style={{'fontSize':'30px'}}>{selectModul?.module_name}</span>
                                 <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{convertDate(selectModul?.created_at)}</span>
                                 <p className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: selectModul?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
                         </div>
@@ -136,17 +136,16 @@ const fecha = new Date(fechaISO);
                                         return(
                                                 <div key={index} onClick={()=>{
                                                         // Guardamos el indice de la actividad
-
+                                                        setSelectActivityIndex(index);
                                                         // Guardamos la actividad especifica
-
-                                                        
+                                                        setSelectActivity(obj);
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                {obj.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Video orquídeas'}</span> : <></>}
-                                                                {obj.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Momento de discusión'}</span> : <></>}
-                                                                {obj.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Adjunta tu respuesta'}</span> : <></>}
-                                                                {obj.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Corta redacción'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Video orquídeas'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Momento de discusión'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Corta redacción'}</span> : <></>}
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                         </div>
                                                 </div>
