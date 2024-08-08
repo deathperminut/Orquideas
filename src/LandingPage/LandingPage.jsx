@@ -7,6 +7,7 @@ import Flores from '../assets/images/circleVioleta.png';
 import Slider from "react-slick";
 import Landing_logo from  '../assets/images/Flowers_landing.png'
 import { MdAssignmentAdd } from "react-icons/md";
+import { CiBookmark } from "react-icons/ci";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { IoIosClose } from "react-icons/io";
 import { BiLogoGmail } from "react-icons/bi";
@@ -22,6 +23,7 @@ import Naranja from '../assets/images/Naranja2.png';
 import Amarillo from '../assets/images/Amarillo2.png';
 import Cafe from '../assets/images/Cafe22.png';
 import Aguamarina from '../assets/images/AguaMarina2.png';
+import { MdDeleteOutline } from "react-icons/md";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
@@ -568,54 +570,51 @@ export default function LandingPage() {
                         <div className='ContainerInfoModul'>
                                 <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>{FilterModul()?.title}</span>
                                 <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{''}</span>
-                                <p className='fontLight description_moduls'>{FilterModul()?.description}</p>
+                                <p className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: FilterModul()?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
                         </div>
                 </div>
-                {/* <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
-                <div className='ClassesContainerFluid'>
-                                                <div className='divClass_2 bs-2-'>
+                <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Objetivo general</span>
+                <div className=''>
+                    
+                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: FilterModul()?.general_objective.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                                                {/* <div className='divClass_2 bs-2-'>
 
                                                         <div className='TextContainerClass'>
                                                                 <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
+                                                </div> */}
+                </div>
+                <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Objetivos especificos</span>
+                <div className='listInstitucions' style={{'marginTop':'30px'}}>
+                                      {FilterModul()?.specific_objectives.map((obj,index)=>{
+                                        return(
+                                          <div key={index} className='ListData'>
+                                                <div className='col-auto'>
+                                                <CiBookmark />
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
-
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
+                                                <span className='fontLight'>{obj?.description}</span>
+                                          </div>
+                                        )
+                                      })
+                                      }
+                                      
+                </div>
+                <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Skills (Habilidades)</span>
+                <div className='listInstitucions' style={{'marginTop':'30px'}}>
+                                      {FilterModul()?.skills_and_learnings.map((obj,index)=>{
+                                        return(
+                                          <div key={index} className='ListData'>
+                                                <div className='col-auto'>
+                                                <CiBookmark />
                                                 </div>
-                                                <div className='divClass_2 bs-2-'>
-
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div className='divClass_2 bs-2-'>
-
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div className='divClass_2 bs-2-'>
- 
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div className='divClass_2 bs-2-'>
-
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                </div> */}
+                                                <span className='fontLight'>{obj?.description}</span>
+                                          </div>
+                                        )
+                                      })
+                                      }
+                                      
+                </div>
         </div>
                 </div>
                 </div>

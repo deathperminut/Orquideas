@@ -140,6 +140,11 @@
     padding: 10px;
     transition: 1s;
 }
+.ListData{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
 .NewsSwiper:hover{
     transform: scale(1.05);
 
