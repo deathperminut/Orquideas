@@ -19,7 +19,7 @@ import { IoMdPhotos } from "react-icons/io";
 import { AppContext } from '../../../../Context';
 import Preloader from '../../../../Components/Shared/Preloader/Preloader';
 import Swal from 'sweetalert2';
-import { CreateNews, GetNews } from '../../../../Services/News/News';
+import { CreateNews, DeleteNew, EditNews, GetNews } from '../../../../Services/News/News';
 import { CreateInstitution } from '../../../../Services/Institutions/Institutions';
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
@@ -288,9 +288,22 @@ export default function NewsModul() {
     React.useEffect(()=>{
         loadData();
     },[])
+    
+    async function createFile(URL){
+      let response = await fetch(URL);
+      let data = await response.blob();
+      let metadata = {
+        type: 'image/png'
+      };
+      let file = new File([data], "test.png", metadata);
+      return file;
+
+  }
+
 
     const loadData=async()=>{
-
+        // loadData
+        
         // CARGAMOS LAS NOTICIAS
         setPreloader(true);
         let result =  undefined;
@@ -305,8 +318,19 @@ export default function NewsModul() {
 
         if(result){
             setPreloader(false);
-            setListNews(result.data.filter((obj)=>obj.category == "Noticia"))
-            setSupportList(result.data.filter((obj)=>obj.category == "Noticia"))
+            // iteramos por cada noticia y obtenemos el archivo para cada imagen
+            let lista_news = result.data.filter((obj)=>obj.category == "Noticia");
+            let list_new = []
+            for (var i = 0; i< lista_news.length;i++){
+              let result =  undefined
+              result = await  createFile(lista_news[i]?.image);
+              if(result){
+                list_new.push({...lista_news[i],['imageFile']:result})
+              }
+            }
+            console.log("FILES: ",list_new);
+            setListNews(list_new)
+            setSupportList(list_new)
         }
 
     }
@@ -431,6 +455,95 @@ export default function NewsModul() {
       }
     }
 
+    // PASAMOS AL APARTADO DE ACTUALIZAR
+    let [bodyEdit,setBodyEdit] = React.useState(null);
+
+    let ReadInputNewsEdit=(event,type)=>{
+
+      setBodyEdit({...bodyEdit,[type]:event.target.value})
+
+    }
+
+    const EditData=async()=>{
+
+      // VERIFICAMOS LOS CAMPOS
+      if(bodyEdit?.title === "" || bodyEdit?.content === "" || FileCreate == null || bodyEdit?.LINK === ""){
+
+        Swal.fire({
+          icon: 'info',
+          title: 'Debes completar todos los campos para cargar la noticia'
+        })
+
+      }else{
+        // creamos el formdata
+
+        let form =  new FormData();
+        form.append('title',bodyEdit?.title);
+        form.append('LINK',bodyEdit?.LINK);
+        form.append('category',bodyEdit?.category);
+        form.append('content',bodyEdit?.content);
+        form.append('image',FileCreate);
+        form.append('author',userData?.id);
+        
+        // OBTENEMOS LOS DATOS
+        setPreloader(true);
+        let result =  undefined;
+        
+        result = await  EditNews(form,bodyEdit?.id).catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+            icon: 'info',
+            title: 'Problemas para crear la noticia'
+          })
+        })
+
+        if(result){
+          setPreloader(false);
+          console.log("results: ",result.data);
+          Swal.fire({
+            icon: 'success',
+            title: 'Noticia actualizada con éxito'
+          })
+          // LLAMAMOS LAS NOTICIAS
+          loadData();
+          // CERRAMOS EL OFFCANVAS Y REINICIAMOS VARIABLES
+          setBodyEdit(null)
+          setFileCreate(null);
+          setImage(null);
+          handleClose1();
+        }
+
+
+      }
+
+    }
+
+    // PROCESO DE ELIMINADO
+    let deleteData=async(body)=>{
+
+      setPreloader(true);
+      let result =  undefined;
+      result =  await DeleteNew(body?.id).catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+            icon: 'info',
+            title: 'Problemas para eliminar la noticia'
+          })
+      })
+      if(result){
+        console.log(result.data);
+        setPreloader(false);
+        // volvemos a cargar los datos
+        loadData();
+        Swal.fire({
+          icon: 'success',
+          title: 'se elimino la noticia correctamente'
+        })
+      }
+
+    }
 
 
 
@@ -448,7 +561,19 @@ export default function NewsModul() {
             <div className='dataModulContainer'>
                 <div className='ContainerNameModul'>
                     <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Agregar noticia</p>
-                    <div className='ButtonEditModul bs-2-' onClick={handleShow2}>
+                    <div className='ButtonEditModul bs-2-' onClick={()=>{
+                      setBodyNews(
+                        {
+                          'title':'',
+                          'LINK':'',
+                          'category':'Noticia',
+                          'content':'',
+                        }
+                      )
+                      setFileCreate(null);
+                      setImage(null);
+                      handleShow2()
+                      }}>
                     <FaRegPlusSquare size={20}/>
                     </div>
                 </div>
@@ -508,7 +633,13 @@ export default function NewsModul() {
                                                 <td className='align-middle'>
                                                     <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
                                                         <div className='col-auto'>
-                                                        <button onClick={handleShow1} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                        <button onClick={()=>{
+                                                          setBodyEdit(obj)
+                                                          setFileCreate(obj['imageFile']);
+                                                          // obtenemos el enlace
+                                                          setImage(obj['image']);
+                                                          handleShow1();
+                                                          }} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
                                                                 <FaRegEdit />
                                                         </button>
                                                         </div>
@@ -517,7 +648,7 @@ export default function NewsModul() {
                                                 <td className='align-middle'>
                                                     <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
                                                         <div className='col-auto'>
-                                                        <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                        <button onClick={()=>deleteData(obj)} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
                                                                 <MdOutlineDelete />
                                                         </button>
                                                         </div>
@@ -533,7 +664,19 @@ export default function NewsModul() {
                     </div> 
                 </div>
             </div>
-            <Offcanvas className="offcanvasBodyV2" show={show2} onHide={handleClose2}>
+            <Offcanvas className="offcanvasBodyV2" show={show2} onHide={()=>{
+              setBodyNews(
+                {
+                  'title':'',
+                  'LINK':'',
+                  'category':'Noticia',
+                  'content':'',
+                }
+              )
+              setFileCreate(null);
+              setImage(null);
+              handleClose2();
+              }}>
                     <div className='offcanvas-header pb-4 padding-40-'>
                         <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Nueva noticia</h2>
                         <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
@@ -622,30 +765,61 @@ export default function NewsModul() {
                             <div className='col-12'>
                                 <form action='' className='Form'>
                                     <div className='ContainerForm'>
-                                        <div className='ContainerPhoto'>
-                                            <IoMdPhotos size={40} className='fa icon-add-image'></IoMdPhotos>
-                                            <input className='position-absolute bottom-0 end-0 file-input-photo-'
-                                            type="file" />
-                                            <button
-                                            className='btn bg-transparent d-flex flex-row justify-content-center align-items-center align-self-center rounded-pill p-2 position-absolute bottom-0 end-0 btn-white- bs-'
-                                            type="button">
-                                            </button>
+                                    {FileCreate == null ? 
+                                        <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
+                                              <input onChange={(event)=>ReadFile(event)} type="file" id="fichero-tarifas" accept="image/*" class="input-file" value=""></input>
+                                              <span className='fontSemiBold'>Subir imagen</span>
                                         </div>
+                                        :
+                                        <>
+                                        <div className='ContainerPhoto'>
+                                        
+                                        {image && (
+                                          <div 
+                                            id="imagePreview" 
+                                            style={{
+                                              width: '100px',
+                                              height: '100px',
+                                              backgroundSize: 'cover',
+                                              backgroundPosition: 'center',
+                                              backgroundImage: `url(${image})`,
+                                              border: '1px solid #ddd',
+                                            }}
+                                          ></div>
+                                        )}  
+                                        </div>
+                                        <div onClick={()=>{
+                                          setFileCreate(null);
+                                          setImage(null);
+                                        }} className='CloseButton'>
+                                        <IoIosClose size={30}></IoIosClose>
+                                        </div>
+                                        </>
+                                        
+                                        }
                                     </div>
                                     <span className='fs-10- fontLight' >Titulo</span>
                                     <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                                     <div className='col-12'>
                                         <div className='form-floating inner-addon- left-addon-'>
-                                        <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                        <input value={bodyEdit?.title} onChange={(event)=>ReadInputNewsEdit(event,'title')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <span className='fs-10- fontLight' >Enlace</span>
+                                    <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                                    <div className='col-12'>
+                                        <div className='form-floating inner-addon- left-addon-'>
+                                        <input value={bodyEdit?.LINK} onChange={(event)=>ReadInputNewsEdit(event,'LINK')} type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
                                         </div>
                                     </div>
                                     </div>
                                     <span className='fontSemiBold color-purple'>Contenido</span>
                                     <div style={{'height':'400px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                                        <textarea style={{'height':'400px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                                        <textarea value={bodyEdit?.content} onChange={(event)=>ReadInputNewsEdit(event,'content')} style={{'height':'400px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                     </div>
                                     <div className='ContainerButton_2'>
-                                        <div className='Button_2' style={{'marginTop':'20px'}}>
+                                        <div onClick={EditData} className='Button_2' style={{'marginTop':'20px'}}>
                                                     <span className='text_button_2'>Editar</span>
                                         </div>
                                     </div>

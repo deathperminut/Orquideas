@@ -19,12 +19,18 @@ const CreateNews=async (body)=>{
     
 }
 
-const EditNews=async (body)=>{
+const EditNews=async (body,id)=>{
     
-    const path  = environment.api + environment.updateNew+body?.id+'/';
+    const path  = environment.api + environment.updateNew+id+'/';
     
     return await axios.put(path,body);
 }
 
+const DeleteNew=async(id)=>{
+    const path  = environment.api + environment.updateNew+id+'/';
+    
+    return await axios.delete(path);
+}
 
-export {GetNews,CreateNews,EditNews}
+
+export {GetNews,CreateNews,EditNews,DeleteNew}
