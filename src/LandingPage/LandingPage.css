@@ -138,6 +138,11 @@
     margin-right: 0px !important;
     margin-left: 0px !important;
     padding: 10px;
+    transition: 1s;
+}
+.NewsSwiper:hover{
+    transform: scale(1.05);
+
 }
 .SwiperImage{
     width: 100%;

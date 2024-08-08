@@ -358,12 +358,12 @@ export default function LandingPage() {
                                                 <p className='fontSemiBold' style={{fontSize:'12px','maxWidth':'500px','textAlign':'center'}}>Mira el mundo con nuevos ojos revisa el enfoque del módulo</p>
                                                 </div>
                                                 <div className='divsContainer'>
-                                                <div onClick={()=>{
-                                                    setSelectModul(2);
-                                                    handleShow2()
-                                                    }} className='buttonElement'>
-                                                    <span className='white fontLight'>Ver</span>
-                                                </div>
+                                                    <div onClick={()=>{
+                                                        setSelectModul(2);
+                                                        handleShow2()
+                                                        }} className='buttonElement'>
+                                                        <span className='white fontLight'>Ver</span>
+                                                    </div>
                                                 </div>
                                             
                                         </div>
@@ -400,18 +400,28 @@ export default function LandingPage() {
                             >
                             {news.map((obj,index)=>{
                                 return(
-                                    <SwiperSlide className='NewsSwiper'>
-                                        <div className='SwiperImage'>
-                                                <img src={obj?.image} className='ImageLanding'></img>
+                                    <SwiperSlide >
+                                        <div className='NewsSwiper'>
+                                            <div className='SwiperImage'>
+                                                    <img src={obj?.image} className='ImageLanding'></img>
+                                            </div>
+                                            <div className='SwiperText'>
+                                                    <p className='TitleNews fontSemiBold color-purple'>
+                                                        {obj?.title}
+                                                    </p>
+                                                    <p className='InfoNews fontLight'>
+                                                        {obj?.content}
+                                                    </p>
+                                            </div>
+                                            <div className='divsContainer'>
+                                                    <div onClick={()=>{
+                                                        window.open(obj?.LINK, '_blank');
+                                                    }}  className='buttonElement'>
+                                                        <span className='white fontLight'> Ver mas</span>
+                                                    </div>
+                                            </div>
                                         </div>
-                                        <div className='SwiperText'>
-                                                <p className='TitleNews fontSemiBold color-purple'>
-                                                    {obj?.title}
-                                                </p>
-                                                <p className='InfoNews fontLight'>
-                                                    {obj?.content}
-                                                </p>
-                                        </div>
+                                        
                                     </SwiperSlide>
                                 )
                             })}
@@ -448,17 +458,27 @@ export default function LandingPage() {
                             {stories.map((obj,index)=>{
                                 return(
                                     <SwiperSlide className='NewsSwiper'>
-                                        <div className='SwiperImage'>
-                                                <img src={obj?.image} className='ImageLanding'></img>
+                                        <div className='NewsSwiper'>
+                                            <div className='SwiperImage'>
+                                                    <img src={obj?.image} className='ImageLanding'></img>
+                                            </div>
+                                            <div className='SwiperText'>
+                                                    <p className='TitleNews fontSemiBold color-purple'>
+                                                        {obj?.title}
+                                                    </p>
+                                                    <p className='InfoNews fontLight'>
+                                                        {obj?.content}
+                                                    </p>
+                                            </div>
+                                            <div className='divsContainer'>
+                                                    <div onClick={()=>{
+                                                        window.open(obj?.LINK, '_blank');
+                                                    }}  className='buttonElement'>
+                                                        <span className='white fontLight'> Ver mas</span>
+                                                    </div>
+                                            </div>
                                         </div>
-                                        <div className='SwiperText'>
-                                                <p className='TitleNews fontSemiBold color-purple'>
-                                                    {obj?.title}
-                                                </p>
-                                                <p className='InfoNews fontLight'>
-                                                    {obj?.content}
-                                                </p>
-                                        </div>
+                                        
                                     </SwiperSlide>
                                 )
                             })}
@@ -551,7 +571,7 @@ export default function LandingPage() {
                                 <p className='fontLight description_moduls'>{FilterModul()?.description}</p>
                         </div>
                 </div>
-                <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
+                {/* <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
                 <div className='ClassesContainerFluid'>
                                                 <div className='divClass_2 bs-2-'>
 
@@ -595,7 +615,7 @@ export default function LandingPage() {
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
                                                         </div>
                                                 </div>
-                </div>
+                </div> */}
         </div>
                 </div>
                 </div>

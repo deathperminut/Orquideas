@@ -21,6 +21,8 @@ function ProviderContext(props){
         setModuls([]);
         setInstitution([]);
         setSelectModul(null);
+        setSelectModulAdmin(null);
+        setSelectModulInstiAdmin(null);
     }
     
 
