@@ -21,6 +21,7 @@ export const environment = {
     getSpecificInstitutions:'users/institutions/',
     editInstitution:'users/institutions/',
     deleteInstitution:'users/institutions/',
+    createInstitution:'users/createInstitution/',
 
     // USERS
     register:'users/register/',
@@ -28,8 +29,9 @@ export const environment = {
     getUser:'users/',
     editUser:'users/',
     // news
-    getNews:'content/news/',
-
+    getNews:  'content/news/',
+    createNew:'content/news/',
+    updateNew:'content/news/',
 
     // rols
 
