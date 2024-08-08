@@ -26,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
 class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution

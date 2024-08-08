@@ -19,7 +19,9 @@ class CreateUserView(generics.CreateAPIView):
     #     return Response({'token': token.key})
 
 
-
+class CreateInstitution(generics.CreateAPIView):
+    queryset =  Institution.objects.all()
+    serializer_class =  InstitutionSerializer
 
 class UserListView(generics.ListAPIView):
     permission_classes = [AllowAny]  # Permite acceso a todos sin autenticación

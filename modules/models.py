@@ -139,7 +139,7 @@ class TrainingModule(models.Model):
     module_name = models.CharField(max_length=200)
     tag_line = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
-    color = models.CharField(max_length=7)
+    color = models.CharField(max_length=10)
     document = models.FileField(upload_to='modules/', null=True, blank=True)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
