@@ -12,8 +12,7 @@ import Naranja from '../../../assets/images/Naranja2.png';
 import Amarillo from '../../../assets/images/Amarillo2.png';
 import Cafe from '../../../assets/images/Cafe22.png';
 import Aguamarina from '../../../assets/images/AguaMarina2.png';
-
-
+import { CiBookmark } from "react-icons/ci";
 
 export default function SelectModul() {
         const navigate=useNavigate();
@@ -98,47 +97,63 @@ const fecha = new Date(fechaISO);
                         <div className='ContainerInfoModul'>
                                 <span className='fontSemiBold ' style={{'fontSize':'30px'}}>{selectModul?.title}</span>
                                 <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{convertDate(selectModul?.created_at)}</span>
-                                <p className='fontLight description_moduls'>{selectModul?.description}</p>
+                                <p className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: selectModul?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
                         </div>
+                </div>
+                <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Objetivos especificos</span>
+                <div className='listInstitucions' style={{'marginTop':'30px'}}>
+                                      {selectModul?.specific_objectives.map((obj,index)=>{
+                                        return(
+                                          <div key={index} className='ListData'>
+                                                <div className='col-auto'>
+                                                <CiBookmark />
+                                                </div>
+                                                <span className='fontLight'>{obj?.description}</span>
+                                          </div>
+                                        )
+                                      })
+                                      }
+                                      
+                </div>
+                <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Skills (Habilidades)</span>
+                <div className='listInstitucions' style={{'marginTop':'30px'}}>
+                                      {selectModul?.skills_and_learnings.map((obj,index)=>{
+                                        return(
+                                          <div key={index} className='ListData'>
+                                                <div className='col-auto'>
+                                                <CiBookmark />
+                                                </div>
+                                                <span className='fontLight'>{obj?.description}</span>
+                                          </div>
+                                        )
+                                      })
+                                      }
+                                      
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
                 <div className='ClassesContainerFluid'>
-                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
+                                {selectModul?.foundations.map((obj,index)=>{
+                                        return(
+                                                <div key={index} onClick={()=>{
+                                                        // Guardamos el indice de la actividad
+
+                                                        // Guardamos la actividad especifica
+
+                                                        
+                                                        navigate('/Lobby/SelectClass')
+                                                        }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
+                                                                {obj.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Video orquídeas'}</span> : <></>}
+                                                                {obj.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Momento de discusión'}</span> : <></>}
+                                                                {obj.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Adjunta tu respuesta'}</span> : <></>}
+                                                                {obj.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Corta redacción'}</span> : <></>}
+                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                         </div>
                                                 </div>
-                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
-                                                <div onClick={()=>navigate('/Lobby/SelectClass')} className='divClass_2 bs-2-'>
-                                                        <div className='TextContainerClass'>
-                                                                <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
-                                                        </div>
-                                                </div>
+                                        )
+                                })
+                                }
+                                                
                 </div>
         </div>
     )
