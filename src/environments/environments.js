@@ -39,6 +39,11 @@ export const environment = {
 
     // MODULS
 
-    getModuls:'modules/'
+    getModuls:'modules/',
+
+    // COMMENTS
+    getComments:'community/comments/',
+    createComment:'community/comments/',
+
 
 }

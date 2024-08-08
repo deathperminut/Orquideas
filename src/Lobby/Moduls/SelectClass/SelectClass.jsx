@@ -12,14 +12,78 @@ import ReactPlayer from 'react-player'
 
 import { AppContext } from '../../../Context';
 import { set } from 'date-fns';
+import { CreateComment, GetComments } from '../../../Services/Comments/Comments';
+import { GetUser } from '../../../Services/Users/Users';
 
 export default function SelectClass() {
 
+    
     // React.useContext
     let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
-
-    /* use effect */
+    
+    
+    /* use state */
     let [state,setState] = React.useState(1);
+
+    let [comments,setComment] = React.useState([]);
+    let [preloader,setPreloader] = React.useState(false);
+    let [users,setUsers] = React.useState([]);
+    /* useEffect */
+
+    React.useEffect(()=>{
+        
+        loadUsers();
+
+    },[])
+
+    let loadUsers=async()=>{
+
+        // obtenemos los usuarios
+        let result =  undefined;
+        setPreloader(true);
+        result =  await GetUser().catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+            icon: 'info',
+            title: 'Problemas al cargar usuarios'
+          })
+        });
+  
+        if(result){
+          setPreloader(false);
+          setUsers(result.data);
+          GetComentarios();
+        }
+  
+      }
+    
+    const GetComentarios=async()=>{
+        let result =  undefined;
+        result =  await GetComments().catch((error)=>{
+            console.log(error);
+            setPreloader(false);
+            Swal.fire({
+                icon: 'info',
+                title: 'Error al traer comentarios'
+            })
+        })
+        if(result){
+            console.log("comentarios: ",result.data);
+            setComment(result.data);
+        }
+
+    }
+
+    const GetUserData=(userId)=>{
+        let filter_ =  users.filter((obj)=> obj?.id == userId);
+        if(filter_.length == 0){
+            return null;
+        }else{
+            return filter_[0]
+        }
+    }
+
 
     const convertDate=(fechaISO)=>{
         // Convertir la cadena a un objeto Date
@@ -43,8 +107,52 @@ export default function SelectClass() {
 
         }
 
+        let [inputComment,setInputComment] = React.useState("");
+
+        let ReadInput=(event)=>{
+            setInputComment(event.target.value);
+        }
+
+        const generateComment=async()=>{
+            if(inputComment == ""){
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Debes ingresar algun comentario para publicar'
+                })
+
+            }else{
+
+                let result =  undefined;
+                
+                result =  await  CreateComment({'content':inputComment,'user':userData?.id}).catch((error)=>{
+                    console.log(error);
+                    setPreloader(false);
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Error al crear comentario'
+                    })
+                })
+                if(result){
+                    setPreloader(false);
+                    setInputComment("");
+                    GetComentarios();
+                }
+
+            }
+        }
+
     return (
         <div className='dataModulContainer'>
+            {
+                    preloader ?
+                    <>
+                    <Preloader></Preloader>
+                    </>
+                    :
+
+                    <></>
+            }
             <div className='navBarClass'>
                     <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginRight':'10px'}}>{selectModul?.title}</span>
                     <div className='progressContainer'>
@@ -222,36 +330,21 @@ export default function SelectClass() {
                     <div className='chatCourseContainer bs-2-'>
                         <span className='fontSemiBold color-purple'>Foro</span>
                         <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                            <textarea className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                            <textarea value={inputComment} onChange={ReadInput} className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                         </div>
-                        <div className='ButtonSend bs-2-'>
+                        <div onClick={generateComment} className='ButtonSend bs-2-'>
                                 <IoMdSend></IoMdSend>
                         </div>
                         <div className='comentaryContainer'>
-                            <div className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >Juan Sebastian Mendez</span>
-                                    <p className='Comment fontLight'>Alguien sabe como valido el curso?</p>
-                            </div>
-                            <div className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >Juan Sebastian Mendez</span>
-                                    <p className='Comment fontLight'>Alguien sabe como valido el curso?</p>
-                            </div>
-                            <div className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >Juan Sebastian Mendez</span>
-                                    <p className='Comment fontLight'>Alguien sabe como valido el curso?</p>
-                            </div>
-                            <div className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >Juan Sebastian Mendez</span>
-                                    <p className='Comment fontLight'>Alguien sabe como valido el curso?</p>
-                            </div>
-                            <div className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >Juan Sebastian Mendez</span>
-                                    <p className='Comment fontLight'>Alguien sabe como valido el curso?</p>
-                            </div>
-                            <div className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >Juan Sebastian Mendez</span>
-                                    <p className='Comment fontLight'>Alguien sabe como valido el curso?</p>
-                            </div>
+                            {comments.map((obj,index)=>{
+                                return(
+                                    <div key={index} className='Comentario bs-2-'>
+                                    <span className='Name fontSemiBold color-purple' >{ GetUserData(obj?.user)?.last_name}</span>
+                                    <p className='Comment fontLight'>{obj?.content}</p>
+                                    </div>
+                                )
+                            })}
+                            
                         </div>
                         
                     </div>
