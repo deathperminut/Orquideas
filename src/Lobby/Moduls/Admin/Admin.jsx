@@ -7,6 +7,7 @@ import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import $ from 'jquery';
+import Institutions from './Institutions/Institutions';
 import { HiOutlineUsers } from "react-icons/hi";
 import { HiOutlineNewspaper } from "react-icons/hi2";
 import circleAmarillo from '../../../assets/images/circleAmarillo.png';
@@ -30,6 +31,7 @@ import Amarillo from '../../../assets/images/Amarillo2.png';
 import Cafe from '../../../assets/images/Cafe22.png';
 import Aguamarina from '../../../assets/images/AguaMarina2.png';
 import StoriesModuls from './StoriesModuls/StoriesModuls';
+import { MdMapsHomeWork } from "react-icons/md";
 
 export default function Admin() {
 
@@ -203,6 +205,19 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
+                <div onClick={()=>setState(5)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                  <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
+                    <div className='card border-0 overflow-hidden bs-3-'>
+                      <NavLink className='nav-link card-img-overlay d-flex flex-column justify-content-center align-items-center align-self-center'>
+                        <div className={`d-flex flex-row justify-content-center align-items-center align-self-center position-absolute top-0 start-50 translate-middle-x mt-4 rounded-circle ${
+                          'wrapper-icon-indicator-adverse-events-'}`}>
+                           <MdMapsHomeWork  color='#FFF' size={50}/>
+                        </div>
+                        <p className='fs-4- fontSemiBold fw-bold lh-1 position-absolute bottom-0 start-50 translate-middle-x mb-5 text-center'>Instituciones</p>
+                      </NavLink>
+                    </div>
+                  </div>
+                </div>
                 <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
@@ -284,6 +299,12 @@ export default function Admin() {
                 {
                   state == 4 ? 
                   <StoriesModuls></StoriesModuls>
+                  :
+                  <></>
+                }
+                {
+                  state == 5 ? 
+                  <Institutions></Institutions>
                   :
                   <></>
                 }
