@@ -32,6 +32,10 @@ import Cafe from '../../../assets/images/Cafe22.png';
 import Aguamarina from '../../../assets/images/AguaMarina2.png';
 import StoriesModuls from './StoriesModuls/StoriesModuls';
 import { MdMapsHomeWork } from "react-icons/md";
+import { AppContext } from '../../../Context';
+import Swal from 'sweetalert2';
+import Preloader from '../../../Components/Shared/Preloader/Preloader';
+import { GetUser } from '../../../Services/Users/Users';
 
 export default function Admin() {
 
@@ -135,10 +139,50 @@ export default function Admin() {
 
       let [state,setState] = React.useState(1);
 
+      // USE STATE
+      let {selectModulInstiAdmin,setSelectModulInstiAdmin,institution,moduls,selectModulAdmin,setSelectModulAdmin} = React.useContext(AppContext);
+
+      let [users,setUsers] = React.useState([]);
+      let [preloader,setPreloader] = React.useState(false);
+
+      React.useEffect(()=>{
+        loadUsers();
+      },[])
+
+      const loadUsers=async()=>{
+          
+          setPreloader(true);
+          let result =  undefined;
+          result =  await GetUser().catch((error)=>{
+            console.log(error);
+            setPreloader(false);
+            Swal.fire({
+              icon: 'info',
+              title: 'Error al cargar usuarios'
+            })
+          })
+
+          if(result){
+            setPreloader(false);
+            console.log(result.data);
+            setUsers(result.data);
+          }
+
+      }
+
 
     
     return (
         <div className='container-fluid overflow-x-hidden'>
+        {
+                    preloader ?
+                    <>
+                    <Preloader></Preloader>
+                    </>
+                    :
+
+                    <></>
+            }
         <div className='row'>
           <div className='col-12'>
             <h2 className='m-0 p-0 lh-sm fs-3- fontSemiBold fw-bold color-purple'>Panel de administración</h2>
@@ -218,56 +262,90 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 8)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(8)))
+                  setState(2);
+                  
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Violeta} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 3)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(3)))
+                  setState(2);
+                  
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Azul} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 4)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(4)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Rojo} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 5)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(5)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Verde} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 6)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(6)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Naranja} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 1)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(1)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Amarillo} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 2)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(2)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                           <img src={Cafe} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>setState(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
+                <div onClick={()=>{
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 7)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(7)))
+                  setState(2);
+                  }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 overflow-hidden bs-3-'>
                         <img src={Aguamarina} className='card-img' alt="" />
@@ -287,7 +365,7 @@ export default function Admin() {
                 <></>
                 }
                 {state == 2 ? 
-                <IndexModuls></IndexModuls>
+                <IndexModuls institution={institution} users = {users}></IndexModuls>
                 :
                 <></>
                 }

@@ -14,6 +14,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import * as echarts from 'echarts';
 import { CiCircleMore } from "react-icons/ci";
 import $ from "jquery"
+import { AppContext } from '../../../../Context';
+import Swal from 'sweetalert2';
+import Preloader from '../../../../Components/Shared/Preloader/Preloader';
+import { GetInstitutions, UpdateInstitution } from '../../../../Services/Institutions/Institutions';
 
 
 /**
@@ -261,10 +265,33 @@ const options = [
 
 
 
-export default function IndexModuls() {
+export default function IndexModuls(props) {
+    
+    // REACT USE CONTEXT
+    let {selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
+
     const [show2, setShow2] = React.useState(false);
+    let [preloader,setPreloader] = React.useState(false);
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
+    
+    const GetInsti=(idUser)=>{
+      let filter_ = institution.filter((obj)=> obj.users.includes(idUser))
+      return filter_[0]
+    }
+
+    let [supportList,setSupportList] = React.useState([...props.users]);
+
+    let ReadInput = (event) =>{
+      
+      if(event.target.value == ""){
+        setSupportList(props.users)
+      }else{
+        setSupportList(props.users.filter((obj)=> obj.first_name.toLowerCase().includes(event.target.value.toLowerCase()) || obj.last_name.toLowerCase().includes(event.target.value.toLowerCase()) ));
+      }
+      
+      
+    }
 
 
 
@@ -801,11 +828,129 @@ export default function IndexModuls() {
 
     },[])
 
+    let [selectInsti,setSelectInsti] = React.useState(null);
+
+    const GetInstitutionData= async()=>{
+      let result =  undefined;
+      setPreloader(true);
+      result =  await GetInstitutions().catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+              icon: 'info',
+              title: 'Error al traer información de roles'
+          })
+      })
+      if(result){
+          console.log("Institución: ",result.data);
+          setInstitution(result.data.map((obj)=>{
+              return (
+                  {...obj,['value']:obj.id,['label']:obj.name}
+              )
+          }));
+          setPreloader(false)
+      }
+    }
+
+    const AppendInstitution=async()=>{
+
+      // miramos de que no este agregado
+      if(selectInsti == null){
+        Swal.fire({
+          icon: 'info',
+          title: 'Selecciona una institución para vincular'
+        })
+      }else{
+        // miramos que no este vinculado ya
+        if(selectInsti?.allowed_modules.includes(selectModulAdmin?.id)){
+          Swal.fire({
+            icon: 'info',
+            title: 'Esta institución ya se encuentra vinculada'
+          })
+        }else{
+          // vinculamos la institución
+          setPreloader(true);
+          let result =  undefined;
+          let lista_ = selectInsti['allowed_modules']
+          lista_.push(selectModulAdmin?.id);
+          result =  await UpdateInstitution({...selectInsti,['allowed_modules']:lista_}).catch((error)=>{
+            console.log(error);
+            Swal.fire({
+              icon: 'info',
+              title: 'Problemas para vincular institución'
+            })
+            setPreloader(false);
+          })
+          if(result){
+            setPreloader(false);
+            setSelectInsti(null);
+            // agregamos la institución a la lista de instituciones vinculadas
+            let lista_nueva = [...selectModulInstiAdmin];
+            lista_nueva.push(result.data);
+            setSelectModulInstiAdmin(lista_nueva);
+            // cargamos el arreglo de instituciones
+            GetInstitutionData();
+            Swal.fire({
+              icon: 'success',
+              title: 'Institución vinculada con éxito'
+            })
+          }
+        }
+      }
+      
+
+    }
+
+    // desvincular institución
+
+    const deleteInstitution=async(obj)=>{
+
+      // vinculamos la institución
+      setPreloader(true);
+      let result =  undefined;
+      let lista_ = obj['allowed_modules'].filter((obj)=> obj !== selectModulAdmin?.id)
+      result =  await UpdateInstitution({...obj,['allowed_modules']:lista_}).catch((error)=>{
+        console.log(error);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas para vincular institución'
+        })
+        setPreloader(false);
+      })
+      if(result){
+        setPreloader(false);
+        setSelectInsti(null);
+        // agregamos la institución a la lista de instituciones vinculadas
+        let lista_nueva = [...selectModulInstiAdmin].filter((obj)=> obj?.id !== obj?.id);
+        setSelectModulInstiAdmin(lista_nueva);
+        // cargamos el arreglo de instituciones
+        GetInstitutionData();
+        Swal.fire({
+          icon: 'success',
+          title: 'Institución desvinculada con éxito'
+        })
+      }
+      
+
+    }
+
     return (
         <>
+          {
+                          preloader ?
+                          <>
+                          <Preloader></Preloader>
+                          </>
+                          :
+                          <></>
+          }
           <div className='dataModulContainer'>
+
             <div className='ContainerNameModul'>
-                <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Datos del módulo</p>
+                <p className='fontSemiBold color-purple' style={{'marginTop':'30px','fontSize':'30px'}}>{selectModulAdmin?.title}</p>
+            </div>
+            <div className='ContainerNameModul'>
+                <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Vincular institución</p>
                 <div className='ButtonEditModul bs-2-' onClick={handleShow2}>
                 <FaRegPlusSquare size={20}/>
                 </div>
@@ -818,17 +963,7 @@ export default function IndexModuls() {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                             <div className='col-12'>
                                 <div className='form-floating inner-addon- right-addon-'>
-                                <input type="text" className='form-control' id='password' placeholder="" />
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div className='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                        <span className='fs-10- fontLight'>Institución</span>
-                            <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                            <div className='col-12'>
-                                <div className='form-floating inner-addon- right-addon-'>
-                                <input type="text" className='form-control' id='password' placeholder="Institución" />
+                                <input onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
                                 </div>
                             </div>
                             </div>
@@ -842,250 +977,62 @@ export default function IndexModuls() {
                         <thead>
                             <tr>
                                 <th scope="col" className='th-width-xs-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'></span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'></span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-md-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Nombre completo</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Nombre completo</span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Número de identificación</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Número de identificación</span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Porcentaje (%)</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Porcentaje (%)</span>
+                                  </div>
                                 </th>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <label>
-                                            <input type="checkbox" name="radio"/>
-                                            <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Institución 1</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>100%</p>
-                                    </td>
-                                </tr>
+                                {supportList.map((obj,index)=>{
+                                  return(
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                            <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
+                                            <div className='checks-radios-'>
+                                                <label>
+                                                <input type="checkbox" name="radio"/>
+                                                <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
+                                                </label>
+                                            </div>
+                                            </div>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.last_name}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.first_name}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetInsti(obj?.id)?.name}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{}</p>
+                                        </td>
+                                    </tr>
+                                  )
+                                })}
+                                
                             </tbody>
                         </table>
                         </div>
@@ -1831,201 +1778,33 @@ export default function IndexModuls() {
                   
                   <div className='container-fluid pt-0 pb-0 padding-40-'>
                       <div className='row'>
-                      <span className='fs-10- fontLight' >Crear institución</span>
                       <div className='col-12'>
                       <form action='' className='Form'>
-                              <span className='fs-10- fontLight' >Nombre</span>
-                              <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
-                              <div className='col-12'>
-                                  <div className='form-floating inner-addon- left-addon-'>
-                                  <input type="text" className='form-control' id='user' placeholder="Ingrese su usuario" />
-                                  </div>
-                              </div>
-                              </div>
-                              <div className='ContainerButton_2'>
-                                  <div className='Button_2' style={{'marginTop':'20px'}}>
-                                              <span className='text_button_2'>Crear</span>
-                                  </div>
-                              </div>
-                              <div className='TableUsersContainer bs-2-' style={{'marginBottom':'20px'}}>
-                                      <div className='row mt-4 mb-4'>
-                                              <div className='table-responsive table-general-'>
-                                              <table className='table table-sm table-striped table-no-border- align-middle'>
-                                              <thead>
-                                                  <tr>
-                                                      <th scope="col" className='th-width-md-'>
-                                                      <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                                          <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
-                                                      </div>
-                                                      </th>
-                                                      <th scope="col" className='th-width-sm-'>
-                                                      <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                                          <span className='fs-5- fontSemiBold fw-bold color-purple'>Eliminar</span>
-                                                      </div>
-                                                      </th>
-                                                  </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                      <tr>
-                                                          
-                                                          <td className='align-middle'>
-                                                          <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Empresa 1</p>
-                                                          </td>
-                                                          <td className='align-middle'>
-                                                                  <div className='row gx-1 d-flex flex-row justify-content-center align-items-start align-self-start'>
-                                                                      <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                                                      </div>
-                                                                  </div>
-                                                          </td>
-                                                      </tr>
-                                                  </tbody>
-                                              </table>
-                                              </div>
-                                      </div> 
-                              </div>
+                              
                               <span className='fs-10- fontLight' style={{'marginTop':'20px'}}>Institución</span>
                               <div className='inner-addon- left-addon-'>
-                                  <Select options={options} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                  <Select options={institution} value={{'value':selectInsti?.value,'label':selectInsti?.label}} onChange={(event)=>setSelectInsti(event)} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                               </div>
-                              <div className='ContainerButton_2'>
+                              <div onClick={AppendInstitution} className='ContainerButton_2'>
                                   <div className='Button_2' style={{'marginTop':'20px'}}>
                                               <span className='text_button_2'>Agregar</span>
                                   </div>
                               </div>
                               <div className='listInstitucions'>
-                                      <div className='Institucions'>
-                                              <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                              </div>
-                                              <span className='fontLight'>Universidad nacional</span>
-                                      </div>
-                                      <div className='Institucions'>
-                                              <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                              </div>
-                                              <span className='fontLight'>Universidad nacional</span>
-                                      </div>
-                                      <div className='Institucions'>
-                                              <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                              </div>
-                                              <span className='fontLight'>Universidad nacional</span>
-                                      </div>
-                                      <div className='Institucions'>
-                                              <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                              </div>
-                                              <span className='fontLight'>Universidad nacional</span>
-                                      </div>
-                                      <div className='Institucions'>
-                                              <div className='col-auto'>
-                                                                      <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
-                                                                      <MdDeleteOutline />
-                                                                      </button>
-                                              </div>
-                                              <span className='fontLight'>Universidad nacional</span>
-                                      </div>
+                                      {selectModulInstiAdmin?.map((obj,index)=>{
+                                        return(
+                                          <div key={index} className='Institucions'>
+                                                <div className='col-auto'>
+                                                                        <button onClick={()=>deleteInstitution(obj)} className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center ' type="button" >
+                                                                        <MdDeleteOutline />
+                                                                        </button>
+                                                </div>
+                                                <span className='fontLight'>{obj?.name}</span>
+                                          </div>
+                                        )
+                                      })
+                                      }
+                                      
                               </div>
                           </form>
                       </div>
