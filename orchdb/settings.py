@@ -90,8 +90,14 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
+    #     "modules_db": {
+    #         "ENGINE": "django.db.backends.sqlite3",
+    #         "NAME": BASE_DIR / "modules_db.sqlite3",
+    #     },
 }
+
+# DATABASE_ROUTERS = ['orchdb.db_router.ModulesRouter']
 
 
 # Password validation

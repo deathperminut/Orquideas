@@ -10,10 +10,31 @@ from .models import (
     Evidence,
     Redaction,
     ForumParticipation,
+    CloudForumParticipation,
     SelectionMultipleQuestionary,
     OpenQuestionary,
     ChoiceQuestionary,
+    ActivityModule,
+    UserActivityModule,
+    UserModule,
+    SurveyModule,
+    UserSurveyModule,
+    SatisfactionQuestion,
+    OpenQuestionaryOptional,
+    Image,
 )
+
+
+class OpenQuestionaryOptionalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpenQuestionaryOptional
+        fields = ['question', 'response']
+
+
+class SatisfactionQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SatisfactionQuestion
+        fields = ['survey', 'level_of_satisfaction']
 
 
 class SpecificObjectiveSerializer(serializers.ModelSerializer):
@@ -31,7 +52,13 @@ class SkillAndLearningSerializer(serializers.ModelSerializer):
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ['description', 'video_link', 'video_file']
+        fields = ['description', 'video_link']
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ['description', 'image']
 
 
 class FormatTextSerializer(serializers.ModelSerializer):
@@ -64,6 +91,12 @@ class ForumParticipationSerializer(serializers.ModelSerializer):
         fields = ['question', 'response']
 
 
+class CloudForumParticipationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CloudForumParticipation
+        fields = ['question', 'response']
+
+
 class ChoiceQuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = ChoiceQuestionary
@@ -90,10 +123,14 @@ class ActivitySerializer(serializers.ModelSerializer):
     lecture = LectureSerializer()
     evidence = EvidenceSerializer()
     video = VideoSerializer()
+    image = ImageSerializer()
     redaction = RedactionSerializer()
     forum_participation = ForumParticipationSerializer()
+    cloud_forum_participation = CloudForumParticipationSerializer()
     selection_multiple_questionary = SelectionMultipleQuestionarySerializer()
     open_questionary = OpenQuestionarySerializer()
+    open_questionary_optional = OpenQuestionaryOptionalSerializer()
+    satisfaction_question = SatisfactionQuestionSerializer()
 
     class Meta:
         model = Activity
@@ -102,18 +139,24 @@ class ActivitySerializer(serializers.ModelSerializer):
             'lecture',
             'evidence',
             'video',
+            'image',
             'redaction',
             'forum_participation',
+            'cloud_forum_participation',
             'selection_multiple_questionary',
             'open_questionary',
+            'open_questionary_optional',
+            'satisfaction_question',
         ]
         extra_kwargs = {
             'format_text': {'allow_null': False},
             'lecture': {'allow_null': False},
             'evidence': {'allow_null': False},
             'video': {'allow_null': False},
+            'image': {'allow_null': False},
             'redaction': {'allow_null': False},
             'forum_participation': {'allow_null': False},
+            'cloud_forum_participation': {'allow_null': False},
             'selection_multiple_questionary': {'allow_null': False},
             'open_questionary': {'allow_null': False},
         }
@@ -132,10 +175,6 @@ class TrainingModuleSerializer(serializers.ModelSerializer):
     skills_and_learnings = SkillAndLearningSerializer(
         many=True, read_only=True
     )
-    foundations = ActivitySerializer(many=True, read_only=True)
-    engage = ActivitySerializer(many=True, read_only=True)
-    co_create = ActivitySerializer(many=True, read_only=True)
-    reflection = ActivitySerializer(many=True, read_only=True)
 
     class Meta:
         model = TrainingModule
@@ -152,8 +191,124 @@ class TrainingModuleSerializer(serializers.ModelSerializer):
             'general_objective',
             'specific_objectives',
             'skills_and_learnings',
+        ]
+
+
+class ActivityModuleSerializer(serializers.ModelSerializer):
+    foundations = ActivitySerializer(many=True, read_only=True)
+    engage = ActivitySerializer(many=True, read_only=True)
+    co_create = ActivitySerializer(many=True, read_only=True)
+    reflection = ActivitySerializer(many=True, read_only=True)
+    training_module = TrainingModuleSerializer(read_only=True)
+
+    class Meta:
+        model = ActivityModule
+        fields = [
+            'id',
+            'training_module',
             'foundations',
             'engage',
             'co_create',
             'reflection',
         ]
+
+
+class UserActivityModuleSerializer(serializers.ModelSerializer):
+    foundations = ActivitySerializer(many=True, read_only=True)
+    engage = ActivitySerializer(many=True, read_only=True)
+    co_create = ActivitySerializer(many=True, read_only=True)
+    reflection = ActivitySerializer(many=True, read_only=True)
+    url = serializers.HyperlinkedIdentityField(
+        view_name='useractivitymodule-detail', lookup_field='pk'
+    )
+
+    class Meta:
+        model = UserActivityModule
+        fields = [
+            'url',
+            'foundations',
+            'engage',
+            'co_create',
+            'reflection',
+        ]
+
+
+class SurveyModuleSerializer(serializers.ModelSerializer):
+    survey = ActivitySerializer(many=True, read_only=True)
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        all_questions_responses = []
+
+        for survey_item in instance.survey.all():
+            item_data = ActivitySerializer(survey_item).data
+            all_questions_responses.append(item_data)
+
+        representation['all_questions_responses'] = all_questions_responses
+        return representation
+
+    class Meta:
+        model = SurveyModule
+        fields = ['id', 'survey', 'all_questions_responses']
+
+
+class UserSurveyModuleSerializer(serializers.ModelSerializer):
+    survey = ActivitySerializer(many=True, read_only=True)
+    url = serializers.HyperlinkedIdentityField(
+        view_name='usersurveymodule-detail', lookup_field='pk'
+    )
+
+    class Meta:
+        model = UserSurveyModule
+        fields = [
+            'url',
+            'survey',
+        ]
+
+
+class UserModuleSerializer(serializers.ModelSerializer):
+    #     activity_module_master = ActivityModuleSerializer(read_only=True)
+    user = serializers.CharField(source='user.email', read_only=True)
+    number_of_activities = serializers.SerializerMethodField()
+    number_of_evidence_activities = serializers.SerializerMethodField()
+    activity_module_editable = UserActivityModuleSerializer(read_only=True)
+    survey_module_editable = UserSurveyModuleSerializer(read_only=True)
+    module_name = serializers.CharField(
+        source='activity_module_master.training_module.module_name',
+        read_only=True,
+    )
+
+    class Meta:
+        model = UserModule
+        fields = [
+            'module_name',
+            'user',
+            'number_of_activities',
+            'number_of_evidence_activities',
+            'activity_module_editable',
+            'survey_module_editable',
+        ]
+
+    def get_number_of_activities(self, obj):
+        return (
+            obj.activity_module_editable.foundations.count()
+            + obj.activity_module_editable.engage.count()
+            + obj.activity_module_editable.co_create.count()
+            + obj.activity_module_editable.reflection.count()
+        )
+
+    def get_number_of_evidence_activities(self, obj):
+        return (
+            obj.activity_module_editable.foundations.filter(
+                evidence__isnull=False
+            ).count()
+            + obj.activity_module_editable.engage.filter(
+                evidence__isnull=False
+            ).count()
+            + obj.activity_module_editable.co_create.filter(
+                evidence__isnull=False
+            ).count()
+            + obj.activity_module_editable.reflection.filter(
+                evidence__isnull=False
+            ).count()
+        )

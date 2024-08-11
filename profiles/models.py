@@ -52,7 +52,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 class Institution(models.Model):
     name = models.CharField(max_length=200)
-    allowed_modules = models.ManyToManyField('modules.TrainingModule', related_name='allowed_institutions', blank=True)
+    allowed_modules = models.ManyToManyField('modules.TrainingModule', related_name='allowed_institutions')
     users = models.ManyToManyField(UserProfile, related_name='institutions', blank=True)
 
     def __str__(self):
