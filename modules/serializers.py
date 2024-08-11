@@ -236,20 +236,9 @@ class UserActivityModuleSerializer(serializers.ModelSerializer):
 class SurveyModuleSerializer(serializers.ModelSerializer):
     survey = ActivitySerializer(many=True, read_only=True)
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        all_questions_responses = []
-
-        for survey_item in instance.survey.all():
-            item_data = ActivitySerializer(survey_item).data
-            all_questions_responses.append(item_data)
-
-        representation['all_questions_responses'] = all_questions_responses
-        return representation
-
     class Meta:
         model = SurveyModule
-        fields = ['id', 'survey', 'all_questions_responses']
+        fields = ['id', 'survey']
 
 
 class UserSurveyModuleSerializer(serializers.ModelSerializer):

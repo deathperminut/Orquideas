@@ -19,7 +19,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserModuleSerializer(serializers.ModelSerializer):
+class ProfileUserModuleSerializer(serializers.ModelSerializer):
     module_name = serializers.CharField(
         source='activity_module_master.training_module.module_name',
         read_only=True,
@@ -38,7 +38,7 @@ class UserModuleSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    usermodule_set = UserModuleSerializer(many=True, read_only=True)
+    usermodule_set = ProfileUserModuleSerializer(many=True, read_only=True)
     institutions = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
