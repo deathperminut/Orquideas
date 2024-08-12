@@ -12,6 +12,7 @@ from .views import (
     SurveyModuleDetailView,
     UserSurveyModuleListCreateView,
     UserSurveyModuleDetailView,
+    TrainingModuleListView
 )
 
 urlpatterns = [
@@ -19,6 +20,11 @@ urlpatterns = [
         'training-modules/',
         TrainingModuleListCreateView.as_view(),
         name='trainingmodule-list-create',
+    ),
+    path(
+        'modules/',
+        TrainingModuleListView.as_view(),
+        name="get-modules"
     ),
     path(
         'training-modules/<int:pk>/',
