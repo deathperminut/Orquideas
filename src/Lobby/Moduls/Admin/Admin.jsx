@@ -277,8 +277,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 3)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(3)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 1)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(1)))
                   setState(2);
                   
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
@@ -289,8 +289,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 4)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(4)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 5)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(5)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -300,8 +300,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 5)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(5)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 7)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(7)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -322,8 +322,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 1)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(1)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 3)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(3)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -333,8 +333,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 2)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(2)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 4)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(4)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -344,8 +344,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 7)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(7)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 2)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(2)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -359,7 +359,7 @@ export default function Admin() {
                 <></>
                 }
 
-                {userData?.role == 2 ? 
+                {userData?.role == 3 ? 
                 <>
                 <div onClick={()=>setState(3)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -392,7 +392,7 @@ export default function Admin() {
                 :
                 <></>
                 }
-                {userData?.role == 3 ? 
+                {userData?.role == 4 ? 
                 <>
                 <div onClick={()=>{
                   setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 8)[0])
@@ -407,8 +407,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 3)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(3)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 1)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(1)))
                   setState(2);
                   
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
@@ -419,8 +419,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 4)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(4)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 5)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(5)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -430,8 +430,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 5)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(5)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 7)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(7)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -452,8 +452,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 1)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(1)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 3)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(3)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -463,8 +463,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 2)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(2)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 4)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(4)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -474,8 +474,8 @@ export default function Admin() {
                   </div>
                 </div>
                 <div onClick={()=>{
-                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 7)[0])
-                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(7)))
+                  setSelectModulAdmin(moduls.filter((obj)=> obj?.id == 2)[0])
+                  setSelectModulInstiAdmin(institution.filter((obj)=>obj.allowed_modules.includes(2)))
                   setState(2);
                   }} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4'>
                   <div id="card-indicator" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
@@ -488,7 +488,7 @@ export default function Admin() {
                 :
                 <></>
                 }
-                {userData?.role == 4 ? 
+                {userData?.role == 2 ? 
                 <></>
                 :
                 <></>

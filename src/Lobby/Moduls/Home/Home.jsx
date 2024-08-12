@@ -106,35 +106,35 @@ export default function Home() {
           </div>
         </div>
         <div className='row row-cols-auto d-flex flex-wrap justify-content-center align-items-center align-self-center justify-content-sm-center align-items-sm-center align-self-sm-center justify-content-md-center align-items-md-center align-self-md-center justify-content-lg-start align-items-lg-center align-self-lg-center justify-content-xl-start align-items-xl-center align-self-xl-center justify-content-xxl-start align-items-xxl-center align-self-xxl-center g-4 d-none d-sm-none d-md-flex d-lg-flex d-xl-flex d-xxl-flex mt-2'>
-          <div className='col' onClick={()=>verifyModul(1)}>
+          <div className='col' onClick={()=>verifyModul(3)}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Amarillo} className='card-img' alt="" />
               </div>
             </div>
           </div>
-          <div className='col' onClick={()=>verifyModul(2)}>
+          <div className='col' onClick={()=>verifyModul(4)}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Cafe} className='card-img' alt="" />
               </div>
             </div>
           </div>
-          <div className='col' onClick={()=>verifyModul(3)}>
+          <div className='col' onClick={()=>verifyModul(1)}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Azul} className='card-img' alt="" />
               </div>
             </div>
           </div>
-          <div className='col' onClick={()=>verifyModul(4)}>
+          <div className='col' onClick={()=>verifyModul(5)}>
             <div id="card-portfolio" className='w-100 cursor-' >
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Rojo} className='card-img' alt="" />
               </div>
             </div>
           </div>
-          <div className='col' onClick={()=>verifyModul(5)}>
+          <div className='col' onClick={()=>verifyModul(7)}>
             <div id="card-portfolio" className='w-100 cursor-'>
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Verde} className='card-img' alt="" />
@@ -148,7 +148,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='col' onClick={()=>verifyModul(7)}>
+          <div className='col' onClick={()=>verifyModul(2)}>
             <div id="card-portfolio" className='w-100 cursor-'>
               <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                 <img src={Aguamarina} className='card-img' alt="" />
@@ -167,35 +167,35 @@ export default function Home() {
           <div className='col-12'>
             <div className="swiper swiper-container-portfolio">
               <div className="swiper-wrapper">
-                <div onClick={()=>verifyModul(1)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>verifyModul(3)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Amarillo} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>verifyModul(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>verifyModul(4)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Cafe} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>verifyModul(3)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>verifyModul(1)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Azul} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>verifyModul(4)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>verifyModul(5)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Rojo} className='card-img' alt="" />
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>verifyModul(5)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>verifyModul(7)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Verde} className='card-img' alt="" />
@@ -209,7 +209,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div onClick={()=>verifyModul(7)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
+                <div onClick={()=>verifyModul(2)} className='swiper-slide d-flex flex-row justify-content-center align-items-center align-self-center mt-4 mb-5'>
                   <div id="card-portfolio" className='w-100 d-flex flex-row justify-content-center align-items-center align-self-center cursor-'>
                     <div className='card border-0 box-shadow-card-aplications overflow-hidden'>
                       <img src={Aguamarina} className='card-img' alt="" />
