@@ -235,7 +235,7 @@ export default function LandingPage() {
                                                 </div>
                                                 <div className='divsContainer'>
                                                 <div onClick={()=>{
-                                                    setSelectModul(1);
+                                                    setSelectModul(3);
                                                     handleShow2()
                                                     }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
@@ -256,7 +256,7 @@ export default function LandingPage() {
                                                 </div>
                                                 <div className='divsContainer'>
                                                 <div onClick={()=>{
-                                                    setSelectModul(3);
+                                                    setSelectModul(1);
                                                     handleShow2()
                                                     }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
@@ -277,7 +277,7 @@ export default function LandingPage() {
                                                 </div>
                                                 <div className='divsContainer'>
                                                 <div onClick={()=>{
-                                                    setSelectModul(4);
+                                                    setSelectModul(5);
                                                     handleShow2()
                                                     }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
@@ -298,7 +298,7 @@ export default function LandingPage() {
                                                 </div>
                                                 <div className='divsContainer'>
                                                 <div onClick={()=>{
-                                                    setSelectModul(5);
+                                                    setSelectModul(7);
                                                     handleShow2()
                                                     }}  className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
@@ -340,7 +340,7 @@ export default function LandingPage() {
                                                 </div>
                                                 <div className='divsContainer'>
                                                 <div  onClick={()=>{
-                                                    setSelectModul(7);
+                                                    setSelectModul(2);
                                                     handleShow2()
                                                     }} className='buttonElement'>
                                                     <span className='white fontLight'>Ver</span>
@@ -361,7 +361,7 @@ export default function LandingPage() {
                                                 </div>
                                                 <div className='divsContainer'>
                                                     <div onClick={()=>{
-                                                        setSelectModul(2);
+                                                        setSelectModul(4);
                                                         handleShow2()
                                                         }} className='buttonElement'>
                                                         <span className='white fontLight'>Ver</span>
@@ -520,31 +520,31 @@ export default function LandingPage() {
                 <div className='DataInfoModulContainer' style={{'backgroundColor':FilterModul()?.color}}>
                         <div className='ContainerImageModul_2'>
                                                     {selectModul == 1 ?
-                                                    <img src={Amarillo} className='card-img' alt="" />
-                                                    :
-                                                    <></>
-                                                    }
-
-                                                    {selectModul == 2 ?
-                                                    <img src={Cafe} className='card-img' alt="" />
-                                                    :
-                                                    <></>
-                                                    }
-
-                                                    {selectModul == 3 ?
                                                     <img src={Azul} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
 
+                                                    {selectModul == 2 ?
+                                                    <img src={Aguamarina} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
+                                                    {selectModul == 3 ?
+                                                    <img src={Amarillo} className='card-img' alt="" />
+                                                    :
+                                                    <></>
+                                                    }
+
                                                     {selectModul == 4 ?
-                                                    <img src={Rojo} className='card-img' alt="" />
+                                                    <img src={Cafe} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
 
                                                     {selectModul == 5 ?
-                                                    <img src={Verde} className='card-img' alt="" />
+                                                    <img src={Rojo} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
@@ -556,7 +556,7 @@ export default function LandingPage() {
                                                     }
 
                                                     {selectModul == 7 ?
-                                                    <img src={Aguamarina} className='card-img' alt="" />
+                                                    <img src={Verde} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }

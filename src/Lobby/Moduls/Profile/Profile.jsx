@@ -273,9 +273,9 @@ export default function Profile() {
     // use States
     let [preloader,setPreloader] = React.useState(false);
     let [data,setData] = React.useState({
-      'email':userData.email,
-      'first_name':userData.first_name,
-      'last_name':userData.last_name,
+      'email':userData?.email,
+      'first_name':userData?.first_name,
+      'last_name':userData?.last_name,
       'role':userData?.role,
       'password':userData?.password
     });
@@ -349,9 +349,7 @@ export default function Profile() {
     const ObtainModulInstitution=()=>{
 
       let insti =  GetIns();
-      console.log("INSTITUCIÓN SELECCIONADA: ",insti)
-      let moduls_ = insti.allowed_modules
-      console.log("ALLOWED SELECCIONADA: ",moduls_)
+      let moduls_ = insti?.allowed_modules
       if(moduls_.length !== 0){
 
         let modulId =  moduls_[0];
@@ -448,7 +446,7 @@ export default function Profile() {
                                 
                                 <span className='fs-10- fontLight' >Institución</span>
                                 <div className='inner-addon- left-addon-'>
-                                    <Select isDisabled={true} options={[]} value={{'value':GetIns().name,label:GetIns()?.name}}  components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                                    <Select isDisabled={true} options={[]} value={{'value':GetIns()?.name,label:GetIns()?.name}}  components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
                                 </div>
                                 <div  className='ContainerButton_2'>
                                     <div onClick={UpdateAccount} className='Button_2' style={{'marginTop':'20px'}}>

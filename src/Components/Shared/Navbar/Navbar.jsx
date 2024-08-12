@@ -86,7 +86,7 @@ export default function Navbar() {
             setPreloader(false);
             Swal.fire({
                 icon: 'info',
-                title: 'Error al traer información de roles'
+                title: 'Error al traer información de módulos'
             })
         })
         if(result){

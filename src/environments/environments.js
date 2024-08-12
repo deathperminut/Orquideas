@@ -39,7 +39,7 @@ export const environment = {
 
     // MODULS
 
-    getModuls:'modules/',
+    getModuls:'modules/modules/',
 
     // COMMENTS
     getComments:'community/comments/',

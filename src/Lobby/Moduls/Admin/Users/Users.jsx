@@ -313,7 +313,8 @@ export default function Users() {
         setFilter(event.target.value);
       }else{
         // FILTRAMOS POR EL VALOR DE EMAIL O NOMBRE O IDENTIFICACIÓN
-        let filter_ = listUsers.filter((obj)=> obj.email.toLowerCase().includes(event.target.value) || obj.last_name.toLowerCase().includes(event.target.value) || obj.first_name.toLowerCase().includes(event.target.value))
+        console.log(listUsers, "USUARIOS: ")
+        let filter_ = listUsers.filter((obj)=> obj.email.toLowerCase().includes(event.target.value.toLowerCase()) || obj.last_name.toLowerCase().includes(event.target.value.toLowerCase()) || obj.first_name.toLowerCase().includes(event.target.value.toLowerCase()))
         setSupportList(filter_);
         setFilter(event.target.value);
       }

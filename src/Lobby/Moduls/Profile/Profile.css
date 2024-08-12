@@ -33,8 +33,7 @@
 .ContainerInfoModul{
   width: 80%;
   max-width: 600px;
-  height: 300px;
-  max-height: 300px;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   padding-left: 60px;
@@ -506,7 +505,7 @@
     .ContainerInfoModul{
       width: 80%;
       max-width: 600px;
-      height: 300px;
+      min-height: 300px;
       display: flex;
       flex-direction: column;
       padding-left: 60px;
@@ -573,7 +572,6 @@
       width: 100%;
       max-width: 600px;
       min-height: 300px;
-      
       display: flex;
       flex-direction: column;
       padding-left: 60px;

@@ -338,7 +338,7 @@ export default function Register() {
         // REALIZAMOS EL REGISTRO
         let result =  undefined;
         setPreloader(true);
-        result =  await RegisterUser({'email':userInfo['email'],'first_name':userInfo['identification'],'last_name':userInfo['name'],'password':userInfo['password'],'role':4}).catch((error)=>{
+        result =  await RegisterUser({'email':userInfo['email'],'first_name':userInfo['identification'],'last_name':userInfo['name'],'password':userInfo['password'],'role':2}).catch((error)=>{
           console.log(error);
           if(error?.response?.data?.email?.length !== 0 ){
             setPreloader(false);

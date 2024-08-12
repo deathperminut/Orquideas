@@ -62,7 +62,7 @@ export default function Sidebar() {
                         <p className='m-0 ms-4 align-items-center align-self-center fs-5-  unabbreviated- lh-sm fontLight'>Home</p>
                         </NavLink>
                     </li>
-                    {userData?.role != 4 ? 
+                    {userData?.role != 2 ? 
                     <li className='nav-item'>
                         <NavLink className='nav-link d-flex flex-row justify-content-start align-items-center align-self-center position-relative fs-5- ff-monse-regular-' style={({ isActive }) => ({ color: isActive ? 'var(--color-white-)' : 'var(--color-white-)', background: isActive ? 'var(--color-secondary-purple-)' : 'var(--color-tertiary-blue-)', })} to='/Lobby/Admin'>
                         <p className='m-0 align-items-center align-self-center fs-5- ff-monse-regular-  abbreviated- tx-decoration-'><img className='logo-medical-sidebar-' src={Admin} alt="" /></p>
