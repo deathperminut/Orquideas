@@ -908,7 +908,7 @@ export default function IndexModuls(props) {
       // vinculamos la institución
       setPreloader(true);
       let result =  undefined;
-      let lista_ = obj['allowed_modules'].filter((obj)=> obj !== selectModulAdmin?.id)
+      let lista_ = obj['allowed_modules'].filter((obj2)=> obj2 !== selectModulAdmin?.id)
       result =  await UpdateInstitution({...obj,['allowed_modules']:lista_}).catch((error)=>{
         console.log(error);
         Swal.fire({
@@ -921,7 +921,8 @@ export default function IndexModuls(props) {
         setPreloader(false);
         setSelectInsti(null);
         // agregamos la institución a la lista de instituciones vinculadas
-        let lista_nueva = [...selectModulInstiAdmin].filter((obj)=> obj?.id !== obj?.id);
+        console.log("QUE HAY AQUI? ",selectModulInstiAdmin);
+        let lista_nueva = [...selectModulInstiAdmin].filter((obj2)=> obj2?.id !== obj?.id);
         setSelectModulInstiAdmin(lista_nueva);
         // cargamos el arreglo de instituciones
         GetInstitutionData();
