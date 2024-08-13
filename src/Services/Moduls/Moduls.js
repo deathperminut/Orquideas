@@ -15,5 +15,9 @@ const getUserModulActivities=async(path)=>{
         return await axios.get(path);
 }
 
+const updateActivities=async(path,body)=>{
+    return await axios.put(path,body);
+}
 
-export {getModuls,getUserModulActivities}
+
+export {getModuls,getUserModulActivities,updateActivities}

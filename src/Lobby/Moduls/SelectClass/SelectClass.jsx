@@ -8,24 +8,31 @@ import Flores from '../../../assets/images/circleVioleta.png';
 import Swal from 'sweetalert2';
 import Preloader from '../../../Components/Shared/Preloader/Preloader';
 import ReactPlayer from 'react-player'
-
-
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { IoIosClose } from "react-icons/io";
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AppContext } from '../../../Context';
 import { set } from 'date-fns';
 import { CreateComment, GetComments } from '../../../Services/Comments/Comments';
 import { GetUser } from '../../../Services/Users/Users';
+import { updateActivities } from '../../../Services/Moduls/Moduls';
 
 export default function SelectClass() {
 
-    
+    const navigate=useNavigate();
     // React.useContext
-    let {userModulActivities,setUserModulActivities,selectActivityType,setSelectActivityType,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
+    let {userModulActivitiesLink,setUserModulActivitiesLink,userModulActivities,setUserModulActivities,selectActivityType,setSelectActivityType,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
     /* use state */
     let [state,setState] = React.useState(1);
 
     let [comments,setComment] = React.useState([]);
     let [preloader,setPreloader] = React.useState(false);
     let [users,setUsers] = React.useState([]);
+
+    // use State
+    const [show2, setShow2] = React.useState(false);
+    const handleClose2 = () => setShow2(false);
+    const handleShow2 = () => setShow2(true);
     /* useEffect */
 
     React.useEffect(()=>{
@@ -140,6 +147,63 @@ export default function SelectClass() {
             }
         }
 
+
+        function jsonToFormData(obj, formData = new FormData(), parentKey = '') {
+            if (Array.isArray(obj)) {
+                // Si es una lista, iteramos sobre los elementos
+                obj.forEach((value, index) => {
+                    const key = parentKey ? `${parentKey}[${index}]` : index;
+                    jsonToFormData(value, formData, key);
+                });
+            } else if (typeof obj === 'object' && obj !== null && !(obj instanceof File)) {
+                // Si es un objeto, iteramos sobre sus propiedades
+                for (let key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        const propName = parentKey ? `${parentKey}[${key}]` : key;
+                        jsonToFormData(obj[key], formData, propName);
+                    }
+                }
+            } else {
+                // Si es un valor simple (no objeto, no array), lo añadimos directamente
+                formData.append(parentKey, obj);
+            }
+            return formData;
+        }
+
+        // EVIDENCE
+        const ReadFileData=async(event,typeActivity)=>{
+
+            console.log("SUBIENDO ARCHIVOS: ",event.target.files);
+            let ModulActivities = {...userModulActivities};
+            ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex]['upload']  =event.target.files[0]
+            // GUARDAMOS Y ACTUALIZAMOS LAS ACTIVIDADES
+            let formData = jsonToFormData(ModulActivities);
+
+            // LLAMAMOS EL SERVICIO DE UPDATE
+            let result =  undefined;
+            setPreloader(true);
+            
+            result =  await updateActivities(userModulActivitiesLink,formData).catch((error)=>{
+                console.log(error);
+                setPreloader(false);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Error al subir el documento'
+                })
+            })
+            if(result){
+                console.log("DATOS AL ACTUALIZAR ACTIVIDAD: ",result.data);
+                setPreloader(false);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Subido con éxito'
+                })
+            }
+            
+        }
+        
+        
+
         const NextActivity=()=>{
             // VERIFICAMOS EL ORDEN Y EL TIPO DE ACTIVIDAD
             // obtenemos el tipo de actividad en el que se encuentra
@@ -175,6 +239,7 @@ export default function SelectClass() {
 
                     }else{
                         // pasamos al éxamen
+                        handleShow2();
                     }
 
 
@@ -198,6 +263,7 @@ export default function SelectClass() {
 
                     }else{
                         // pasamos al éxamen
+                        handleShow2();
                     }
 
                 }else if(selectActivityType == 'co_create'){
@@ -213,13 +279,13 @@ export default function SelectClass() {
 
                     }else{
                         // pasamos al éxamen
-
+                        handleShow2();
                     }
 
                 }else{
 
                     // pasariamos a presentar el éxamen
-
+                    handleShow2();
                 }
             }else{
                 // si no estamos en la ultima pasamos a la siguiente y listo
@@ -230,7 +296,59 @@ export default function SelectClass() {
 
         }
 
+        const ReadCheckBox=(event,value,type,index)=>{
+
+            // obtenemos el elementos y actualizamos
+            let copyActivityModuls = {...userModulActivities};
+            
+            copyActivityModuls['survey_module_editable']['survey'][index][type]['level_of_satisfaction']= value;
+            console.log("GUARDADO: ",copyActivityModuls);
+            setUserModulActivities(copyActivityModuls);
+
+        }
+
+        const ReadTextArea=(event,index)=>{
+            let copyActivityModuls = {...userModulActivities};
+            
+            copyActivityModuls['survey_module_editable']['survey'][index]['open_questionary_optional']['response']= event.target.value;
+            console.log("GUARDADO: ",copyActivityModuls);
+            setUserModulActivities(copyActivityModuls);
+        }
+
+        const RegisterSurvey=async()=>{
+            console.log("DATOS FINALES: ",userModulActivities);
+            let result =  undefined;
+            setPreloader(true);
+            
+            result =  await updateActivities(userModulActivities?.survey_module_editable?.url,userModulActivities?.survey_module_editable).catch((error)=>{
+                console.log(error);
+                setPreloader(false);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Error al subir el documento'
+                })
+            })
+            if(result){
+                console.log("DATOS AL ACTUALIZAR ACTIVIDAD: ",result.data);
+                setPreloader(false);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Felicidades haz terminado el módulo'
+                }).then((r)=>{
+                    if(r.isConfirmed){
+                        navigate('/Lobby')
+                    }else{
+                        navigate('/Lobby')
+                    }
+                })
+
+            }
+        }
+
+
     return (
+        <>
+
         <div className='dataModulContainer'>
             {
                     preloader ?
@@ -276,12 +394,14 @@ export default function SelectClass() {
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
                                     <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <input  type="file" id="fichero-tarifas" accept="image/*" class="input-file" value=""></input>
+                                            <input onChange={(event)=>ReadFileData(event,'evidence')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
                                             <span className='fontSemiBold'>Subir archivo</span>
                                     </div>
                             </div>
                             :
-                            <></>}
+                            <>
+                            </>
+                            }
                             {selectActivity?.hasOwnProperty("redaction") ?   
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
@@ -418,7 +538,7 @@ export default function SelectClass() {
                                         })
                                         }
                                         {userModulActivities?.activity_module_editable?.co_create.map((obj,index)=>{
-                                            return(
+                                            return( 
                                                     <div key={index} onClick={()=>{
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
@@ -491,5 +611,87 @@ export default function SelectClass() {
                     </div>
             </div>
         </div>
+        {/* PRESENTAR EL ÉXAMEN */}
+        <Offcanvas className="" show={show2} onHide={handleClose2}>
+                <div className='offcanvas-header pb-4 padding-40-'>
+                <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Retroalimentación</h2>
+                <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
+                </div>
+                <div className='offcanvas-body '>
+                <div className='container-fluid pt-0 pb-0 padding-40-'>
+                    <div className='row'>
+                    <div className='col-12'>
+                    <form action='' className='Form'>
+                            {userModulActivities?.survey_module_editable.survey.map((obj,index)=>{
+                                return(
+
+                                    <>
+                                        {obj.hasOwnProperty('satisfaction_question') ? 
+                                        <div key={index} className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mt-3'>
+                                            <div className='col-12 d-flex flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-column flex-xxl-column justify-content-between align-items-center align-self-center mb-2'>
+                                                <p className='m-0 me-0 me-sm-3 me-md-3 me-lg-3 me-xl-3 me-xxl-3 mb-3 lh-sm text-center fs-5- fontLight- fw-normal tx-light-black-' dangerouslySetInnerHTML={{ __html: obj?.satisfaction_question?.survey.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                                <div className='d-flex flex-row justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start align-items-center align-self-center'>
+                                                    <div className='checks-radios- me-1'>
+                                                        <label>
+                                                        <input onChange={(event)=>ReadCheckBox(event,1,'satisfaction_question',index)} type="radio" name={"radio"+index}/>
+                                                        <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>1</span>
+                                                        </label>
+                                                    </div>
+                                                    <div className='checks-radios- me-1'>
+                                                        <label>
+                                                        <input onChange={(event)=>ReadCheckBox(event,2,'satisfaction_question',index)} type="radio" name={"radio"+index}/>
+                                                        <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>2</span>
+                                                        </label>
+                                                    </div>
+                                                    <div className='checks-radios- me-1'>
+                                                        <label>
+                                                        <input onChange={(event)=>ReadCheckBox(event,3,'satisfaction_question',index)} type="radio" name={"radio"+index}/>
+                                                        <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>3</span>
+                                                        </label>
+                                                    </div>
+                                                    <div className='checks-radios- me-1'>
+                                                        <label>
+                                                        <input onChange={(event)=>ReadCheckBox(event,4,'satisfaction_question',index)}   type="radio" name={"radio"+index}/>
+                                                        <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>4</span>
+                                                        </label>
+                                                    </div>
+                                                    <div className='checks-radios- me-1'>
+                                                        <label>
+                                                        <input onChange={(event)=>ReadCheckBox(event,5,'satisfaction_question',index)}   type="radio" name={"radio"+index}/>
+                                                        <span className='lh-sm fs-5- fontLight- tx-dark-purple-'>5</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        :
+                                        <div key={index} className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mt-3'>
+                                            <div className='col-12 d-flex flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-column flex-xxl-column justify-content-between align-items-center align-self-center mb-2'>
+                                                <p className='m-0 me-0 me-sm-3 me-md-3 me-lg-3 me-xl-3 me-xxl-3 mb-3 lh-sm text-center fs-5- fontLight- fw-normal tx-light-black-' dangerouslySetInnerHTML={{ __html: obj?.open_questionary_optional?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                                <div className='d-flex flex-row justify-content-start justify-content-sm-start justify-content-md-start justify-content-lg-start justify-content-xl-start justify-content-xxl-start align-items-center align-self-center'>
+                                                <textarea onChange={(event)=>ReadTextArea(event,index)}  className='form-control fontLight ' rows="4" placeholder='Ingresar'></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+                                        
+                                    </>
+                                    
+                                )
+                            })}
+                            
+                            <div  className='ContainerButton_2'>
+                                <div onClick={RegisterSurvey} className='Button_2' style={{'marginTop':'20px'}}>
+                                            <span className='text_button_2'>Registrar</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+                </div>
+        </Offcanvas>
+        </>
+        
     )
 }

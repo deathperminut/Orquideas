@@ -349,12 +349,13 @@ export default function Profile() {
     const ObtainModulInstitution=()=>{
 
       let insti =  GetIns();
+      console.log("INSTITUCIÓN: ",insti)
       let moduls_ = insti?.allowed_modules
       if(moduls_.length !== 0){
 
         let modulId =  moduls_[0];
 
-        console.log("ALLOWED dSELECCIONADA: ",moduls,)
+        console.log("ALLOWED dSELECCIONADA: ",modulId)
         return moduls.filter((obj)=> obj.id == modulId)[0];
 
       }else{
@@ -467,31 +468,31 @@ export default function Profile() {
                                 <div className='col-12'>
                                         <div className='lastModuleContainer'>
                                                   <div className='ContainerImageModul'>
-                                                    {ObtainModulInstitution()?.id == 1 ?
+                                                    {ObtainModulInstitution()?.id == 3 ?
                                                     <img src={Amarillo} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
 
-                                                    {ObtainModulInstitution()?.id == 2 ?
+                                                    {ObtainModulInstitution()?.id == 4 ?
                                                     <img src={Cafe} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
 
-                                                    {ObtainModulInstitution()?.id == 3 ?
+                                                    {ObtainModulInstitution()?.id == 1 ?
                                                     <img src={Azul} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
 
-                                                    {ObtainModulInstitution()?.id == 4 ?
+                                                    {ObtainModulInstitution()?.id == 5 ?
                                                     <img src={Rojo} className='card-img' alt="" />
                                                     :
                                                     <></>
                                                     }
 
-                                                    {ObtainModulInstitution()?.id == 5 ?
+                                                    {ObtainModulInstitution()?.id == 7 ?
                                                     <img src={Verde} className='card-img' alt="" />
                                                     :
                                                     <></>
@@ -503,7 +504,7 @@ export default function Profile() {
                                                     <></>
                                                     }
 
-                                                    {ObtainModulInstitution()?.id == 7 ?
+                                                    {ObtainModulInstitution()?.id == 2 ?
                                                     <img src={Aguamarina} className='card-img' alt="" />
                                                     :
                                                     <></>
@@ -520,7 +521,8 @@ export default function Profile() {
                                                           <p className='fontLight description_moduls'>{ObtainModulInstitution()?.description}</p>
                                                   </div>
                                         </div>
-                                        <div onClick={()=>{
+                                        {ObtainModulInstitution() !== null ? 
+                                          <div onClick={()=>{
                                           setSelectModul(ObtainModulInstitution());
                                           navigate('/Lobby/SelectModul')
                                         }} className='classroomContainer'>
@@ -531,6 +533,10 @@ export default function Profile() {
                                                   </div>
                                                   
                                         </div>
+                                        :
+                                        <></>
+                                        }
+                                        
                                 </div>
                               </div>
                             </div>

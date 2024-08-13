@@ -21,7 +21,7 @@ import { getUserModulActivities } from '../../../Services/Moduls/Moduls';
 
 export default function Home() {
 
-    let {userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul} = React.useContext(AppContext);
+    let {setUserModulActivitiesLink,userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul} = React.useContext(AppContext);
 
 
 
@@ -91,6 +91,7 @@ export default function Home() {
                         console.log("VALIDACIONES USUARIO: ",modulo_usuario,result.data,specificModul);
                         // guardamos el modulo seleccionado
                         setPreloader(true);
+                        setUserModulActivitiesLink(modulo_usuario[0].endpoint);
                         let resultV1 =  await getUserModulActivities(modulo_usuario[0].endpoint).catch((error)=>{
                           console.log(error);
                           setPreloader(false);

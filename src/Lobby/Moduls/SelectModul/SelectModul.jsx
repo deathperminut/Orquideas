@@ -18,7 +18,7 @@ export default function SelectModul() {
         const navigate=useNavigate();
 
         // React.useContext
-        let {selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
+        let {setUserModulActivitiesLink,selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
         
         const convertDate=(fechaISO)=>{
                 // Convertir la cadena a un objeto Date
