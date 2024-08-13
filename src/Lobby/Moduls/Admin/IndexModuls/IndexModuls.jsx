@@ -10,6 +10,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Flores from '../../../../assets/images/circleVioleta.png';
 import { CiCircleCheck } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { ImEnter } from "react-icons/im";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as echarts from 'echarts';
 import { CiCircleMore } from "react-icons/ci";
@@ -274,6 +275,7 @@ export default function IndexModuls(props) {
     let [preloader,setPreloader] = React.useState(false);
     let [lista_modulo,setLista_modulo] =React.useState([]);
     let [filter,setFilter] = React.useState("");
+    let [selectUser,setSelectUser] = React.useState(null);
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
     
@@ -286,6 +288,7 @@ export default function IndexModuls(props) {
 
     React.useEffect(()=>{
       setFilter("");
+      setSelectUser(null);
       setLista_modulo(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
       setSupportList(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
       
@@ -1044,7 +1047,7 @@ export default function IndexModuls(props) {
                                             <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
                                             <div className='checks-radios-'>
                                                 <label>
-                                                <input type="checkbox" name="radio"/>
+                                                <input onClick={()=>setSelectUser(obj)} type="radio" name="radio"/>
                                                 <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
                                                 </label>
                                             </div>
@@ -1279,13 +1282,18 @@ export default function IndexModuls(props) {
                     </div>
                 </div>
             </div> */}
-            <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Temario</p>
+            {selectUser == null ? 
+            <>
+              
+            </>
+            :
+            <>
+            <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>{GetUserData(selectUser)?.last_name}</p>
             <Accordion >
                 <Accordion.Item className='bs-2- classColaps' eventKey="0">
                     <Accordion.Header className='fontSemiBold'>
                             <div className='TextContainerClass'>
-                                    <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Bienvenido al inicio del módulo!</span>
-                                    <span className='fontLight dateClass' style={{'textAlign':'center'}}>Publicado el 11 de marzo de 2024</span>
+                                    <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Da click en el boton para poder observar las actividades del usuario!</span>
                             </div>
                     </Accordion.Header>
                     <Accordion.Body>
@@ -1295,19 +1303,14 @@ export default function IndexModuls(props) {
                         <table className='table table-sm table-striped table-no-border- align-middle'>
                         <thead>
                             <tr>
-                                <th scope="col" className='th-width-xs-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'></span>
-                                </div>
-                                </th>
                                 <th scope="col" className='th-width-md-'>
                                 <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Nombre completo</span>
+                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Categoria</span>
                                 </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
                                 <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Número de identificación</span>
+                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Tipo actividad</span>
                                 </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
@@ -1318,132 +1321,239 @@ export default function IndexModuls(props) {
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className='align-middle'>
-                                        <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
-                                        <div className='checks-radios-'>
-                                            <CiCircleCheck size={30}></CiCircleCheck>
-                                        </div>
-                                        </div>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Juan Sebastian Mendez Rondon</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>1005691633</p>
-                                    </td>
-                                    <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>Excelente lugar</p>
-                                    </td>
-                                </tr>
+                                {selectUser?.activity_module_editable?.foundations.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
+                                          obj?.evidence.upload == null ? 
+                                          <></>
+                                          :
+                                          <>
+
+                                          </>
+                                        }</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                {selectUser?.activity_module_editable?.engage.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Compromiso'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
+                                          obj?.evidence.upload == null ? 
+                                          <></>
+                                          :
+                                          <>
+
+                                          </>
+                                        }</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                {selectUser?.activity_module_editable?.co_create.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cooperación'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
+                                          obj?.evidence.upload == null ? 
+                                          <></>
+                                          :
+                                          <>
+
+                                          </>
+                                        }</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                {selectUser?.activity_module_editable?.reflection.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cooperación'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
+                                          obj?.evidence.upload == null ? 
+                                          <></>
+                                          :
+                                          <>
+
+                                          </>
+                                        }</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                
                             </tbody>
                         </table>
                         </div>
@@ -1453,6 +1563,9 @@ export default function IndexModuls(props) {
                 </Accordion.Item>
                 
             </Accordion>
+            </>
+            }
+            
           </div>
           <Offcanvas className="offcanvasBodyV2" show={show2} onHide={handleClose2}>
                   <div className='offcanvas-header pb-4 padding-40-'>
