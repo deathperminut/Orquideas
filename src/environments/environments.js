@@ -27,6 +27,7 @@ export const environment = {
     register:'users/register/',
     login: 'users/login/',
     getUser:'users/',
+    getSpecificUser:'users/',
     editUser:'users/',
     // news
     getNews:  'content/news/',

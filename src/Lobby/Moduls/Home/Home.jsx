@@ -16,10 +16,12 @@ import Cafe from '../../../assets/images/Cafe22.png';
 import Aguamarina from '../../../assets/images/AguaMarina2.png';
 import { AppContext } from '../../../Context';
 import Swal from 'sweetalert2';
+import { GetSpecificUser } from '../../../Services/Users/Users';
+import { getUserModulActivities } from '../../../Services/Moduls/Moduls';
 
 export default function Home() {
 
-    let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul} = React.useContext(AppContext);
+    let {userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul} = React.useContext(AppContext);
 
 
 
@@ -59,16 +61,66 @@ export default function Home() {
         });
       }, []);
 
-      const verifyModul=(idModul)=>{
+      let [preloader,setPreloader] = React.useState(false);
 
+      const verifyModul=async(idModul)=>{
+        // obtenemos el objeto del modulo especifico
+        let specificModul =  moduls.filter((obj)=> obj.id == idModul)[0]
         // MIRAMOS SI LA INSTITUCIÓN INCLUYE EL ID RESPECTIVO
         let filter_ = institution.filter((obj)=> obj.users.includes(userData?.id))
-        console.log("institución filtrada",filter_);
+        console.log("institución filtrada",filter_,userData,specificModul);
         if(filter_.length !== 0){
               if(filter_[0].allowed_modules.includes(idModul)){
-                // guardamos el modulo seleccionado
-                setSelectModul(moduls.filter((obj)=>obj.id == idModul)[0]);
-                navigate('/Lobby/SelectModul')
+                // MIRAMOS SI EL USUARIO TIENE ACCESO A LAS ACTIVIDADES
+                let result =  undefined;
+                setPreloader(true);
+                result =  await GetSpecificUser(userData?.id).catch((error)=>{
+                      console.log(error);
+                      setPreloader(false);
+                      Swal.fire({
+                        icon: 'info',
+                        title: 'Problemas para validar permisos del usuario'
+                      })
+                })
+                if(result){
+                      setPreloader(false);
+                      console.log("INFORMACIÓN USUARIO: ",result.data);
+                      let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj.module_name == specificModul.module_name);
+                      
+                      if(modulo_usuario.length !== 0){
+                        console.log("VALIDACIONES USUARIO: ",modulo_usuario,result.data,specificModul);
+                        // guardamos el modulo seleccionado
+                        setPreloader(true);
+                        let resultV1 =  await getUserModulActivities(modulo_usuario[0].endpoint).catch((error)=>{
+                          console.log(error);
+                          setPreloader(false);
+                          Swal.fire({
+                            icon: 'info',
+                            title: 'Problemas para traer información de actividades'
+                          })
+                        })
+                        if(resultV1){
+                          setPreloader(false);
+                          console.log("ACTIVIDADES MODULO: ",resultV1.data);
+                          setUserModulActivities(resultV1.data);
+                          setSelectModul(moduls.filter((obj)=>obj.id == idModul)[0]);
+                          Swal.fire({
+                            icon: 'success',
+                            title: 'Sin problemas para validar'
+                          })
+                          // ADECUAMOS LOS MODULOS
+                          navigate('/Lobby/SelectModul')
+                        }
+                        
+                      }else{
+                        Swal.fire({
+                          icon: 'info',
+                          title: 'El usuario no tiene permisos para acceder a las actividades'
+                        })
+                      }
+                      
+                }
+                
               }else{
                 Swal.fire({
                   icon: 'info',

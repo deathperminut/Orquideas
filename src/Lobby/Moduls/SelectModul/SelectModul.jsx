@@ -18,7 +18,7 @@ export default function SelectModul() {
         const navigate=useNavigate();
 
         // React.useContext
-        let {userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
+        let {userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
         
         const convertDate=(fechaISO)=>{
                 // Convertir la cadena a un objeto Date
@@ -45,31 +45,31 @@ const fecha = new Date(fechaISO);
         <div className='dataModulContainer'>
                 <div className='DataInfoModulContainer' style={{'backgroundColor':selectModul?.color}}>
                         <div className='ContainerImageModul_2' >
-                                {selectModul?.id == 1 ?
+                                {selectModul?.id == 3 ?
                                 <img src={Amarillo} className='card-img' alt="" />
                                 :
                                 <></>
                                 }
 
-                                {selectModul?.id == 2 ?
+                                {selectModul?.id == 4 ?
                                 <img src={Cafe} className='card-img' alt="" />
                                 :
                                 <></>
                                 }
 
-                                {selectModul?.id == 3 ?
+                                {selectModul?.id == 1 ?
                                 <img src={Azul} className='card-img' alt="" />
                                 :
                                 <></>
                                 }
 
-                                {selectModul?.id == 4 ?
+                                {selectModul?.id == 5 ?
                                 <img src={Rojo} className='card-img' alt="" />
                                 :
                                 <></>
                                 }
 
-                                {selectModul?.id == 5 ?
+                                {selectModul?.id == 7 ?
                                 <img src={Verde} className='card-img' alt="" />
                                 :
                                 <></>
@@ -81,7 +81,7 @@ const fecha = new Date(fechaISO);
                                 <></>
                                 }
 
-                                {selectModul?.id == 7 ?
+                                {selectModul?.id == 2 ?
                                 <img src={Aguamarina} className='card-img' alt="" />
                                 :
                                 <></>
@@ -132,7 +132,7 @@ const fecha = new Date(fechaISO);
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Temario</span>
                 <div className='ClassesContainerFluid'>
-                                {selectModul?.foundations.map((obj,index)=>{
+                                {userModulActivities?.activity_module_editable?.foundations.map((obj,index)=>{
                                         return(
                                                 <div key={index} onClick={()=>{
                                                         // Guardamos el indice de la actividad
@@ -142,10 +142,70 @@ const fecha = new Date(fechaISO);
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Video orquídeas'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Momento de discusión'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Adjunta tu respuesta'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(index)+1)+' Corta redacción'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  video orquídeas'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de discusión'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos corta redacción'}</span> : <></>}
+                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                        </div>
+                                                </div>
+                                        )
+                                })
+                                }
+                                {userModulActivities?.activity_module_editable?.engage.map((obj,index)=>{
+                                        return(
+                                                <div key={index} onClick={()=>{
+                                                        // Guardamos el indice de la actividad
+                                                        setSelectActivityIndex(index);
+                                                        // Guardamos la actividad especifica
+                                                        setSelectActivity(obj);
+                                                        navigate('/Lobby/SelectClass')
+                                                        }} className='divClass_2 bs-2-'>
+                                                        <div className='TextContainerClass'>
+                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso Video orquídeas'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  momento de discusión'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso corta redacción'}</span> : <></>}
+                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                        </div>
+                                                </div>
+                                        )
+                                })
+                                }
+                                {userModulActivities?.activity_module_editable?.co_create.map((obj,index)=>{
+                                        return(
+                                                <div key={index} onClick={()=>{
+                                                        // Guardamos el indice de la actividad
+                                                        setSelectActivityIndex(index);
+                                                        // Guardamos la actividad especifica
+                                                        setSelectActivity(obj);
+                                                        navigate('/Lobby/SelectClass')
+                                                        }} className='divClass_2 bs-2-'>
+                                                        <div className='TextContainerClass'>
+                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo video orquídeas'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo momento de discusión'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo corta redacción'}</span> : <></>}
+                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                        </div>
+                                                </div>
+                                        )
+                                })
+                                }
+                                {userModulActivities?.activity_module_editable.reflection.map((obj,index)=>{
+                                        return(
+                                                <div key={index} onClick={()=>{
+                                                        // Guardamos el indice de la actividad
+                                                        setSelectActivityIndex(index);
+                                                        // Guardamos la actividad especifica
+                                                        setSelectActivity(obj);
+                                                        navigate('/Lobby/SelectClass')
+                                                        }} className='divClass_2 bs-2-'>
+                                                        <div className='TextContainerClass'>
+                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión video orquídeas'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión momento de discusión'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión corta redacción'}</span> : <></>}
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                         </div>
                                                 </div>

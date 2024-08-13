@@ -11,5 +11,9 @@ const getModuls=async ()=>{
     return await axios.get(path);
 }
 
+const getUserModulActivities=async(path)=>{
+        return await axios.get(path);
+}
 
-export {getModuls}
+
+export {getModuls,getUserModulActivities}
