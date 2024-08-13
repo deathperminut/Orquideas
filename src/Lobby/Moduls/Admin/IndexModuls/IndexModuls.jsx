@@ -6,6 +6,7 @@ import makeAnimated from 'react-select/animated';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FaRegPlusSquare } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
+import { CiCircleMore } from "react-icons/ci";
 import Accordion from 'react-bootstrap/Accordion';
 import Flores from '../../../../assets/images/circleVioleta.png';
 import { CiCircleCheck } from "react-icons/ci";
@@ -13,7 +14,6 @@ import { MdDeleteOutline } from "react-icons/md";
 import { ImEnter } from "react-icons/im";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as echarts from 'echarts';
-import { CiCircleMore } from "react-icons/ci";
 import $ from "jquery"
 import { AppContext } from '../../../../Context';
 import Swal from 'sweetalert2';
@@ -1047,8 +1047,8 @@ export default function IndexModuls(props) {
                                             <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
                                             <div className='checks-radios-'>
                                                 <label>
-                                                <input onClick={()=>setSelectUser(obj)} type="radio" name="radio"/>
-                                                <span className='lh-sm fs-5- fontSemiBold tx-dark-purple-'></span>
+                                                <CiCircleMore size={30} onClick={()=>setSelectUser(obj)} type="radio" name="radio"/>
+                                                
                                                 </label>
                                             </div>
                                             </div>
