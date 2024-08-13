@@ -273,6 +273,7 @@ export default function IndexModuls(props) {
     const [show2, setShow2] = React.useState(false);
     let [preloader,setPreloader] = React.useState(false);
     let [lista_modulo,setLista_modulo] =React.useState([]);
+    let [filter,setFilter] = React.useState("");
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
     
@@ -284,7 +285,7 @@ export default function IndexModuls(props) {
     let [supportList,setSupportList] = React.useState([]);
 
     React.useEffect(()=>{
-
+      setFilter("");
       setLista_modulo(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
       setSupportList(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
       
@@ -295,8 +296,10 @@ export default function IndexModuls(props) {
     let ReadInput = (event) =>{
       
       if(event.target.value == ""){
+        setFilter("");
         setSupportList(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
       }else{
+        setFilter(event.target.value);
         let lista_original = usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name)
         setSupportList(lista_original.filter((obj)=> GetUserData(obj).first_name.toLowerCase().includes(event.target.value.toLowerCase()) || GetUserData(obj).last_name.toLowerCase().includes(event.target.value.toLowerCase()) ));
       }
@@ -988,7 +991,7 @@ export default function IndexModuls(props) {
                             <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                             <div className='col-12'>
                                 <div className='form-floating inner-addon- right-addon-'>
-                                <input onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
+                                <input value={filter} onChange={ReadInput} type="text" className='form-control' id='password' placeholder="" />
                                 </div>
                             </div>
                             </div>
