@@ -268,10 +268,11 @@ const options = [
 export default function IndexModuls(props) {
     
     // REACT USE CONTEXT
-    let {userData,selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
+    let {usersHistorial,setUsersHistorial,userData,selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
 
     const [show2, setShow2] = React.useState(false);
     let [preloader,setPreloader] = React.useState(false);
+    let [lista_modulo,setLista_modulo] =React.useState([]);
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
     
@@ -280,14 +281,24 @@ export default function IndexModuls(props) {
       return filter_[0]
     }
 
-    let [supportList,setSupportList] = React.useState([...props.users]);
+    let [supportList,setSupportList] = React.useState([]);
+
+    React.useEffect(()=>{
+
+      setLista_modulo(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
+      setSupportList(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
+      
+    },[usersHistorial,selectModulAdmin])
+
+    
 
     let ReadInput = (event) =>{
       
       if(event.target.value == ""){
-        setSupportList(props.users)
+        setSupportList(usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name))
       }else{
-        setSupportList(props.users.filter((obj)=> obj.first_name.toLowerCase().includes(event.target.value.toLowerCase()) || obj.last_name.toLowerCase().includes(event.target.value.toLowerCase()) ));
+        let lista_original = usersHistorial.filter((obj,index)=>obj?.module_name == selectModulAdmin?.module_name)
+        setSupportList(lista_original.filter((obj)=> GetUserData(obj).first_name.toLowerCase().includes(event.target.value.toLowerCase()) || GetUserData(obj).last_name.toLowerCase().includes(event.target.value.toLowerCase()) ));
       }
       
       
@@ -304,529 +315,529 @@ export default function IndexModuls(props) {
     };
 
 
-    React.useEffect(()=>{
-    /**
-     * GRAFICA MEDICAL HISTORY 1 (PIE CHART)
-     */
+    // React.useEffect(()=>{
+    // /**
+    //  * GRAFICA MEDICAL HISTORY 1 (PIE CHART)
+    //  */
 
-    let chartMedicalHistoryOne = echarts.init(document.getElementById('chart-medical-history-one-'));
-    let optionMedicalHistoryOne;
+    // let chartMedicalHistoryOne = echarts.init(document.getElementById('chart-medical-history-one-'));
+    // let optionMedicalHistoryOne;
 
-    optionMedicalHistoryOne = {
-      tooltip: {
-        trigger: 'item',
-        showDelay: 0,
-        transitionDuration: 0.2,
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        borderWidth: 1,
-        borderColor: '#FAFAFA',
-        padding: 5,
-        textStyle: {
-          color: '#414D55',
-          fontSize: 12,
-          lineHeight:10,
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular'
-        },
-        extraCssText: 'box-shadow: 0px 1px 8px #142E6E1A'
-      },
-      legend: {
-        type: 'scroll',
-        orient: 'horizontal',
-        left: 'center',
-        top: 10,
-        bottom: 20,
-        itemGap : 25,
-        width: '90%',
-        inactiveColor: '#728998',
-        textStyle: {
-          color: '#414D55',
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular, Verdana',
-        },
-        pageIconSize: 12,
-        pageIconColor: '#6149CD',
-        pageIconInactiveColor: '#414D55',
-        pageTextStyle: {
-          color: '#414D55',
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular, Verdana',
-        },
-        formatter : function(params, value){
-          var newParamsName = "";
-          var paramsNameNumber = params.length;
-          var provideNumber = 50;
-          var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-          if (paramsNameNumber > provideNumber) {
-              for (var p = 0; p < rowNumber; p++) {
-                var tempStr = "";
-                if (p === rowNumber - 1) {
-                    tempStr = (params.length > 6 ? (params.slice(0,50)+"...") : '' );
-                } else {}
-                newParamsName += tempStr;
-              }
-          } else {
-              newParamsName = params;
-          }
-          return newParamsName
-        },
-      },
-      toolbox: {
-        show: true,
-        orient: 'horizontal',
-        showTitle: false,
-        feature: {
-          restore: {show: false},
-          saveAsImage: {
-            type: 'png',
-            name: 'Género',
-            backgroundColor: '#FAFAFA',
-            show: true,
-            iconStyle: {
-              borderColor: '#414D55'
-            },
-            emphasis: {
-              iconStyle: {
-                borderColor: '#414D55'
-              },
-            }
-          }
-        },
-        iconStyle: {
-          borderColor: '#414D55'
-        },
-        emphasis: {
-          iconStyle: {
-            borderColor: '#414D55'
-          },
-        },
-        bottom: 0,
-        pixelRatio: 2,
-      },
-      series: [
-        {
-          type: 'pie',
-          radius: ['30%', '70%'],
-          center: ['50%', '50%'],
-          roseType: 'area',
-          hoverOffset: 12,
-          top: 15,
-          label: {
-            show: false,
-            position: 'center',
-            normal: {
-              show: true,
-              color: '#414D55',
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            }
-          },
-          emphasis: {
-            label: {
-              show: true,
-              color: '#414D55',
-              fontSize: 14,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular',
-              formatter: "({d}%)",
-            },
-            show: true,
-            color: '#414D55',
-            fontSize: 12,
-            fontWeight: 'normal',
-            fontFamily: 'Monserat-regular'
-          },
-          lableLine: {
-            normal: {
-              show: false,
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            },
-            emphasis: {
-              show: true,
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            }
-          },
-          itemStyle: {
-            borderRadius: 8,
-            normal: {
-              opacity: 1,
-              shadowOffsetX: 0,
-              shadowOffsetY: 0
-            }
-          },
-          data: [
-            {value: 40, name: 'Completado', itemStyle: { color: '#30E7C9' }},
-            {value: 38, name: 'Pendiente', itemStyle: { color: '#6149CD' }},
-          ],
-          animationDelay: function (idx) {
-            return idx * 15;
-          }
-        }
-      ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: function (idx) {
-        return idx * 5;
-      }
-    };
+    // optionMedicalHistoryOne = {
+    //   tooltip: {
+    //     trigger: 'item',
+    //     showDelay: 0,
+    //     transitionDuration: 0.2,
+    //     backgroundColor: 'rgba(255, 255, 255, 1)',
+    //     borderWidth: 1,
+    //     borderColor: '#FAFAFA',
+    //     padding: 5,
+    //     textStyle: {
+    //       color: '#414D55',
+    //       fontSize: 12,
+    //       lineHeight:10,
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular'
+    //     },
+    //     extraCssText: 'box-shadow: 0px 1px 8px #142E6E1A'
+    //   },
+    //   legend: {
+    //     type: 'scroll',
+    //     orient: 'horizontal',
+    //     left: 'center',
+    //     top: 10,
+    //     bottom: 20,
+    //     itemGap : 25,
+    //     width: '90%',
+    //     inactiveColor: '#728998',
+    //     textStyle: {
+    //       color: '#414D55',
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular, Verdana',
+    //     },
+    //     pageIconSize: 12,
+    //     pageIconColor: '#6149CD',
+    //     pageIconInactiveColor: '#414D55',
+    //     pageTextStyle: {
+    //       color: '#414D55',
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular, Verdana',
+    //     },
+    //     formatter : function(params, value){
+    //       var newParamsName = "";
+    //       var paramsNameNumber = params.length;
+    //       var provideNumber = 50;
+    //       var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+    //       if (paramsNameNumber > provideNumber) {
+    //           for (var p = 0; p < rowNumber; p++) {
+    //             var tempStr = "";
+    //             if (p === rowNumber - 1) {
+    //                 tempStr = (params.length > 6 ? (params.slice(0,50)+"...") : '' );
+    //             } else {}
+    //             newParamsName += tempStr;
+    //           }
+    //       } else {
+    //           newParamsName = params;
+    //       }
+    //       return newParamsName
+    //     },
+    //   },
+    //   toolbox: {
+    //     show: true,
+    //     orient: 'horizontal',
+    //     showTitle: false,
+    //     feature: {
+    //       restore: {show: false},
+    //       saveAsImage: {
+    //         type: 'png',
+    //         name: 'Género',
+    //         backgroundColor: '#FAFAFA',
+    //         show: true,
+    //         iconStyle: {
+    //           borderColor: '#414D55'
+    //         },
+    //         emphasis: {
+    //           iconStyle: {
+    //             borderColor: '#414D55'
+    //           },
+    //         }
+    //       }
+    //     },
+    //     iconStyle: {
+    //       borderColor: '#414D55'
+    //     },
+    //     emphasis: {
+    //       iconStyle: {
+    //         borderColor: '#414D55'
+    //       },
+    //     },
+    //     bottom: 0,
+    //     pixelRatio: 2,
+    //   },
+    //   series: [
+    //     {
+    //       type: 'pie',
+    //       radius: ['30%', '70%'],
+    //       center: ['50%', '50%'],
+    //       roseType: 'area',
+    //       hoverOffset: 12,
+    //       top: 15,
+    //       label: {
+    //         show: false,
+    //         position: 'center',
+    //         normal: {
+    //           show: true,
+    //           color: '#414D55',
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         }
+    //       },
+    //       emphasis: {
+    //         label: {
+    //           show: true,
+    //           color: '#414D55',
+    //           fontSize: 14,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular',
+    //           formatter: "({d}%)",
+    //         },
+    //         show: true,
+    //         color: '#414D55',
+    //         fontSize: 12,
+    //         fontWeight: 'normal',
+    //         fontFamily: 'Monserat-regular'
+    //       },
+    //       lableLine: {
+    //         normal: {
+    //           show: false,
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         },
+    //         emphasis: {
+    //           show: true,
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         }
+    //       },
+    //       itemStyle: {
+    //         borderRadius: 8,
+    //         normal: {
+    //           opacity: 1,
+    //           shadowOffsetX: 0,
+    //           shadowOffsetY: 0
+    //         }
+    //       },
+    //       data: [
+    //         {value: 40, name: 'Completado', itemStyle: { color: '#30E7C9' }},
+    //         {value: 38, name: 'Pendiente', itemStyle: { color: '#6149CD' }},
+    //       ],
+    //       animationDelay: function (idx) {
+    //         return idx * 15;
+    //       }
+    //     }
+    //   ],
+    //   animationEasing: 'elasticOut',
+    //   animationDelayUpdate: function (idx) {
+    //     return idx * 5;
+    //   }
+    // };
 
-    optionMedicalHistoryOne && chartMedicalHistoryOne.setOption(optionMedicalHistoryOne);
+    // optionMedicalHistoryOne && chartMedicalHistoryOne.setOption(optionMedicalHistoryOne);
 
-    $(window).on('resize', function(){
-      if(chartMedicalHistoryOne != null && chartMedicalHistoryOne !== undefined){
-        chartMedicalHistoryOne.resize();
-      }
-    });
+    // $(window).on('resize', function(){
+    //   if(chartMedicalHistoryOne != null && chartMedicalHistoryOne !== undefined){
+    //     chartMedicalHistoryOne.resize();
+    //   }
+    // });
 
 
-    /**
-     * GRAFICA MEDICAL HISTORY 2 (BAR CHART)
-     */
+    // /**
+    //  * GRAFICA MEDICAL HISTORY 2 (BAR CHART)
+    //  */
 
-    let chartMedicalHistoryThree = echarts.init(document.getElementById('chart-medical-history-two-'));
-    let optionMedicalHistoryThree;
+    // let chartMedicalHistoryThree = echarts.init(document.getElementById('chart-medical-history-two-'));
+    // let optionMedicalHistoryThree;
 
-    const dataMedicalHistoryThree = [
-      { valueOne: 'Empresa 1', valueTwo: 120, valueThree: 30},
-      { valueOne: 'Empresa 2', valueTwo: 90, valueThree: 20,},
-      { valueOne: 'Empresa 3', valueTwo: 60, valueThree: 8 ,},
-      { valueOne: 'Empresa 4', valueTwo: 80, valueThree: 15,},
-      { valueOne: 'Empresa 5', valueTwo: 100, valueThree: 25,},
-      { valueOne: 'Empresa 6', valueTwo: 110, valueThree: 22,},
-      { valueOne: 'Empresa 7', valueTwo: 70, valueThree: 13,},
-      { valueOne: 'Empresa 8', valueTwo: 50, valueThree: 10,},
-      { valueOne: 'Empresa 9', valueTwo: 68, valueThree: 12,},
-      { valueOne: 'Empresa 10', valueTwo: 26, valueThree: 5 ,},
-      { valueOne: 'Empresa 11', valueTwo: 45, valueThree: 18,},
-      { valueOne: 'Empresa 12', valueTwo: 34, valueThree: 11,}
-    ];
+    // const dataMedicalHistoryThree = [
+    //   { valueOne: 'Empresa 1', valueTwo: 120, valueThree: 30},
+    //   { valueOne: 'Empresa 2', valueTwo: 90, valueThree: 20,},
+    //   { valueOne: 'Empresa 3', valueTwo: 60, valueThree: 8 ,},
+    //   { valueOne: 'Empresa 4', valueTwo: 80, valueThree: 15,},
+    //   { valueOne: 'Empresa 5', valueTwo: 100, valueThree: 25,},
+    //   { valueOne: 'Empresa 6', valueTwo: 110, valueThree: 22,},
+    //   { valueOne: 'Empresa 7', valueTwo: 70, valueThree: 13,},
+    //   { valueOne: 'Empresa 8', valueTwo: 50, valueThree: 10,},
+    //   { valueOne: 'Empresa 9', valueTwo: 68, valueThree: 12,},
+    //   { valueOne: 'Empresa 10', valueTwo: 26, valueThree: 5 ,},
+    //   { valueOne: 'Empresa 11', valueTwo: 45, valueThree: 18,},
+    //   { valueOne: 'Empresa 12', valueTwo: 34, valueThree: 11,}
+    // ];
 
-    optionMedicalHistoryThree = {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: '#FAFAFA',
-            color: '#040E29',
-            fontWeight: 'normal',
-            fontFamily: 'Monserat-regular'
-          }
-        },
-        showDelay: 0,
-        transitionDuration: 0.2,
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        borderWidth: 1,
-        borderColor: '#FAFAFA',
-        padding: 5,
-        textStyle: {
-          color: '#414D55',
-          fontSize: 12,
-          lineHeight:10,
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular'
-        },
-        extraCssText: 'box-shadow: 0px 1px 8px #142E6E1A'
-      },
-      legend: {
-        type: 'scroll',
-        orient: 'horizontal',
-        left: 'center',
-        top: 10,
-        bottom: 20,
-        itemGap : 25,
-        width: '90%',
-        inactiveColor: '#728998',
-        textStyle: {
-          color: '#414D55',
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular, Verdana',
-        },
-        pageIconSize: 12,
-        pageIconColor: '#6149CD',
-        pageIconInactiveColor: '#414D55',
-        pageTextStyle: {
-          color: '#414D55',
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular, Verdana',
-        },
-        formatter : function(params, value){
-          var newParamsName = "";
-          var paramsNameNumber = params.length;
-          var provideNumber = 50;
-          var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-          if (paramsNameNumber > provideNumber) {
-              for (var p = 0; p < rowNumber; p++) {
-                var tempStr = "";
-                if (p === rowNumber - 1) {
-                    tempStr = (params.length > 6 ? (params.slice(0,50)+"...") : '' );
-                } else {}
-                newParamsName += tempStr;
-              }
-          } else {
-              newParamsName = params;
-          }
-          return newParamsName
-        },
-        data: ['Completado', 'Pendiente']
-      },
-      toolbox: {
-        show: true,
-        orient: 'horizontal',
-        showTitle: false,
-        feature: {
-          dataZoom: {
-            show: true,
-            iconStyle: {
-              borderColor: '#414D55'
-            },
-            emphasis: {
-              iconStyle: {
-                borderColor: '#414D55'
-              },
-            }
-          },
-          restore: {
-            show: true,
-            iconStyle: {
-              borderColor: '#414D55'
-            },
-            emphasis: {
-              iconStyle: {
-                borderColor: '#414D55'
-              },
-            }
-          },
-          saveAsImage: {
-            type: 'png',
-            name: 'Consulta externa de medicina general',
-            backgroundColor: '#FAFAFA',
-            show: true,
-            iconStyle: {
-              borderColor: '#414D55'
-            },
-            emphasis: {
-              iconStyle: {
-                borderColor: '#414D55'
-              },
-            }
-          }
-        },
-        iconStyle: {
-          borderColor: '#414D55'
-        },
-        emphasis: {
-          iconStyle: {
-            borderColor: '#414D55'
-          },
-        },
-        bottom: 0,
-        pixelRatio: 2,
-      },
-      grid: [
-        {
-          containLabel: true,
-          borderColor: '#728998'
-        }
-      ],
-      xAxis: {
-        type: 'category',
-        name: '',
-        nameLocation: 'middle',
-        nameGap: 40,
-        nameTextStyle: {
-          color: '#728998',
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular'
-        },
-        axisLabel: {
-          color: '#728998',
-          fontWeight: 'normal',
-          fontFamily: 'Monserat-regular'
-        },
-        axisLine: {
-          lineStyle: {
-            color: '#728998',
-            width: 1,
-          }
-        },
-        boundaryGap: true,
-        data: dataMedicalHistoryThree.map(item => item.valueOne)
-      },
-      yAxis: [
-        {
-          type: 'value',
-          name: '',
-          nameLocation: 'middle',
-          nameGap: 50,
-          nameTextStyle: {
-            color: '#728998',
-            fontWeight: 'normal',
-            fontFamily: 'Monserat-regular'
-          },
-          axisLabel: {
-            formatter : function(params, value){
-              var newParamsName = "";
-              var paramsNameNumber = params.length;
-              var provideNumber = 12;
-              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-              if (paramsNameNumber > provideNumber) {
-                  for (var p = 0; p < rowNumber; p++) {
-                    var tempStr = "";
-                    if (p === rowNumber - 1) {
-                        tempStr = (params.length > 6 ? (params.slice(0,12)+"...") : '' );
-                    } else {}
-                    newParamsName += tempStr;
-                  }
-              } else {
-                newParamsName = params;
-              }
-              return newParamsName
-            },
-            color: '#728998',
-            fontWeight: 'normal',
-            fontFamily: 'Monserat-regular'
-          },
-          boundaryGap: [0, '0%'],
-          axisLine: {
-            onZero: false,
-            lineStyle: {
-              color: '#728998',
-              width: 1,
-            }
-          },
-        },
-        {
-          type: 'value',
-          nameLocation: 'middle',
-          nameGap: 25,
-          nameTextStyle: {
-            color: '#728998',
-            fontWeight: 'normal',
-            fontFamily: 'Monserat-regular'
-          },
-          axisLabel: {
-            formatter : function(params, value){
-              var newParamsName = "";
-              var paramsNameNumber = params.length;
-              var provideNumber = 12;
-              var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-              if (paramsNameNumber > provideNumber) {
-                  for (var p = 0; p < rowNumber; p++) {
-                    var tempStr = "";
-                    if (p === rowNumber - 1) {
-                        tempStr = (params.length > 6 ? (params.slice(0,12)+"...") : '' );
-                    } else {}
-                    newParamsName += tempStr;
-                  }
-              } else {
-                newParamsName = params;
-              }
-              return newParamsName
-            },
-            color: '#728998',
-            fontWeight: 'normal',
-            fontFamily: 'Monserat-regular'
-          },
-          boundaryGap: [0, '0%'],
-          axisLine: {
-            onZero: false,
-            lineStyle: {
-              color: '#728998',
-              width: 1,
-            }
-          },
-        },
-      ],
-      series: [
-        {
-          type: 'bar',
-          name: 'Completado',
-          label: {
-            normal: {
-              show: true,
-              position: 'top',
-              color: '#414D55',
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            },
-            emphasis: {
-              show: true,
-              position: 'top',
-              color: '#6149CD',
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            },
-          },
-          itemStyle: {
-            color: "#FFD60C",
-            shadowBlur: 0,
-            shadowOffsetY: 0,
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: dataMedicalHistoryThree.map(item => item.valueTwo),
-          animationDelay: function (idx) {
-            return idx * 15;
-          }
-        },
-        {
-          type: 'bar',
-          name: 'Pendiente',
-          label: {
-            normal: {
-              show: true,
-              position: 'top',
-              color: '#414D55',
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            },
-            emphasis: {
-              show: true,
-              position: 'top',
-              color: '#414D55',
-              fontSize: 12,
-              fontWeight: 'normal',
-              fontFamily: 'Monserat-regular'
-            },
-          },
-          itemStyle: {
-            color: "#6149CD",
-            shadowBlur: 0,
-            shadowOffsetY: 0,
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: dataMedicalHistoryThree.map(item => item.valueThree),
-          animationDelay: function (idx) {
-            return idx * 15;
-          }
-        }
-      ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: function (idx) {
-        return idx * 5;
-      }
-    };
+    // optionMedicalHistoryThree = {
+    //   tooltip: {
+    //     trigger: 'axis',
+    //     axisPointer: {
+    //       type: 'cross',
+    //       label: {
+    //         backgroundColor: '#FAFAFA',
+    //         color: '#040E29',
+    //         fontWeight: 'normal',
+    //         fontFamily: 'Monserat-regular'
+    //       }
+    //     },
+    //     showDelay: 0,
+    //     transitionDuration: 0.2,
+    //     backgroundColor: 'rgba(255, 255, 255, 1)',
+    //     borderWidth: 1,
+    //     borderColor: '#FAFAFA',
+    //     padding: 5,
+    //     textStyle: {
+    //       color: '#414D55',
+    //       fontSize: 12,
+    //       lineHeight:10,
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular'
+    //     },
+    //     extraCssText: 'box-shadow: 0px 1px 8px #142E6E1A'
+    //   },
+    //   legend: {
+    //     type: 'scroll',
+    //     orient: 'horizontal',
+    //     left: 'center',
+    //     top: 10,
+    //     bottom: 20,
+    //     itemGap : 25,
+    //     width: '90%',
+    //     inactiveColor: '#728998',
+    //     textStyle: {
+    //       color: '#414D55',
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular, Verdana',
+    //     },
+    //     pageIconSize: 12,
+    //     pageIconColor: '#6149CD',
+    //     pageIconInactiveColor: '#414D55',
+    //     pageTextStyle: {
+    //       color: '#414D55',
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular, Verdana',
+    //     },
+    //     formatter : function(params, value){
+    //       var newParamsName = "";
+    //       var paramsNameNumber = params.length;
+    //       var provideNumber = 50;
+    //       var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+    //       if (paramsNameNumber > provideNumber) {
+    //           for (var p = 0; p < rowNumber; p++) {
+    //             var tempStr = "";
+    //             if (p === rowNumber - 1) {
+    //                 tempStr = (params.length > 6 ? (params.slice(0,50)+"...") : '' );
+    //             } else {}
+    //             newParamsName += tempStr;
+    //           }
+    //       } else {
+    //           newParamsName = params;
+    //       }
+    //       return newParamsName
+    //     },
+    //     data: ['Completado', 'Pendiente']
+    //   },
+    //   toolbox: {
+    //     show: true,
+    //     orient: 'horizontal',
+    //     showTitle: false,
+    //     feature: {
+    //       dataZoom: {
+    //         show: true,
+    //         iconStyle: {
+    //           borderColor: '#414D55'
+    //         },
+    //         emphasis: {
+    //           iconStyle: {
+    //             borderColor: '#414D55'
+    //           },
+    //         }
+    //       },
+    //       restore: {
+    //         show: true,
+    //         iconStyle: {
+    //           borderColor: '#414D55'
+    //         },
+    //         emphasis: {
+    //           iconStyle: {
+    //             borderColor: '#414D55'
+    //           },
+    //         }
+    //       },
+    //       saveAsImage: {
+    //         type: 'png',
+    //         name: 'Consulta externa de medicina general',
+    //         backgroundColor: '#FAFAFA',
+    //         show: true,
+    //         iconStyle: {
+    //           borderColor: '#414D55'
+    //         },
+    //         emphasis: {
+    //           iconStyle: {
+    //             borderColor: '#414D55'
+    //           },
+    //         }
+    //       }
+    //     },
+    //     iconStyle: {
+    //       borderColor: '#414D55'
+    //     },
+    //     emphasis: {
+    //       iconStyle: {
+    //         borderColor: '#414D55'
+    //       },
+    //     },
+    //     bottom: 0,
+    //     pixelRatio: 2,
+    //   },
+    //   grid: [
+    //     {
+    //       containLabel: true,
+    //       borderColor: '#728998'
+    //     }
+    //   ],
+    //   xAxis: {
+    //     type: 'category',
+    //     name: '',
+    //     nameLocation: 'middle',
+    //     nameGap: 40,
+    //     nameTextStyle: {
+    //       color: '#728998',
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular'
+    //     },
+    //     axisLabel: {
+    //       color: '#728998',
+    //       fontWeight: 'normal',
+    //       fontFamily: 'Monserat-regular'
+    //     },
+    //     axisLine: {
+    //       lineStyle: {
+    //         color: '#728998',
+    //         width: 1,
+    //       }
+    //     },
+    //     boundaryGap: true,
+    //     data: dataMedicalHistoryThree.map(item => item.valueOne)
+    //   },
+    //   yAxis: [
+    //     {
+    //       type: 'value',
+    //       name: '',
+    //       nameLocation: 'middle',
+    //       nameGap: 50,
+    //       nameTextStyle: {
+    //         color: '#728998',
+    //         fontWeight: 'normal',
+    //         fontFamily: 'Monserat-regular'
+    //       },
+    //       axisLabel: {
+    //         formatter : function(params, value){
+    //           var newParamsName = "";
+    //           var paramsNameNumber = params.length;
+    //           var provideNumber = 12;
+    //           var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+    //           if (paramsNameNumber > provideNumber) {
+    //               for (var p = 0; p < rowNumber; p++) {
+    //                 var tempStr = "";
+    //                 if (p === rowNumber - 1) {
+    //                     tempStr = (params.length > 6 ? (params.slice(0,12)+"...") : '' );
+    //                 } else {}
+    //                 newParamsName += tempStr;
+    //               }
+    //           } else {
+    //             newParamsName = params;
+    //           }
+    //           return newParamsName
+    //         },
+    //         color: '#728998',
+    //         fontWeight: 'normal',
+    //         fontFamily: 'Monserat-regular'
+    //       },
+    //       boundaryGap: [0, '0%'],
+    //       axisLine: {
+    //         onZero: false,
+    //         lineStyle: {
+    //           color: '#728998',
+    //           width: 1,
+    //         }
+    //       },
+    //     },
+    //     {
+    //       type: 'value',
+    //       nameLocation: 'middle',
+    //       nameGap: 25,
+    //       nameTextStyle: {
+    //         color: '#728998',
+    //         fontWeight: 'normal',
+    //         fontFamily: 'Monserat-regular'
+    //       },
+    //       axisLabel: {
+    //         formatter : function(params, value){
+    //           var newParamsName = "";
+    //           var paramsNameNumber = params.length;
+    //           var provideNumber = 12;
+    //           var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+    //           if (paramsNameNumber > provideNumber) {
+    //               for (var p = 0; p < rowNumber; p++) {
+    //                 var tempStr = "";
+    //                 if (p === rowNumber - 1) {
+    //                     tempStr = (params.length > 6 ? (params.slice(0,12)+"...") : '' );
+    //                 } else {}
+    //                 newParamsName += tempStr;
+    //               }
+    //           } else {
+    //             newParamsName = params;
+    //           }
+    //           return newParamsName
+    //         },
+    //         color: '#728998',
+    //         fontWeight: 'normal',
+    //         fontFamily: 'Monserat-regular'
+    //       },
+    //       boundaryGap: [0, '0%'],
+    //       axisLine: {
+    //         onZero: false,
+    //         lineStyle: {
+    //           color: '#728998',
+    //           width: 1,
+    //         }
+    //       },
+    //     },
+    //   ],
+    //   series: [
+    //     {
+    //       type: 'bar',
+    //       name: 'Completado',
+    //       label: {
+    //         normal: {
+    //           show: true,
+    //           position: 'top',
+    //           color: '#414D55',
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         },
+    //         emphasis: {
+    //           show: true,
+    //           position: 'top',
+    //           color: '#6149CD',
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         },
+    //       },
+    //       itemStyle: {
+    //         color: "#FFD60C",
+    //         shadowBlur: 0,
+    //         shadowOffsetY: 0,
+    //       },
+    //       emphasis: {
+    //         focus: 'series'
+    //       },
+    //       data: dataMedicalHistoryThree.map(item => item.valueTwo),
+    //       animationDelay: function (idx) {
+    //         return idx * 15;
+    //       }
+    //     },
+    //     {
+    //       type: 'bar',
+    //       name: 'Pendiente',
+    //       label: {
+    //         normal: {
+    //           show: true,
+    //           position: 'top',
+    //           color: '#414D55',
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         },
+    //         emphasis: {
+    //           show: true,
+    //           position: 'top',
+    //           color: '#414D55',
+    //           fontSize: 12,
+    //           fontWeight: 'normal',
+    //           fontFamily: 'Monserat-regular'
+    //         },
+    //       },
+    //       itemStyle: {
+    //         color: "#6149CD",
+    //         shadowBlur: 0,
+    //         shadowOffsetY: 0,
+    //       },
+    //       emphasis: {
+    //         focus: 'series'
+    //       },
+    //       data: dataMedicalHistoryThree.map(item => item.valueThree),
+    //       animationDelay: function (idx) {
+    //         return idx * 15;
+    //       }
+    //     }
+    //   ],
+    //   animationEasing: 'elasticOut',
+    //   animationDelayUpdate: function (idx) {
+    //     return idx * 5;
+    //   }
+    // };
 
-    optionMedicalHistoryThree && chartMedicalHistoryThree.setOption(optionMedicalHistoryThree);
+    // optionMedicalHistoryThree && chartMedicalHistoryThree.setOption(optionMedicalHistoryThree);
 
-    $(window).on('resize', function(){
-      if(chartMedicalHistoryThree != null && chartMedicalHistoryThree !== undefined){
-        chartMedicalHistoryThree.resize();
-      }
-    });
+    // $(window).on('resize', function(){
+    //   if(chartMedicalHistoryThree != null && chartMedicalHistoryThree !== undefined){
+    //     chartMedicalHistoryThree.resize();
+    //   }
+    // });
 
-    },[])
+    // },[])
 
     let [selectInsti,setSelectInsti] = React.useState(null);
 
@@ -934,6 +945,14 @@ export default function IndexModuls(props) {
       
 
     }
+    
+    let GetUserData=(obj)=>{
+      // obtenemos el email del usuario y lo buscamos en la lista global de usuarios
+      let email_user = obj?.user;
+      // CON EL CORREO BUSCAMOS EN LA LISTA GLOBAL
+      let user = props.users.filter((obj2)=> obj2.email == email_user)[0];
+      return user
+    }
 
     return (
         <>
@@ -999,14 +1018,19 @@ export default function IndexModuls(props) {
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
                                   <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Email</span>
                                   </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
                                   <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Porcentaje (%)</span>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
                                   </div>
                                 </th>
+                                {/* <th scope="col" className='th-width-sm-'>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Porcentaje (%)</span>
+                                  </div>
+                                </th> */}
                             </tr>
                             </thead>
                             <tbody>
@@ -1024,16 +1048,16 @@ export default function IndexModuls(props) {
                                             </div>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.last_name}</p>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetUserData(obj)?.last_name}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.first_name}</p>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetUserData(obj)?.first_name}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetInsti(obj?.id)?.name}</p>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.user}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{}</p>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetInsti(GetUserData(obj)?.id)?.name}</p>
                                         </td>
                                     </tr>
                                   )
@@ -1044,7 +1068,7 @@ export default function IndexModuls(props) {
                         </div>
                 </div> 
             </div>
-            <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Estadísticas</p>
+            {/* <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Estadísticas</p>
             <div className='row row-cols-auto g-4'>
                 <div className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6'>
                     <div id='card-indicator-large-' className='card border-0 rounded-3 w-100 bs-2- position-relative overflow-hidden'>
@@ -1251,7 +1275,7 @@ export default function IndexModuls(props) {
                     {showOverlay === 'card2' && <div className="overlay-backdrop" onClick={() => toggleOverlay(null)} />}
                     </div>
                 </div>
-            </div>
+            </div> */}
             <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Temario</p>
             <Accordion >
                 <Accordion.Item className='bs-2- classColaps' eventKey="0">

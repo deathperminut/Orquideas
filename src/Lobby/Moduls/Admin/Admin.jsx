@@ -36,6 +36,7 @@ import { AppContext } from '../../../Context';
 import Swal from 'sweetalert2';
 import Preloader from '../../../Components/Shared/Preloader/Preloader';
 import { GetUser } from '../../../Services/Users/Users';
+import { loadActivitiesUsers } from '../../../Services/Moduls/Moduls';
 
 export default function Admin() {
 
@@ -140,14 +141,35 @@ export default function Admin() {
       let [state,setState] = React.useState(1);
 
       // USE STATE
-      let {userData,selectModulInstiAdmin,setSelectModulInstiAdmin,institution,moduls,selectModulAdmin,setSelectModulAdmin} = React.useContext(AppContext);
+      let {usersHistorial,setUsersHistorial,userData,selectModulInstiAdmin,setSelectModulInstiAdmin,institution,moduls,selectModulAdmin,setSelectModulAdmin} = React.useContext(AppContext);
 
       let [users,setUsers] = React.useState([]);
       let [preloader,setPreloader] = React.useState(false);
 
       React.useEffect(()=>{
         loadUsers();
+        loadActivitiesModuls();
       },[])
+
+      const loadActivitiesModuls=async()=>{
+
+        let result =  undefined;
+        setPreloader(true);
+        result  = await loadActivitiesUsers().catch((error)=>{
+          console.log(error);
+          setPreloader(false);
+          Swal.fire({
+            icon: 'info',
+            title: 'Problemas al cargar información de usuarios'
+          })
+        })
+        if(result){
+          console.log("ACTIVIDADES: ",result.data);
+          setPreloader(false);
+          setUsersHistorial(result.data);
+        }
+
+      }
 
       const loadUsers=async()=>{
           

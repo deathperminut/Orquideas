@@ -41,6 +41,7 @@ export const environment = {
     // MODULS
 
     getModuls:'modules/modules/',
+    getUsersResponse:'modules/user-modules/',
 
     // COMMENTS
     getComments:'community/comments/',

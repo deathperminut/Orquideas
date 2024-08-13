@@ -18,6 +18,7 @@ function ProviderContext(props){
     let [selectModulInstiAdmin,setSelectModulInstiAdmin] = React.useState(null);
     let [userModulActivities,setUserModulActivities] = React.useState(null);
     let [userModulActivitiesLink,setUserModulActivitiesLink] = React.useState(null);
+    let [usersHistorial,setUsersHistorial] = React.useState([]);
     /* FUNCTIONS */
 
     const cleanContext=()=>{
@@ -33,12 +34,13 @@ function ProviderContext(props){
         setUserModulActivities(null);
         setSelectActivityType(null);
         setUserModulActivitiesLink(null);
+        setUsersHistorial([]);
     }
     
 
     return (
         
-        <AppContext.Provider value={{userModulActivitiesLink,setUserModulActivitiesLink,selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity,userData,setUserData,cleanContext,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectModulAdmin,setSelectModulAdmin,selectModulInstiAdmin,setSelectModulInstiAdmin}}>
+        <AppContext.Provider value={{usersHistorial,setUsersHistorial,userModulActivitiesLink,setUserModulActivitiesLink,selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity,userData,setUserData,cleanContext,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectModulAdmin,setSelectModulAdmin,selectModulInstiAdmin,setSelectModulInstiAdmin}}>
             {props.children}
         </AppContext.Provider>
         

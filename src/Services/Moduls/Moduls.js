@@ -19,5 +19,11 @@ const updateActivities=async(path,body)=>{
     return await axios.put(path,body);
 }
 
+const loadActivitiesUsers=async()=>{
 
-export {getModuls,getUserModulActivities,updateActivities}
+    let path = environment.api + environment.getUsersResponse
+    return await axios.get(path);
+}
+
+
+export {getModuls,getUserModulActivities,updateActivities,loadActivitiesUsers}
