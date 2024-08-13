@@ -13,6 +13,7 @@ function ProviderContext(props){
     let [selectModul,setSelectModul] = React.useState(null);
     let [selectActivity,setSelectActivity] = React.useState(null);
     let [selectActivityIndex,setSelectActivityIndex] = React.useState(null);
+    let [selectActivityType,setSelectActivityType] = React.useState(null);
     let [selectModulAdmin,setSelectModulAdmin] = React.useState(null);
     let [selectModulInstiAdmin,setSelectModulInstiAdmin] = React.useState(null);
     let [userModulActivities,setUserModulActivities] = React.useState(null);
@@ -29,12 +30,13 @@ function ProviderContext(props){
         setSelectActivity(null);
         setSelectActivityIndex(null);
         setUserModulActivities(null);
+        setSelectActivityType(null);
     }
     
 
     return (
         
-        <AppContext.Provider value={{userModulActivities,setUserModulActivities,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity,userData,setUserData,cleanContext,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectModulAdmin,setSelectModulAdmin,selectModulInstiAdmin,setSelectModulInstiAdmin}}>
+        <AppContext.Provider value={{selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity,userData,setUserData,cleanContext,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectModulAdmin,setSelectModulAdmin,selectModulInstiAdmin,setSelectModulInstiAdmin}}>
             {props.children}
         </AppContext.Provider>
         

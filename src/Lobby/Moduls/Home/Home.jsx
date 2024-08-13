@@ -104,10 +104,6 @@ export default function Home() {
                           console.log("ACTIVIDADES MODULO: ",resultV1.data);
                           setUserModulActivities(resultV1.data);
                           setSelectModul(moduls.filter((obj)=>obj.id == idModul)[0]);
-                          Swal.fire({
-                            icon: 'success',
-                            title: 'Sin problemas para validar'
-                          })
                           // ADECUAMOS LOS MODULOS
                           navigate('/Lobby/SelectModul')
                         }

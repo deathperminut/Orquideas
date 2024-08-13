@@ -18,7 +18,7 @@ export default function SelectModul() {
         const navigate=useNavigate();
 
         // React.useContext
-        let {userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
+        let {selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
         
         const convertDate=(fechaISO)=>{
                 // Convertir la cadena a un objeto Date
@@ -137,6 +137,7 @@ const fecha = new Date(fechaISO);
                                                 <div key={index} onClick={()=>{
                                                         // Guardamos el indice de la actividad
                                                         setSelectActivityIndex(index);
+                                                        setSelectActivityType('foundations');
                                                         // Guardamos la actividad especifica
                                                         setSelectActivity(obj);
                                                         navigate('/Lobby/SelectClass')
@@ -157,6 +158,7 @@ const fecha = new Date(fechaISO);
                                                 <div key={index} onClick={()=>{
                                                         // Guardamos el indice de la actividad
                                                         setSelectActivityIndex(index);
+                                                        setSelectActivityType('engage');
                                                         // Guardamos la actividad especifica
                                                         setSelectActivity(obj);
                                                         navigate('/Lobby/SelectClass')
@@ -177,6 +179,7 @@ const fecha = new Date(fechaISO);
                                                 <div key={index} onClick={()=>{
                                                         // Guardamos el indice de la actividad
                                                         setSelectActivityIndex(index);
+                                                        setSelectActivityType('co_create');
                                                         // Guardamos la actividad especifica
                                                         setSelectActivity(obj);
                                                         navigate('/Lobby/SelectClass')
@@ -198,6 +201,7 @@ const fecha = new Date(fechaISO);
                                                         // Guardamos el indice de la actividad
                                                         setSelectActivityIndex(index);
                                                         // Guardamos la actividad especifica
+                                                        setSelectActivityType('reflection');
                                                         setSelectActivity(obj);
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
