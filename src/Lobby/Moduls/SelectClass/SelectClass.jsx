@@ -176,6 +176,7 @@ export default function SelectClass() {
             let ModulActivities = {...userModulActivities};
             ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex]['upload']  =event.target.files[0]
             // GUARDAMOS Y ACTUALIZAMOS LAS ACTIVIDADES
+            console.log("DATOS PARA ACTUALIZAR ARCHIVO: ",ModulActivities['activity_module_editable']);
             let formData = jsonToFormData(ModulActivities['activity_module_editable']);
             // LLAMAMOS EL SERVICIO DE UPDATE
             let result =  undefined;
@@ -191,6 +192,7 @@ export default function SelectClass() {
             if(result){
                 console.log("DATOS AL ACTUALIZAR ACTIVIDAD: ",result.data);
                 setPreloader(false);
+                NextActivity();
                 Swal.fire({
                     icon: 'success',
                     title: 'Subido con éxito',
