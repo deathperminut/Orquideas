@@ -264,7 +264,7 @@ class TrainingModule(models.Model):
     module_name = models.CharField(max_length=200, null=True, blank=True)
     tag_line = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
-    color = models.CharField(max_length=7)
+    color = models.CharField(max_length=100)
     color_name = models.CharField(max_length=32)
     document = models.FileField(upload_to='modules/', null=True, blank=True)
     description = models.TextField()

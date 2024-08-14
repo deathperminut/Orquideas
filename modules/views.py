@@ -73,6 +73,10 @@ class TrainingModuleListCreateView(generics.ListCreateAPIView):
     queryset = TrainingModule.objects.all()
     serializer_class = TrainingModuleSerializer
 
+    
+class TrainingModuleListView(generics.ListAPIView):
+    queryset = TrainingModule.objects.all()
+    serializer_class = TrainingModuleSerializer
 
 class TrainingModuleDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TrainingModule.objects.all()

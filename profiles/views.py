@@ -59,6 +59,9 @@ class InstitutionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Institution.objects.all()
     serializer_class = InstitutionSerializer
 
+class CreateInstitutionView(generics.CreateAPIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionSerializer
 
 class RoleListView(generics.ListAPIView):
     queryset = Role.objects.all()
