@@ -171,13 +171,18 @@ export default function SelectClass() {
         }
 
         // EVIDENCE
-        const ReadFileData=async(event,typeActivity)=>{
+        const ReadFileData=async(event,key,field)=>{
 
             let ModulActivities = {...userModulActivities};
-            ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex]['upload']  =event.target.files[0]
             // GUARDAMOS Y ACTUALIZAMOS LAS ACTIVIDADES
-            console.log("DATOS PARA ACTUALIZAR ARCHIVO: ",ModulActivities['activity_module_editable']);
-            let formData = jsonToFormData(ModulActivities['activity_module_editable']);
+            let jsonTo = ModulActivities['activity_module_editable'];
+            let formData = new FormData();
+            formData.append('tipo',selectActivityType);
+            formData.append('key',key);
+            formData.append('id',ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex][key]['id'])
+            formData.append('campo',field);
+            formData.append('valor_campo',event.target.files[0])
+
             // LLAMAMOS EL SERVICIO DE UPDATE
             let result =  undefined;
             setPreloader(true);
@@ -394,7 +399,7 @@ export default function SelectClass() {
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
                                     <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <input onChange={(event)=>ReadFileData(event,'evidence')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
+                                            <input onChange={(event)=>ReadFileData(event,'evidence','upload')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
                                             <span className='fontSemiBold'>Subir archivo</span>
                                     </div>
                             </div>
