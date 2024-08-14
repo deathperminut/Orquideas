@@ -173,17 +173,14 @@ export default function SelectClass() {
         // EVIDENCE
         const ReadFileData=async(event,typeActivity)=>{
 
-            console.log("SUBIENDO ARCHIVOS: ",event.target.files);
             let ModulActivities = {...userModulActivities};
             ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex]['upload']  =event.target.files[0]
             // GUARDAMOS Y ACTUALIZAMOS LAS ACTIVIDADES
-            let formData = jsonToFormData(ModulActivities);
-
+            let formData = jsonToFormData(ModulActivities['activity_module_editable']);
             // LLAMAMOS EL SERVICIO DE UPDATE
             let result =  undefined;
             setPreloader(true);
-            
-            result =  await updateActivities(userModulActivitiesLink,formData).catch((error)=>{
+            result =  await updateActivities(ModulActivities['activity_module_editable']['url'],formData).catch((error)=>{
                 console.log(error);
                 setPreloader(false);
                 Swal.fire({
@@ -196,7 +193,8 @@ export default function SelectClass() {
                 setPreloader(false);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Subido con éxito'
+                    title: 'Subido con éxito',
+                    text: 'Te hemos ubicado en la siguiente actividad'
                 })
             }
             
