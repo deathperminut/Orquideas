@@ -12,8 +12,10 @@ from .views import (
     SurveyModuleDetailView,
     UserSurveyModuleListCreateView,
     UserSurveyModuleDetailView,
-    TrainingModuleListView
+    CreateUserModuleView,
+    TrainingModuleListView,
 )
+
 
 urlpatterns = [
     path(
@@ -21,11 +23,7 @@ urlpatterns = [
         TrainingModuleListCreateView.as_view(),
         name='trainingmodule-list-create',
     ),
-    path(
-        'modules/',
-        TrainingModuleListView.as_view(),
-        name="get-modules"
-    ),
+    path('modules/', TrainingModuleListView.as_view(), name="get-modules"),
     path(
         'training-modules/<int:pk>/',
         TrainingModuleDetailView.as_view(),
@@ -80,5 +78,10 @@ urlpatterns = [
         'user-survey-modules/<int:pk>/',
         UserSurveyModuleDetailView.as_view(),
         name='usersurveymodule-detail',
+    ),
+    path(
+        'create-user-module/',
+        CreateUserModuleView.as_view(),
+        name='create-user-module',
     ),
 ]
