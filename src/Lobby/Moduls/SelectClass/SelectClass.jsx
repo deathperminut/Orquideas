@@ -15,7 +15,7 @@ import { AppContext } from '../../../Context';
 import { set } from 'date-fns';
 import { CreateComment, GetComments } from '../../../Services/Comments/Comments';
 import { GetUser } from '../../../Services/Users/Users';
-import { updateActivities } from '../../../Services/Moduls/Moduls';
+import { getUserModulActivities, updateActivities } from '../../../Services/Moduls/Moduls';
 
 export default function SelectClass() {
 
@@ -196,13 +196,29 @@ export default function SelectClass() {
             })
             if(result){
                 console.log("DATOS AL ACTUALIZAR ACTIVIDAD: ",result.data);
-                setPreloader(false);
-                NextActivity();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Subido con éxito',
-                    text: 'Te hemos ubicado en la siguiente actividad'
+                // obtener el conjunto de actividades
+                let answer =  undefined;
+                answer =  await getUserModulActivities(userModulActivitiesLink).catch((error)=>{
+                    console.log(error);
+                    setPreloader(true);
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Problemas para cargar datos',
+                    })
                 })
+                if(answer){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Archivo cargado con éxito',
+                        text:'continua con la siguiente actividad'
+                    })
+                    setUserModulActivities(answer.data);
+                    setPreloader(false);
+                    // actualizamos la clase actual
+                    console.log("RESPUESTAS: ",answer.data,selectActivityType,selectActivityIndex)
+                    setSelectActivity(answer.data['activity_module_editable'][selectActivityType][selectActivityIndex])
+                }
+                
             }
             
         }
@@ -402,6 +418,12 @@ export default function SelectClass() {
                                             <input onChange={(event)=>ReadFileData(event,'evidence','upload')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
                                             <span className='fontSemiBold'>Subir archivo</span>
                                     </div>
+                                    {selectActivity['evidence']['upload'] !== null ? 
+                                    <span className='fontSemiBold linked' onClick={()=>window.open(selectActivity['evidence']['upload'])}>Ver archivo</span>
+                                    :
+                                    <></>
+                                    }
+                                    
                             </div>
                             :
                             <>
