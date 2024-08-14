@@ -113,21 +113,54 @@ class UserActivityModuleDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         data = request.data
         relations = ['foundations', 'engage', 'co_create', 'reflection']
+        print("DATOS DEL REQUEST: ",data,data.keys());
+        lista_llaves = data.keys();
+        if('tipo' in lista_llaves):
+            ### ARMAMOS EL OBJETO A ACTUALIZAR
+            ### objeto actividad 
 
-        for relation in relations:
-            if relation in data:
-                activities = data[relation]
-                for activity in activities:
+            activity_object = {
+                "id":int(data['id']),
+                data['campo']:data['valor_campo']
+            }
+            data = {
+                data['tipo']:[
+                    {
+                        data['key']:activity_object
+                    }
+                ]
+            }
+            print("informacióin: ",data);
+            for relation in relations:
+                if relation in data:
+                    activities = data[relation]
+                    for activity in activities:
 
-                    field = list(activity.keys())[0]
-                    value = list(activity.values())[0]
-                    activity_id = value.pop('id')
+                        field = list(activity.keys())[0]
+                        value = list(activity.values())[0]
+                        activity_id = value.pop('id')
 
-                    activity_obj = FIELDS[field].objects.get(id=activity_id)
+                        activity_obj = FIELDS[field].objects.get(id=activity_id)
 
-                    for key, val in value.items():
-                        setattr(activity_obj, key, val)
-                    activity_obj.save()
+                        for key, val in value.items():
+                            setattr(activity_obj, key, val)
+                        activity_obj.save()
+        
+        else:
+            for relation in relations:
+                if relation in data:
+                    activities = data[relation]
+                    for activity in activities:
+
+                        field = list(activity.keys())[0]
+                        value = list(activity.values())[0]
+                        activity_id = value.pop('id')
+
+                        activity_obj = FIELDS[field].objects.get(id=activity_id)
+
+                        for key, val in value.items():
+                            setattr(activity_obj, key, val)
+                        activity_obj.save()
 
         return Response(serializer.data)
 
