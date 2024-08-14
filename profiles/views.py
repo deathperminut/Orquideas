@@ -14,6 +14,8 @@ from .serializers import (
 from rest_framework.permissions import AllowAny
 
 
+
+
 class CreateUserView(generics.CreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
