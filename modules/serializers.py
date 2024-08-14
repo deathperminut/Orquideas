@@ -28,79 +28,79 @@ from .models import (
 class OpenQuestionaryOptionalSerializer(serializers.ModelSerializer):
     class Meta:
         model = OpenQuestionaryOptional
-        fields = ['question', 'response']
+        fields = ['id', 'question', 'response']
 
 
 class SatisfactionQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SatisfactionQuestion
-        fields = ['survey', 'level_of_satisfaction']
+        fields = ['id', 'survey', 'level_of_satisfaction']
 
 
 class SpecificObjectiveSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpecificObjective
-        fields = ['description']
+        fields = ['id', 'description']
 
 
 class SkillAndLearningSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkillAndLearning
-        fields = ['description']
+        fields = ['id', 'description']
 
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ['description', 'video_link']
+        fields = ['id', 'description', 'video_link']
 
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ['description', 'image']
+        fields = ['id', 'description', 'image']
 
 
 class FormatTextSerializer(serializers.ModelSerializer):
     class Meta:
         model = FormatText
-        fields = ['text']
+        fields = ['id', 'text']
 
 
 class LectureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecture
-        fields = ['title', 'content', 'link']
+        fields = ['id', 'title', 'content', 'link']
 
 
 class EvidenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evidence
-        fields = ['description', 'upload']
+        fields = ['id', 'description', 'upload']
 
 
 class RedactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Redaction
-        fields = ['description', 'text']
+        fields = ['id', 'description', 'text']
 
 
 class ForumParticipationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ForumParticipation
-        fields = ['question', 'response']
+        fields = ['id', 'question', 'response']
 
 
 class CloudForumParticipationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CloudForumParticipation
-        fields = ['question', 'response']
+        fields = ['id', 'question', 'response']
 
 
 class ChoiceQuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = ChoiceQuestionary
-        fields = ['choice_text', 'is_correct']
+        fields = ['id', 'choice_text', 'is_correct']
 
 
 class SelectionMultipleQuestionarySerializer(serializers.ModelSerializer):
@@ -108,13 +108,13 @@ class SelectionMultipleQuestionarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SelectionMultipleQuestionary
-        fields = ['question_text', 'choices']
+        fields = ['id', 'question_text', 'choices']
 
 
 class OpenQuestionarySerializer(serializers.ModelSerializer):
     class Meta:
         model = OpenQuestionary
-        fields = ['question', 'response']
+        fields = ['id', 'question', 'response']
 
 
 class ActivitySerializer(serializers.ModelSerializer):

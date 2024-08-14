@@ -12,6 +12,9 @@ from .views import (
     SurveyModuleDetailView,
     UserSurveyModuleListCreateView,
     UserSurveyModuleDetailView,
+    CreateUserModuleView,
+    #     CreateUserActivityModuleView,
+    #     CreateUserActivityModuleAPIView,  # added
 )
 
 urlpatterns = [
@@ -74,5 +77,10 @@ urlpatterns = [
         'user-survey-modules/<int:pk>/',
         UserSurveyModuleDetailView.as_view(),
         name='usersurveymodule-detail',
+    ),
+    path(
+        'create-user-module/',
+        CreateUserModuleView.as_view(),
+        name='create-user-module',
     ),
 ]
