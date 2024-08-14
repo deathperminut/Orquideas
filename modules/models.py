@@ -415,18 +415,414 @@ class UserModule(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk and self.activity_module_master:
             new_activity_module_copy = UserActivityModule.objects.create()
-            new_activity_module_copy.foundations.set(
-                self.activity_module_master.foundations.all()
-            )
-            new_activity_module_copy.engage.set(
-                self.activity_module_master.engage.all()
-            )
-            new_activity_module_copy.co_create.set(
-                self.activity_module_master.co_create.all()
-            )
-            new_activity_module_copy.reflection.set(
-                self.activity_module_master.reflection.all()
-            )
+            for foundation in self.activity_module_master.foundations.all():
+                foundation_copy = Activity.objects.create(
+                    activity_name=foundation.activity_name,
+                    format_text=(
+                        FormatText.objects.create(
+                            text=foundation.format_text.text
+                        )
+                        if foundation.format_text
+                        else None
+                    ),
+                    lecture=(
+                        Lecture.objects.create(
+                            title=foundation.lecture.title,
+                            content=foundation.lecture.content,
+                            link=foundation.lecture.link,
+                        )
+                        if foundation.lecture
+                        else None
+                    ),
+                    evidence=(
+                        Evidence.objects.create(
+                            description=foundation.evidence.description,
+                            upload=foundation.evidence.upload,
+                        )
+                        if foundation.evidence
+                        else None
+                    ),
+                    video=(
+                        Video.objects.create(
+                            description=foundation.video.description,
+                            video_link=foundation.video.video_link,
+                        )
+                        if foundation.video
+                        else None
+                    ),
+                    redaction=(
+                        Redaction.objects.create(
+                            description=foundation.redaction.description,
+                            text=foundation.redaction.text,
+                        )
+                        if foundation.redaction
+                        else None
+                    ),
+                    image=(
+                        Image.objects.create(
+                            description=foundation.image.description,
+                            image=foundation.image.image,
+                        )
+                        if foundation.image
+                        else None
+                    ),
+                    forum_participation=(
+                        ForumParticipation.objects.create(
+                            question=foundation.forum_participation.question,
+                            response=foundation.forum_participation.response,
+                        )
+                        if foundation.forum_participation
+                        else None
+                    ),
+                    cloud_forum_participation=(
+                        CloudForumParticipation.objects.create(
+                            question=foundation.cloud_forum_participation.question,
+                            response=foundation.cloud_forum_participation.response,
+                        )
+                        if foundation.cloud_forum_participation
+                        else None
+                    ),
+                    selection_multiple_questionary=(
+                        SelectionMultipleQuestionary.objects.create(
+                            question_text=foundation.selection_multiple_questionary.question_text
+                        )
+                        if foundation.selection_multiple_questionary
+                        else None
+                    ),
+                    open_questionary=(
+                        OpenQuestionary.objects.create(
+                            question=foundation.open_questionary.question,
+                            response=foundation.open_questionary.response,
+                        )
+                        if foundation.open_questionary
+                        else None
+                    ),
+                    open_questionary_optional=(
+                        OpenQuestionaryOptional.objects.create(
+                            question=foundation.open_questionary_optional.question,
+                            response=foundation.open_questionary_optional.response,
+                        )
+                        if foundation.open_questionary_optional
+                        else None
+                    ),
+                    satisfaction_question=(
+                        SatisfactionQuestion.objects.create(
+                            survey=foundation.satisfaction_question.survey,
+                            level_of_satisfaction=foundation.satisfaction_question.level_of_satisfaction,
+                        )
+                        if foundation.satisfaction_question
+                        else None
+                    ),
+                )
+                foundation_copy.save()
+                new_activity_module_copy.foundations.add(foundation_copy)
+
+            for engage in self.activity_module_master.engage.all():
+                engage_copy = Activity.objects.create(
+                    activity_name=engage.activity_name,
+                    format_text=(
+                        FormatText.objects.create(
+                            text=engage.format_text.text
+                        )
+                        if engage.format_text
+                        else None
+                    ),
+                    lecture=(
+                        Lecture.objects.create(
+                            title=engage.lecture.title,
+                            content=engage.lecture.content,
+                            link=engage.lecture.link,
+                        )
+                        if engage.lecture
+                        else None
+                    ),
+                    evidence=(
+                        Evidence.objects.create(
+                            description=engage.evidence.description,
+                            upload=engage.evidence.upload,
+                        )
+                        if engage.evidence
+                        else None
+                    ),
+                    video=(
+                        Video.objects.create(
+                            description=engage.video.description,
+                            video_link=engage.video.video_link,
+                        )
+                        if engage.video
+                        else None
+                    ),
+                    redaction=(
+                        Redaction.objects.create(
+                            description=engage.redaction.description,
+                            text=engage.redaction.text,
+                        )
+                        if engage.redaction
+                        else None
+                    ),
+                    image=(
+                        Image.objects.create(
+                            description=engage.image.description,
+                            image=engage.image.image,
+                        )
+                        if engage.image
+                        else None
+                    ),
+                    forum_participation=(
+                        ForumParticipation.objects.create(
+                            question=engage.forum_participation.question,
+                            response=engage.forum_participation.response,
+                        )
+                        if engage.forum_participation
+                        else None
+                    ),
+                    cloud_forum_participation=(
+                        CloudForumParticipation.objects.create(
+                            question=engage.cloud_forum_participation.question,
+                            response=engage.cloud_forum_participation.response,
+                        )
+                        if engage.cloud_forum_participation
+                        else None
+                    ),
+                    selection_multiple_questionary=(
+                        SelectionMultipleQuestionary.objects.create(
+                            question_text=engage.selection_multiple_questionary.question_text
+                        )
+                        if engage.selection_multiple_questionary
+                        else None
+                    ),
+                    open_questionary=(
+                        OpenQuestionary.objects.create(
+                            question=engage.open_questionary.question,
+                            response=engage.open_questionary.response,
+                        )
+                        if engage.open_questionary
+                        else None
+                    ),
+                    open_questionary_optional=(
+                        OpenQuestionaryOptional.objects.create(
+                            question=engage.open_questionary_optional.question,
+                            response=engage.open_questionary_optional.response,
+                        )
+                        if engage.open_questionary_optional
+                        else None
+                    ),
+                    satisfaction_question=(
+                        SatisfactionQuestion.objects.create(
+                            survey=engage.satisfaction_question.survey,
+                            level_of_satisfaction=engage.satisfaction_question.level_of_satisfaction,
+                        )
+                        if engage.satisfaction_question
+                        else None
+                    ),
+                )
+                engage_copy.save()
+                new_activity_module_copy.engage.add(engage_copy)
+
+            for co_create in self.activity_module_master.co_create.all():
+                co_create_copy = Activity.objects.create(
+                    activity_name=co_create.activity_name,
+                    format_text=(
+                        FormatText.objects.create(
+                            text=co_create.format_text.text
+                        )
+                        if co_create.format_text
+                        else None
+                    ),
+                    lecture=(
+                        Lecture.objects.create(
+                            title=co_create.lecture.title,
+                            content=co_create.lecture.content,
+                            link=co_create.lecture.link,
+                        )
+                        if co_create.lecture
+                        else None
+                    ),
+                    evidence=(
+                        Evidence.objects.create(
+                            description=co_create.evidence.description,
+                            upload=co_create.evidence.upload,
+                        )
+                        if co_create.evidence
+                        else None
+                    ),
+                    video=(
+                        Video.objects.create(
+                            description=co_create.video.description,
+                            video_link=co_create.video.video_link,
+                        )
+                        if co_create.video
+                        else None
+                    ),
+                    redaction=(
+                        Redaction.objects.create(
+                            description=co_create.redaction.description,
+                            text=co_create.redaction.text,
+                        )
+                        if co_create.redaction
+                        else None
+                    ),
+                    image=(
+                        Image.objects.create(
+                            description=co_create.image.description,
+                            image=co_create.image.image,
+                        )
+                        if co_create.image
+                        else None
+                    ),
+                    forum_participation=(
+                        ForumParticipation.objects.create(
+                            question=co_create.forum_participation.question,
+                            response=co_create.forum_participation.response,
+                        )
+                        if co_create.forum_participation
+                        else None
+                    ),
+                    cloud_forum_participation=(
+                        CloudForumParticipation.objects.create(
+                            question=co_create.cloud_forum_participation.question,
+                            response=co_create.cloud_forum_participation.response,
+                        )
+                        if co_create.cloud_forum_participation
+                        else None
+                    ),
+                    selection_multiple_questionary=(
+                        SelectionMultipleQuestionary.objects.create(
+                            question_text=co_create.selection_multiple_questionary.question_text
+                        )
+                        if co_create.selection_multiple_questionary
+                        else None
+                    ),
+                    open_questionary=(
+                        OpenQuestionary.objects.create(
+                            question=co_create.open_questionary.question,
+                            response=co_create.open_questionary.response,
+                        )
+                        if co_create.open_questionary
+                        else None
+                    ),
+                    open_questionary_optional=(
+                        OpenQuestionaryOptional.objects.create(
+                            question=co_create.open_questionary_optional.question,
+                            response=co_create.open_questionary_optional.response,
+                        )
+                        if co_create.open_questionary_optional
+                        else None
+                    ),
+                    satisfaction_question=(
+                        SatisfactionQuestion.objects.create(
+                            survey=co_create.satisfaction_question.survey,
+                            level_of_satisfaction=co_create.satisfaction_question.level_of_satisfaction,
+                        )
+                        if co_create.satisfaction_question
+                        else None
+                    ),
+                )
+                co_create_copy.save()
+                new_activity_module_copy.co_create.add(co_create_copy)
+
+            for reflection in self.activity_module_master.reflection.all():
+                reflection_copy = Activity.objects.create(
+                    activity_name=reflection.activity_name,
+                    format_text=(
+                        FormatText.objects.create(
+                            text=reflection.format_text.text
+                        )
+                        if reflection.format_text
+                        else None
+                    ),
+                    lecture=(
+                        Lecture.objects.create(
+                            title=reflection.lecture.title,
+                            content=reflection.lecture.content,
+                            link=reflection.lecture.link,
+                        )
+                        if reflection.lecture
+                        else None
+                    ),
+                    evidence=(
+                        Evidence.objects.create(
+                            description=reflection.evidence.description,
+                            upload=reflection.evidence.upload,
+                        )
+                        if reflection.evidence
+                        else None
+                    ),
+                    video=(
+                        Video.objects.create(
+                            description=reflection.video.description,
+                            video_link=reflection.video.video_link,
+                        )
+                        if reflection.video
+                        else None
+                    ),
+                    redaction=(
+                        Redaction.objects.create(
+                            description=reflection.redaction.description,
+                            text=reflection.redaction.text,
+                        )
+                        if reflection.redaction
+                        else None
+                    ),
+                    image=(
+                        Image.objects.create(
+                            description=reflection.image.description,
+                            image=reflection.image.image,
+                        )
+                        if reflection.image
+                        else None
+                    ),
+                    forum_participation=(
+                        ForumParticipation.objects.create(
+                            question=reflection.forum_participation.question,
+                            response=reflection.forum_participation.response,
+                        )
+                        if reflection.forum_participation
+                        else None
+                    ),
+                    cloud_forum_participation=(
+                        CloudForumParticipation.objects.create(
+                            question=reflection.cloud_forum_participation.question,
+                            response=reflection.cloud_forum_participation.response,
+                        )
+                        if reflection.cloud_forum_participation
+                        else None
+                    ),
+                    selection_multiple_questionary=(
+                        SelectionMultipleQuestionary.objects.create(
+                            question_text=reflection.selection_multiple_questionary.question_text
+                        )
+                        if reflection.selection_multiple_questionary
+                        else None
+                    ),
+                    open_questionary=(
+                        OpenQuestionary.objects.create(
+                            question=reflection.open_questionary.question,
+                            response=reflection.open_questionary.response,
+                        )
+                        if reflection.open_questionary
+                        else None
+                    ),
+                    open_questionary_optional=(
+                        OpenQuestionaryOptional.objects.create(
+                            question=reflection.open_questionary_optional.question,
+                            response=reflection.open_questionary_optional.response,
+                        )
+                        if reflection.open_questionary_optional
+                        else None
+                    ),
+                    satisfaction_question=(
+                        SatisfactionQuestion.objects.create(
+                            survey=reflection.satisfaction_question.survey,
+                            level_of_satisfaction=reflection.satisfaction_question.level_of_satisfaction,
+                        )
+                        if reflection.satisfaction_question
+                        else None
+                    ),
+                )
+                reflection_copy.save()
+                new_activity_module_copy.reflection.add(reflection_copy)
+
             self.activity_module_editable = new_activity_module_copy
 
             first_survey_module = SurveyModule.objects.first()

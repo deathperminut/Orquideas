@@ -73,10 +73,11 @@ class TrainingModuleListCreateView(generics.ListCreateAPIView):
     queryset = TrainingModule.objects.all()
     serializer_class = TrainingModuleSerializer
 
-    
+
 class TrainingModuleListView(generics.ListAPIView):
     queryset = TrainingModule.objects.all()
     serializer_class = TrainingModuleSerializer
+
 
 class TrainingModuleDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TrainingModule.objects.all()
@@ -232,46 +233,47 @@ class CreateUserModuleView(APIView):
         )
 
 
-class CreateUserActivityModuleView(APIView):
-    def post(self, request):
-        user_id = request.data.get('user')
-        activity_data = request.data.get('activity_module_data', {})
-
-        if not user_id or not activity_data:
-            return Response(
-                {
-                    "error": "user and activity_module_data are required fields"
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        try:
-            user = UserProfile.objects.get(pk=user_id)
-            user_activity_module = UserActivityModule.objects.create()
-            for key, activities in activity_data.items():
-                if hasattr(user_activity_module, key):
-                    activity_objs = Activity.objects.filter(
-                        id__in=activities
-                    )
-                    getattr(user_activity_module, key).set(activity_objs)
-            user_module = UserModule.objects.create(
-                user=user, activity_module_editable=user_activity_module
-            )
-        except UserProfile.DoesNotExist:
-            return Response(
-                {"error": "User not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-        except Activity.DoesNotExist:
-            return Response(
-                {"error": "One or more activities not found"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        return Response(
-            {
-                "id": user_module.id,
-                "user": user_module.user.id,
-                "activity_module_editable": user_module.activity_module_editable.id,
-            },
-            status=status.HTTP_201_CREATED,
-        )
+#
+# class CreateUserActivityModuleView(APIView):
+#     def post(self, request):
+#         user_id = request.data.get('user')
+#         activity_data = request.data.get('activity_module_data', {})
+#
+#         if not user_id or not activity_data:
+#             return Response(
+#                 {
+#                     "error": "user and activity_module_data are required fields"
+#                 },
+#                 status=status.HTTP_400_BAD_REQUEST,
+#             )
+#
+#         try:
+#             user = UserProfile.objects.get(pk=user_id)
+#             user_activity_module = UserActivityModule.objects.create()
+#             for key, activities in activity_data.items():
+#                 if hasattr(user_activity_module, key):
+#                     activity_objs = Activity.objects.filter(
+#                         id__in=activities
+#                     )
+#                     getattr(user_activity_module, key).set(activity_objs)
+#             user_module = UserModule.objects.create(
+#                 user=user, activity_module_editable=user_activity_module
+#             )
+#         except UserProfile.DoesNotExist:
+#             return Response(
+#                 {"error": "User not found"}, status=status.HTTP_404_NOT_FOUND
+#             )
+#         except Activity.DoesNotExist:
+#             return Response(
+#                 {"error": "One or more activities not found"},
+#                 status=status.HTTP_404_NOT_FOUND,
+#             )
+#
+#         return Response(
+#             {
+#                 "id": user_module.id,
+#                 "user": user_module.user.id,
+#                 "activity_module_editable": user_module.activity_module_editable.id,
+#             },
+#             status=status.HTTP_201_CREATED,
+#         )
