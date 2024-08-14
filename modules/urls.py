@@ -13,6 +13,7 @@ from .views import (
     UserSurveyModuleListCreateView,
     UserSurveyModuleDetailView,
     CreateUserModuleView,
+    TrainingModuleListView,
 )
 
 
