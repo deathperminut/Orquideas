@@ -1,18 +1,24 @@
-# Usa una imagen oficial de Python como base
-FROM python:3.10-slim
+# Use an official Python runtime as a parent image
+FROM python:3.9
 
-# Establece el directorio de trabajo en el contenedor
-WORKDIR /app
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Copia los archivos de requisitos y instala las dependencias
-COPY requirements.txt .
+# Set the working directory in the container to /orcas
+WORKDIR /orcas
+
+# Copy the current directory contents into the container at /orcas
+COPY . /orcas
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copia el código de la aplicación al contenedor
-COPY . .
-
-# Expone el puerto en el que la aplicación escuchará (por defecto, Django usa el puerto 8000)
+# Expose the port the orcas runs on
 EXPOSE 8080
 
+# Run migrate and then start the Django development server
+CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8080
 # Configura el comando de inicio para el contenedor
-CMD ["python", "manage.py", "runserver","8080"]
+CMD ["python3","manage.py","runserver","0.0.0.0:8080"]
