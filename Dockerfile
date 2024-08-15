@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Expone el puerto en el que la aplicación escuchará (por defecto, Django usa el puerto 8000)
-EXPOSE 8000
+EXPOSE 8080
 
 # Configura el comando de inicio para el contenedor
 CMD ["python", "manage.py", "runserver","8080"]
