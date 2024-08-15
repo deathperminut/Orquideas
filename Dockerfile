@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Configura el comando de inicio para el contenedor
-CMD ["python", "manage.py", "runserver"]
+CMD ["python", "manage.py", "runserver","8080"]
