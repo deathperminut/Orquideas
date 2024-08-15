@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /orcas
 
 # Copy the current directory contents into the container at /orcas
-COPY . /orcas
+COPY requirements.txt . 
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
