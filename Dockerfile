@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copia los archivos de requisitos y instala las dependencias
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copia el código de la aplicación al contenedor
 COPY . .
