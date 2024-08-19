@@ -2,7 +2,7 @@ import React from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { LoginUser } from '../../Services/Users/Users';
+import { GetUserInfo, LoginUser } from '../../Services/Users/Users';
 import Preloader from '../../Components/Shared/Preloader/Preloader';
 import Register from '../Register/Register';
 import { AppContext } from '../../Context';
@@ -49,14 +49,14 @@ export default function Login() {
         })
       })
       if(result){
-        console.log(result.data);
         setPreloader(false);
-        setUserData({...result.data});
-        navigate('/Lobby');
         Swal.fire({
           icon: 'success',
           title: 'Sesión iniciada correctamente'
         })
+        setUserData({...result.data});
+        navigate('/Lobby');
+        
       }
     }
 

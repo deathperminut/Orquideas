@@ -1337,9 +1337,7 @@ export default function IndexModuls(props) {
                                           obj?.evidence.upload == null ? 
                                           <></>
                                           :
-                                          <>
-
-                                          </>
+                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
                                         }</p>
                                         </td>
                                     </tr>
@@ -1395,9 +1393,7 @@ export default function IndexModuls(props) {
                                           obj?.evidence.upload == null ? 
                                           <></>
                                           :
-                                          <>
-
-                                          </>
+                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
                                         }</p>
                                         </td>
                                     </tr>
@@ -1453,9 +1449,7 @@ export default function IndexModuls(props) {
                                           obj?.evidence.upload == null ? 
                                           <></>
                                           :
-                                          <>
-
-                                          </>
+                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
                                         }</p>
                                         </td>
                                     </tr>
@@ -1511,9 +1505,7 @@ export default function IndexModuls(props) {
                                           obj?.evidence.upload == null ? 
                                           <></>
                                           :
-                                          <>
-
-                                          </>
+                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
                                         }</p>
                                         </td>
                                     </tr>

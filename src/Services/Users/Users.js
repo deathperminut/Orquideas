@@ -31,6 +31,15 @@ const GetSpecificUser=async(idUser)=>{
     return await axios.get(path);
 }
 
+const GetUserInfo=async(token)=>{
+    const path =  environment.api+ environment.userInfo;
+    let headers = {
+        Authorization:'Token '+token,
+    }
+    return await axios.get(path,headers);
+
+}
+
 const UpdateUser=async (body,id)=>{
     
 
@@ -42,4 +51,4 @@ const UpdateUser=async (body,id)=>{
 
 
 
-export {RegisterUser,LoginUser,GetUser,UpdateUser,GetSpecificUser}
+export {RegisterUser,LoginUser,GetUser,UpdateUser,GetSpecificUser,GetUserInfo}

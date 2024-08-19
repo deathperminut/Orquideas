@@ -26,6 +26,7 @@ export const environment = {
     // USERS
     register:'users/register/',
     login: 'users/login/',
+    userInfo:'users/user-info/',
     getUser:'users/',
     getSpecificUser:'users/',
     editUser:'users/',
@@ -46,6 +47,7 @@ export const environment = {
     // COMMENTS
     getComments:'community/comments/',
     createComment:'community/comments/',
+    
 
 
 }
