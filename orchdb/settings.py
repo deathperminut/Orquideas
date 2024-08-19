@@ -88,8 +88,12 @@ WSGI_APPLICATION = "orchdb.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST":"34.16.41.177",
+        "NAME": "Orquideas",
+        "USER":"Deathperminut",
+        "PASSWORD":"XnkUk>hUv&tdu.cX",
+        "PORT":"5432"
     },
     #     "modules_db": {
     #         "ENGINE": "django.db.backends.sqlite3",

@@ -404,7 +404,7 @@ class Migration(migrations.Migration):
                 ("module_name", models.CharField(max_length=200)),
                 ("tag_line", models.CharField(max_length=200)),
                 ("title", models.CharField(max_length=200)),
-                ("color", models.CharField(max_length=7)),
+                ("color", models.CharField(max_length=30)),
                 ("color_name", models.CharField(max_length=32)),
                 (
                     "document",

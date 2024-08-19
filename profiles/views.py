@@ -3,6 +3,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
+from rest_framework import status
+from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from .models import UserProfile, Institution, Role
 from .serializers import (
@@ -12,6 +14,7 @@ from .serializers import (
     RoleSelializer,
 )
 from rest_framework.permissions import AllowAny
+
 
 
 
@@ -71,8 +74,8 @@ class RoleListView(generics.ListAPIView):
 
 
 class GetUserInfo(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         token_key = request.GET.get('token', None)
@@ -91,3 +94,25 @@ class GetUserInfo(APIView):
             'last_name': user.last_name,
         }
         return Response({'user': user_info})
+
+
+
+class LoginView(APIView):
+
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Si la autenticación es exitosa, devolver la información del usuario
+            user_data = {
+                'id': user.id,
+                'email': user.email,
+                # Otros campos del usuario que quieras incluir
+            }
+            return Response(user_data, status=status.HTTP_200_OK)
+        else:
+            # Si la autenticación falla, devolver un error
+            return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
