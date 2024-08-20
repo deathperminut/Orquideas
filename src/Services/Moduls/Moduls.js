@@ -25,5 +25,10 @@ const loadActivitiesUsers=async()=>{
     return await axios.get(path);
 }
 
+const createUserModule=async(body)=>{
+    let path =  environment.api + environment.createUserModule;
+    return await axios.post(path,body);
+}
 
-export {getModuls,getUserModulActivities,updateActivities,loadActivitiesUsers}
+
+export {getModuls,getUserModulActivities,updateActivities,loadActivitiesUsers,createUserModule}

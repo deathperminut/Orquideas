@@ -15,7 +15,7 @@ import { AppContext } from '../../../Context';
 import { set } from 'date-fns';
 import { CreateComment, GetComments } from '../../../Services/Comments/Comments';
 import { GetUser } from '../../../Services/Users/Users';
-import { updateActivities } from '../../../Services/Moduls/Moduls';
+import { getUserModulActivities, updateActivities } from '../../../Services/Moduls/Moduls';
 
 export default function SelectClass() {
 
@@ -171,19 +171,22 @@ export default function SelectClass() {
         }
 
         // EVIDENCE
-        const ReadFileData=async(event,typeActivity)=>{
+        const ReadFileData=async(event,key,field)=>{
 
-            console.log("SUBIENDO ARCHIVOS: ",event.target.files);
             let ModulActivities = {...userModulActivities};
-            ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex]['upload']  =event.target.files[0]
             // GUARDAMOS Y ACTUALIZAMOS LAS ACTIVIDADES
-            let formData = jsonToFormData(ModulActivities);
+            let jsonTo = ModulActivities['activity_module_editable'];
+            let formData = new FormData();
+            formData.append('tipo',selectActivityType);
+            formData.append('key',key);
+            formData.append('id',ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex][key]['id'])
+            formData.append('campo',field);
+            formData.append('valor_campo',event.target.files[0])
 
             // LLAMAMOS EL SERVICIO DE UPDATE
             let result =  undefined;
             setPreloader(true);
-            
-            result =  await updateActivities(userModulActivitiesLink,formData).catch((error)=>{
+            result =  await updateActivities(ModulActivities['activity_module_editable']['url'],formData).catch((error)=>{
                 console.log(error);
                 setPreloader(false);
                 Swal.fire({
@@ -193,11 +196,29 @@ export default function SelectClass() {
             })
             if(result){
                 console.log("DATOS AL ACTUALIZAR ACTIVIDAD: ",result.data);
-                setPreloader(false);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Subido con éxito'
+                // obtener el conjunto de actividades
+                let answer =  undefined;
+                answer =  await getUserModulActivities(userModulActivitiesLink).catch((error)=>{
+                    console.log(error);
+                    setPreloader(true);
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Problemas para cargar datos',
+                    })
                 })
+                if(answer){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Archivo cargado con éxito',
+                        text:'continua con la siguiente actividad'
+                    })
+                    setUserModulActivities(answer.data);
+                    setPreloader(false);
+                    // actualizamos la clase actual
+                    console.log("RESPUESTAS: ",answer.data,selectActivityType,selectActivityIndex)
+                    setSelectActivity(answer.data['activity_module_editable'][selectActivityType][selectActivityIndex])
+                }
+                
             }
             
         }
@@ -394,9 +415,15 @@ export default function SelectClass() {
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
                                     <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
-                                            <input onChange={(event)=>ReadFileData(event,'evidence')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
+                                            <input onChange={(event)=>ReadFileData(event,'evidence','upload')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
                                             <span className='fontSemiBold'>Subir archivo</span>
                                     </div>
+                                    {selectActivity['evidence']['upload'] !== null ? 
+                                    <span className='fontSemiBold linked' onClick={()=>window.open(selectActivity['evidence']['upload'])}>Ver archivo</span>
+                                    :
+                                    <></>
+                                    }
+                                    
                             </div>
                             :
                             <>

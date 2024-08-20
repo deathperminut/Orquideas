@@ -10,6 +10,7 @@ import Violeta from '../../../assets/images/Violeta2.png';
 import Azul from '../../../assets/images/Azul22.png';
 import Rojo from '../../../assets/images/Magenta22.png';
 import Verde from '../../../assets/images/Verde2.png';
+import Preloader from '../../../Components/Shared/Preloader/Preloader';
 import Naranja from '../../../assets/images/Naranja2.png';
 import Amarillo from '../../../assets/images/Amarillo2.png';
 import Cafe from '../../../assets/images/Cafe22.png';
@@ -17,7 +18,7 @@ import Aguamarina from '../../../assets/images/AguaMarina2.png';
 import { AppContext } from '../../../Context';
 import Swal from 'sweetalert2';
 import { GetSpecificUser } from '../../../Services/Users/Users';
-import { getUserModulActivities } from '../../../Services/Moduls/Moduls';
+import { createUserModule, getUserModulActivities } from '../../../Services/Moduls/Moduls';
 
 export default function Home() {
 
@@ -85,6 +86,7 @@ export default function Home() {
                 if(result){
                       setPreloader(false);
                       console.log("INFORMACIÓN USUARIO: ",result.data);
+                      let info_user = result.data;
                       let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj.module_name == specificModul.module_name);
                       
                       if(modulo_usuario.length !== 0){
@@ -110,10 +112,54 @@ export default function Home() {
                         }
                         
                       }else{
-                        Swal.fire({
-                          icon: 'info',
-                          title: 'El usuario no tiene permisos para acceder a las actividades'
+                        // debemos crear las actividades para el usuario
+                        let result =  undefined;
+                        setPreloader(true);
+                        result  = await createUserModule({'user':info_user?.id,'activity_module_master':specificModul?.id}).catch((error)=>{
+                          console.log(error);
+                          setPreloader(false);
+                          Swal.fire({
+                            icon: 'info',
+                            title: 'Problemas para validar actividades del usuario'
+                          })
                         })
+                        if(result){
+                          // 
+                          result =  undefined;
+                          result =  await GetSpecificUser(userData?.id).catch((error)=>{
+                            console.log(error);
+                            setPreloader(false);
+                            Swal.fire({
+                              icon: 'info',
+                              title: 'Problemas para validar permisos del usuario'
+                            })
+                          })
+                          if(result){
+                            setPreloader(false);
+                            console.log("INFORMACIÓN USUARIO: ",result.data);
+                            let info_user = result.data;
+                            let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj.module_name == specificModul.module_name);
+                            setPreloader(true);
+                            setUserModulActivitiesLink(modulo_usuario[0].endpoint);
+                            let resultV1 =  await getUserModulActivities(modulo_usuario[0].endpoint).catch((error)=>{
+                              console.log(error);
+                              setPreloader(false);
+                              Swal.fire({
+                                icon: 'info',
+                                title: 'Problemas para traer información de actividades'
+                              })
+                            })
+                            if(resultV1){
+                              setPreloader(false);
+                              console.log("ACTIVIDADES MODULO: ",resultV1.data);
+                              setUserModulActivities(resultV1.data);
+                              setSelectModul(moduls.filter((obj)=>obj.id == idModul)[0]);
+                              // ADECUAMOS LOS MODULOS
+                              navigate('/Lobby/SelectModul')
+                            }
+                          }
+                        }
+                        
                       }
                       
                 }
@@ -131,6 +177,16 @@ export default function Home() {
 
     return (
         <div className='container-fluid'>
+        {
+                          preloader ?
+                          <>
+                          
+                          <Preloader></Preloader>
+                          </>
+                          :
+
+                          <></>
+          }
         <div className='row gx-4 d-flex flex-wrap flex-row justify-content-between align-items-start align-self-start align-self-xxl-center'>
           <div className='col-auto'>
             <h2 className='m-0 p-0 lh-sm fs-3- fontSemiBold color-purple'>Lobby</h2>

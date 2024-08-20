@@ -43,6 +43,7 @@ export const environment = {
 
     getModuls:'modules/modules/',
     getUsersResponse:'modules/user-modules/',
+    createUserModule:'modules/create-user-module/',
 
     // COMMENTS
     getComments:'community/comments/',
