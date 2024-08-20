@@ -115,6 +115,7 @@ export default function Home() {
                         // debemos crear las actividades para el usuario
                         let result =  undefined;
                         setPreloader(true);
+                        console.log("CREAR ELEMENTOS: ",{'user':info_user?.id,'activity_module_master':specificModul?.id})
                         result  = await createUserModule({'user':info_user?.id,'activity_module_master':specificModul?.id}).catch((error)=>{
                           console.log(error);
                           setPreloader(false);
