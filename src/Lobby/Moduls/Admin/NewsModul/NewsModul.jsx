@@ -290,14 +290,16 @@ export default function NewsModul() {
     },[])
     
     async function createFile(URL){
-      let response = await fetch(URL);
+      let response = await fetch(URL).catch((error)=>{
+        console.log("ERROR AL CONSEGUIR LA IMAGEN: ",error)
+        return null
+      });
       let data = await response.blob();
       let metadata = {
         type: 'image/png'
       };
       let file = new File([data], "test.png", metadata);
       return file;
-
   }
 
 
@@ -318,6 +320,7 @@ export default function NewsModul() {
 
         if(result){
             setPreloader(false);
+            console.log("DATA: ",result.data);
             // iteramos por cada noticia y obtenemos el archivo para cada imagen
             let lista_news = result.data.filter((obj)=>obj.category == "Noticia");
             let list_new = []
