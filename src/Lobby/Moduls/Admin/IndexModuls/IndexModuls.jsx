@@ -1,7 +1,8 @@
 import React from 'react';
 import './IndexModuls.css';
 import { FaRegEdit } from "react-icons/fa";
-import Select, { components } from 'react-select'
+import Select, { components } from 'react-select';
+import { AiOutlineFileExcel } from "react-icons/ai";
 import makeAnimated from 'react-select/animated';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FaRegPlusSquare } from "react-icons/fa";
@@ -960,6 +961,70 @@ export default function IndexModuls(props) {
       return user
     }
 
+
+    const exportToCSV = async (data, filename) => {
+      // Convertir los datos en formato CSV
+      const csvRows = [];
+    
+      // Obtener los encabezados de los datos
+      const headers = Object.keys(data[0]);
+      csvRows.push(headers.join(','));
+    
+      // Agregar los datos
+      data.forEach(row => {
+        const values = headers.map(header => {
+          const escapeValue = String(row[header]).replace(/"/g, '""');
+          return `"${escapeValue}"`;
+        });
+        csvRows.push(values.join(','));
+      });
+    
+      // Crear el contenido CSV con BOM para UTF-8
+      const csvContent = '\uFEFF' + csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+      // Crear un enlace para descargar el archivo
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+    
+    
+
+    const downloadExcel=()=>{
+
+      // obtenemos la información de todos los usuarios y los llevamos a una misma estructura para generar
+      let array_survey = [];
+      for (var i=0; i<lista_modulo.length;i++){
+          // DATOS DEL USUARIO
+          // iteramos por cada pregunta
+          let questions_list =  lista_modulo[i].survey_module_editable.survey
+          let object_ = {
+            'user':lista_modulo[i]?.user
+          }
+          for (var a=0;a<questions_list.length;a++){
+            // MIRAMOS QUE TIPO DE ETIQUETA TIENE
+            if(questions_list[a].hasOwnProperty("satisfaction_question")){
+              let question = questions_list[a]?.satisfaction_question?.survey?.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/g, "").trim().replace(" ","_");
+              object_[question] = questions_list[a]?.satisfaction_question?.level_of_satisfaction;
+            }else if (questions_list[a].hasOwnProperty("open_questionary_optional")){
+              let question = questions_list[a]?.open_questionary_optional?.question?.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/g, "").trim();
+              object_[question] = questions_list[a]?.open_questionary_optional?.response;
+            }
+            
+          }
+          array_survey.push(object_);
+
+      }
+      // YA CON ESTOS ELEMENTOS CARGADOS GENERAMOS EL EXCEL
+      exportToCSV(array_survey,'Evaluacion_modulo.csv')
+    }
+
+
+
     return (
         <>
           {
@@ -1000,6 +1065,11 @@ export default function IndexModuls(props) {
                             </div>
                         </div>
                       </div>
+            </div>
+            <div  className='StadisticsContainer'>
+                  <div onClick={downloadExcel} className='excelContainer'>
+                            <AiOutlineFileExcel color='white' size={25}></AiOutlineFileExcel>
+                  </div>
             </div>
             <div className='TableUsersContainer bs-2-'>
                 <div className='row mt-4 mb-4'>
