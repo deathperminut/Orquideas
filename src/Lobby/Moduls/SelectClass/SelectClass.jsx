@@ -12,6 +12,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { IoIosClose } from "react-icons/io";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AppContext } from '../../../Context';
+import ReactWordcloud from 'react-wordcloud';
 import { set } from 'date-fns';
 import { CreateComment, GetComments } from '../../../Services/Comments/Comments';
 import { GetUser } from '../../../Services/Users/Users';
@@ -488,9 +489,35 @@ export default function SelectClass() {
             if(result){
             console.log("ACTIVIDADES MODULO: ",result.data);
             setPreloader(false);
-            setModulHistorial(result.data);
+            setModulHistorial(result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
             }
 
+    }
+
+    const GetWordCloud=()=>{
+        // filtramos las actividades
+        let list_words = [];
+        let index = 0;
+        for (let i=0 ; i<modulHistorial.length;i++ ){
+            let obj = modulHistorial[i];
+            let data_activity = obj.activity_module_editable[selectActivityType][selectActivityIndex]['cloud_forum_participation'];
+            // OBTENEMOS EL TEXTO
+            console.log("datos: ",data_activity)
+            if(data_activity?.response !== ""){
+                // SI ES DIFERENTE A VACIO SEPARAMOS
+                let text_split = data_activity?.response.split(',');
+                for (let a=0 ; a<text_split?.length;a++){
+                    let word_append = {
+                        value:index,
+                        text:text_split[a]
+                    }
+                    index =  index + 1;
+                    list_words.push(word_append);
+                }
+            }
+        }
+        console.log("DATOS PARA ENTREGAR: ",list_words);
+        return list_words;
     }
 
 
@@ -562,6 +589,26 @@ export default function SelectClass() {
                                                 <textarea onChange={ReadReflexion} defaultValue={selectActivity?.forum_participation?.response} style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                             </div>
                                     <div onClick={()=>saveReflexion('forum_participation','response')}  className='Button_2'>
+                                                    <span className='text_button_2'>Guardar</span>
+                                    </div>
+                            </div>
+                            :
+                            <>
+                            </>
+                            }
+
+                            {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   
+                            <div className='format_textActivity'>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
+                                            <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.cloud_forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                            <div className='containerCloud'>
+                                                    <ReactWordcloud   words={GetWordCloud()}></ReactWordcloud>
+                                            </div>
+                                            <span className='fontSemiBold color-purple'>Escribe las palabras que se veran reflejada en la nube</span>
+                                            <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                                <textarea type="text" onChange={ReadReflexion} defaultValue={selectActivity?.cloud_forum_participation?.response}  className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                                            </div>
+                                    <div onClick={()=>saveReflexion('cloud_forum_participation','response')}  className='Button_2'>
                                                     <span className='text_button_2'>Guardar</span>
                                     </div>
                             </div>

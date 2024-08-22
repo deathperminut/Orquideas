@@ -34,6 +34,7 @@
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.0.0",
+    "react-wordcloud": "^1.2.7",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.6.14",
     "swiper": "^8.4.7",
