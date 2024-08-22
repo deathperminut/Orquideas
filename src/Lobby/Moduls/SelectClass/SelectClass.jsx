@@ -229,6 +229,7 @@ export default function SelectClass() {
         const NextActivity=()=>{
             // VERIFICAMOS EL ORDEN Y EL TIPO DE ACTIVIDAD
             setSelectChoice(null);
+            setTextData("");
             // obtenemos el tipo de actividad en el que se encuentra
             let lista_actividades = userModulActivities?.activity_module_editable[selectActivityType];
             if(lista_actividades.length == selectActivityIndex+1){
@@ -380,9 +381,11 @@ export default function SelectClass() {
                 }).then((r)=>{
                     if(r.isConfirmed){
                         setSelectChoice(null);
+                        setTextData("");
                         NextActivity();
                     }else{
                         setSelectChoice(null);
+                        setTextData("");
                         NextActivity();
                     }
                 })
@@ -585,7 +588,7 @@ export default function SelectClass() {
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
                                             <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                             <span className='fontSemiBold color-purple'>Escribe tu reflexión</span>
-                                            <div style={{'height':'300px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                            <div  className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                                 <textarea onChange={ReadReflexion} defaultValue={selectActivity?.forum_participation?.response} style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                             </div>
                                     <div onClick={()=>saveReflexion('forum_participation','response')}  className='Button_2'>
@@ -675,10 +678,10 @@ export default function SelectClass() {
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
                                     <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <span className='fontSemiBold color-purple'>Contenido</span>
-                                    <div style={{'height':'300px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                                        <textarea  style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                                    <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                        <textarea onChange={ReadReflexion} defaultValue={selectActivity?.redaction?.text}  style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                     </div>
-                                    <div  className='Button_2'>
+                                    <div onClick={()=>saveReflexion('redaction','text')}  className='Button_2'>
                                                     <span className='text_button_2'>Guardar</span>
                                     </div>
 
@@ -746,6 +749,7 @@ export default function SelectClass() {
                                             return(
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
+                                                            setTextData("");
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('foundations');
@@ -772,6 +776,7 @@ export default function SelectClass() {
                                             return(
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
+                                                            setTextData("");
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('engage');
@@ -798,6 +803,7 @@ export default function SelectClass() {
                                             return( 
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
+                                                            setTextData("");
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('co_create');
@@ -824,6 +830,7 @@ export default function SelectClass() {
                                             return(
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
+                                                            setTextData("");
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('reflection');
