@@ -13,36 +13,75 @@ import Amarillo from '../../../assets/images/Amarillo2.png';
 import Cafe from '../../../assets/images/Cafe22.png';
 import Aguamarina from '../../../assets/images/AguaMarina2.png';
 import { CiBookmark } from "react-icons/ci";
+import Preloader from '../../../Components/Shared/Preloader/Preloader';
+import { loadActivitiesUsers } from '../../../Services/Moduls/Moduls';
+import Swal from 'sweetalert2';
 
 export default function SelectModul() {
         const navigate=useNavigate();
 
+        // useState
+        let [preloader,setPreloader] = React.useState(false);
         // React.useContext
-        let {setUserModulActivitiesLink,selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
+        let {modulHistorial,setModulHistorial,setUserModulActivitiesLink,selectActivityType,setSelectActivityType,userModulActivities,setUserModulActivities,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
         
+
+        React.useEffect(()=>{
+                GetDataModuls();
+        },[])
+
+        const GetDataModuls=async()=>{
+
+                let result =  undefined;
+                setPreloader(true);
+                result  = await loadActivitiesUsers().catch((error)=>{
+                console.log(error);
+                setPreloader(false);
+                Swal.fire({
+                icon: 'info',
+                title: 'Problemas al cargar información'
+                })
+                })
+                if(result){
+                console.log("ACTIVIDADES MODULO: ",result.data);
+                setPreloader(false);
+                setModulHistorial(result.data);
+                }
+
+        }
+
         const convertDate=(fechaISO)=>{
                 // Convertir la cadena a un objeto Date
-const fecha = new Date(fechaISO);
+        const fecha = new Date(fechaISO);
 
-                // Crear un array con los nombres de los meses
-                const meses = [
-                "enero", "febrero", "marzo", "abril", "mayo", "junio",
-                "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-                ];
+        // Crear un array con los nombres de los meses
+        const meses = [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        ];
 
-                // Obtener el día, el mes y el año de la fecha
-                const dia = fecha.getUTCDate();
-                const mes = meses[fecha.getUTCMonth()]; // getUTCMonth() devuelve el mes (0-11)
-                const año = fecha.getUTCFullYear();
+        // Obtener el día, el mes y el año de la fecha
+        const dia = fecha.getUTCDate();
+        const mes = meses[fecha.getUTCMonth()]; // getUTCMonth() devuelve el mes (0-11)
+        const año = fecha.getUTCFullYear();
 
-                // Formatear la fecha en el formato deseado
-                const fechaFormateada = `Publicado el ${dia} de ${mes} de ${año}`;
+        // Formatear la fecha en el formato deseado
+        const fechaFormateada = `Publicado el ${dia} de ${mes} de ${año}`;
 
-                return fechaFormateada
+        return fechaFormateada
 
         }
         return (
         <div className='dataModulContainer'>
+                {
+                        preloader ?
+                        <>
+                        <Preloader></Preloader>
+                        </>
+                        :
+
+                        <></>
+                }
                 <div className='DataInfoModulContainer' style={{'backgroundColor':selectModul?.color}}>
                         <div className='ContainerImageModul_2' >
                                 {selectModul?.id == 3 ?

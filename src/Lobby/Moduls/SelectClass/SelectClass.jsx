@@ -15,13 +15,13 @@ import { AppContext } from '../../../Context';
 import { set } from 'date-fns';
 import { CreateComment, GetComments } from '../../../Services/Comments/Comments';
 import { GetUser } from '../../../Services/Users/Users';
-import { getUserModulActivities, updateActivities } from '../../../Services/Moduls/Moduls';
+import { getUserModulActivities, loadActivitiesUsers, updateActivities } from '../../../Services/Moduls/Moduls';
 
 export default function SelectClass() {
 
     const navigate=useNavigate();
     // React.useContext
-    let {userModulActivitiesLink,setUserModulActivitiesLink,userModulActivities,setUserModulActivities,selectActivityType,setSelectActivityType,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
+    let {modulHistorial,setModulHistorial,userModulActivitiesLink,setUserModulActivitiesLink,userModulActivities,setUserModulActivities,selectActivityType,setSelectActivityType,userData,setUserData,roles,setRoles,moduls,setModuls,institution,setInstitution,selectModul,setSelectModul,selectActivityIndex,setSelectActivityIndex,selectActivity,setSelectActivity} =  React.useContext(AppContext);
     /* use state */
     let [state,setState] = React.useState(1);
 
@@ -402,6 +402,97 @@ export default function SelectClass() {
             }
         }
 
+        let [textData,setTextData] = React.useState("");
+
+        const ReadReflexion=(event)=>{
+
+                setTextData(event.target.value);
+
+        }
+
+        const saveReflexion = async(key,field)=>{
+
+            if(textData == ""){
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'No haz registrado ninguna reflexión'
+                })
+
+            }else{
+
+                let ModulActivities = {...userModulActivities};
+                // GUARDAMOS Y ACTUALIZAMOS LAS ACTIVIDADES
+                let jsonTo = ModulActivities['activity_module_editable'];
+                let formData = new FormData();
+                formData.append('tipo',selectActivityType);
+                formData.append('key',key);
+                formData.append('id',ModulActivities['activity_module_editable'][selectActivityType][selectActivityIndex][key]['id'])
+                formData.append('campo',field);
+                formData.append('valor_campo',textData);
+                
+                // LLAMAMOS EL SERVICIO DE UPDATE
+                let result =  undefined;
+                setPreloader(true);
+                result =  await updateActivities(ModulActivities['activity_module_editable']['url'],formData).catch((error)=>{
+                    console.log(error);
+                    setPreloader(false);
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Error al subir reflexión'
+                    })
+                })
+                if(result){
+                    console.log("DATOS AL ACTUALIZAR ACTIVIDAD: ",result.data);
+                    // obtener el conjunto de actividades
+                    let answer =  undefined;
+                    answer =  await getUserModulActivities(userModulActivitiesLink).catch((error)=>{
+                        console.log(error);
+                        setPreloader(true);
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Problemas para cargar datos',
+                        })
+                    })
+                    if(answer){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Reflexión cargada con éxito',
+                            text:'continua con la siguiente actividad'
+                        })
+                        setUserModulActivities(answer.data);
+                        GetDataModuls();
+                        setPreloader(false);
+                        // actualizamos la clase actual
+                        setSelectActivity(answer.data['activity_module_editable'][selectActivityType][selectActivityIndex])
+                    }
+                    
+                }
+
+            }
+
+        }
+
+
+        const GetDataModuls=async()=>{
+            let result =  undefined;
+            setPreloader(true);
+            result  = await loadActivitiesUsers().catch((error)=>{
+            console.log(error);
+            setPreloader(false);
+            Swal.fire({
+            icon: 'info',
+            title: 'Problemas al cargar información'
+            })
+            })
+            if(result){
+            console.log("ACTIVIDADES MODULO: ",result.data);
+            setPreloader(false);
+            setModulHistorial(result.data);
+            }
+
+    }
+
 
 
 
@@ -456,6 +547,23 @@ export default function SelectClass() {
                                     <></>
                                     }
                                     
+                            </div>
+                            :
+                            <>
+                            </>
+                            }
+
+                            {selectActivity?.hasOwnProperty("forum_participation") ?   
+                            <div className='format_textActivity'>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
+                                            <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                            <span className='fontSemiBold color-purple'>Escribe tu reflexión</span>
+                                            <div style={{'height':'300px'}} className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                                <textarea onChange={ReadReflexion} defaultValue={selectActivity?.forum_participation?.response} style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                                            </div>
+                                    <div onClick={()=>saveReflexion('forum_participation','response')}  className='Button_2'>
+                                                    <span className='text_button_2'>Guardar</span>
+                                    </div>
                             </div>
                             :
                             <>
@@ -702,23 +810,45 @@ export default function SelectClass() {
                     </div>
                     <div className='chatCourseContainer bs-2-'>
                         <span className='fontSemiBold color-purple'>Foro</span>
+                        {selectActivity.hasOwnProperty("forum_participation") ? 
+                        <>
+                        <div className='comentaryContainer'>
+                            {modulHistorial?.map((obj,index)=>{
+                                return(
+                                    <>
+
+                                    {obj.activity_module_editable[selectActivityType][selectActivityIndex]['forum_participation']['response'] !== "" ? 
+                                    <>
+                                        <div key={index} className='Comentario bs-2-'>
+                                        <span className='Name fontSemiBold color-purple' >{ obj?.user }</span>
+                                        <p className='Comment fontLight'>{obj.activity_module_editable[selectActivityType][selectActivityIndex]['forum_participation']['response']}</p>
+                                        </div>
+                                    </>
+                                    :
+                                    <>
+
+                                    </>
+                                    }
+
+                                    </>
+                                    
+                                    
+                                )
+                            })}
+                        </div>
+                        </>
+                        :
+                        <>
                         <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                             <textarea value={inputComment} onChange={ReadInput} className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                         </div>
                         <div onClick={generateComment} className='ButtonSend bs-2-'>
                                 <IoMdSend></IoMdSend>
                         </div>
-                        <div className='comentaryContainer'>
-                            {comments.map((obj,index)=>{
-                                return(
-                                    <div key={index} className='Comentario bs-2-'>
-                                    <span className='Name fontSemiBold color-purple' >{ GetUserData(obj?.user)?.last_name}</span>
-                                    <p className='Comment fontLight'>{obj?.content}</p>
-                                    </div>
-                                )
-                            })}
-                            
-                        </div>
+                        
+                        </>
+                        }
+                        
                         
                     </div>
             </div>

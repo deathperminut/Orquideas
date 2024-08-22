@@ -158,6 +158,7 @@
 }
 .format_textActivity{
     width: 100%;
+    min-height: 595px;
     overflow-y: auto;
     background-color: rgba(255, 255, 255, 0.81);
     display: flex;
