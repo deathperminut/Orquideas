@@ -107,6 +107,29 @@
     justify-content: start;
     align-items: center;
 }
+.imageContainerClass{
+    width: 100%;
+    min-height: 345px;
+}
+.optionCheckBoxContainer{
+    width: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+.optionLabelContainer{
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+.containerOption{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
 .iconContainer{
     width: 40px;
     height: 40px;

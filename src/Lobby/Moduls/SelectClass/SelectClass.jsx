@@ -227,6 +227,7 @@ export default function SelectClass() {
 
         const NextActivity=()=>{
             // VERIFICAMOS EL ORDEN Y EL TIPO DE ACTIVIDAD
+            setSelectChoice(null);
             // obtenemos el tipo de actividad en el que se encuentra
             let lista_actividades = userModulActivities?.activity_module_editable[selectActivityType];
             if(lista_actividades.length == selectActivityIndex+1){
@@ -362,9 +363,46 @@ export default function SelectClass() {
                         navigate('/Lobby')
                     }
                 })
+            }
+        }
+
+        let [selectChoice,setSelectChoice] = React.useState(null);
+
+
+        let validateChoice=()=>{
+            
+            if(selectChoice?.is_correct){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Felicidades respuesta correcta',
+                    text:'da click en ok para continuar'
+                }).then((r)=>{
+                    if(r.isConfirmed){
+                        setSelectChoice(null);
+                        NextActivity();
+                    }else{
+                        setSelectChoice(null);
+                        NextActivity();
+                    }
+                })
+            }else{
+                if(selectChoice ==  null){
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Selecciona alguna opción para validar'
+                    })
+                }else{
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Respuesta incorrecta sigue intentando'
+                    })
+                }
+                
 
             }
         }
+
+
 
 
     return (
@@ -382,12 +420,6 @@ export default function SelectClass() {
             }
             <div className='navBarClass'>
                     <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginRight':'10px'}}>{selectModul?.title}</span>
-                    {/* <div className='progressContainer'>
-                        <ProgressBar variant="info"  label={`${'60'}%`} now={60} />
-                    </div> */}
-                    {/* <div className='classNumber bs-2-'>
-                        <span className='fontLight'>{selectActivityIndex+1}</span>
-                    </div> */}
                     <div onClick={NextActivity} className='classNumber bs-2-'>
                         <MdSkipNext className='fontLight'></MdSkipNext>
                     </div>
@@ -428,6 +460,60 @@ export default function SelectClass() {
                             :
                             <>
                             </>
+                            }
+
+                            {selectActivity?.hasOwnProperty("image") ?   
+                                <div className='format_textActivity'>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
+                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.image?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <div className='imageContainerClass'>
+                                        <img className='imageContainerClass' src={selectActivity?.image?.image}>
+
+                                        </img>
+                                    </div>
+                                </div>  
+                            :
+                            <></>
+                            }
+
+                            {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   
+                                <div className='format_textActivity'>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Responde a la pregunta'}</span>
+                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.selection_multiple_questionary?.question_text.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <div className='imageContainerClass'>
+                                        {/* MAPEAMOS LAS OPCIONES */}
+                                        {
+                                            selectActivity?.selection_multiple_questionary?.choices.map((obj,index)=>{
+                                                return(
+                                                    <div className='containerOption'>
+                                                            <div className='optionCheckBoxContainer'>
+                                                                <div className='checks-radios- me-1'>
+                                                                    <label>
+                                                                    <input onChange={()=>{
+                                                                        setSelectChoice(obj);
+                                                                        }} checked={selectChoice?.id == obj?.id}  type="radio" name="radio"/>
+                                                                    <span className='lh-sm fs-5- fontLight- tx-dark-purple-'></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className='optionLabelContainer'>
+                                                                    {obj?.choice_text}
+                                                            </div>
+                                                    </div>
+                                                )
+                                            }
+
+                                            )
+                                        }
+                                        <div className='ContainerButton' >
+                                                    <div onClick={validateChoice} className='Button_1' >
+                                                                <span className='text_button_1'>Validar</span>
+                                                    </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                            :
+                            <></>
                             }
                             {selectActivity?.hasOwnProperty("redaction") ?   
                             <div className='format_textActivity'>
@@ -504,6 +590,7 @@ export default function SelectClass() {
                                         {userModulActivities?.activity_module_editable?.foundations.map((obj,index)=>{
                                             return(
                                                     <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('foundations');
@@ -529,6 +616,7 @@ export default function SelectClass() {
                                         {userModulActivities?.activity_module_editable?.engage.map((obj,index)=>{
                                             return(
                                                     <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('engage');
@@ -554,6 +642,7 @@ export default function SelectClass() {
                                         {userModulActivities?.activity_module_editable?.co_create.map((obj,index)=>{
                                             return( 
                                                     <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('co_create');
@@ -579,6 +668,7 @@ export default function SelectClass() {
                                         {userModulActivities?.activity_module_editable?.reflection.map((obj,index)=>{
                                             return(
                                                     <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('reflection');
