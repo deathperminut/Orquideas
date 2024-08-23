@@ -193,6 +193,11 @@ export default function Home() {
             <h2 className='m-0 p-0 lh-sm fs-3- fontSemiBold color-purple'>Lobby</h2>
           </div>
         </div>
+        <div className='row gx-4 d-flex flex-wrap flex-row justify-content-between align-items-start align-self-start align-self-xxl-center'>
+          <div className='col-auto'>
+            <h4 className='m-0 p-0 lh-sm fs-3- fontSemiBold color-purple'>Da clic en el módulo al que deseas ingresar</h4>
+          </div>
+        </div>
         <div className='row mt-4'>
           <div className='col-12'>
             <div className='d-flex flex-row justify-content-start align-items-center align-self-center'>

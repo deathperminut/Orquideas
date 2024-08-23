@@ -357,7 +357,7 @@ export default function SelectClass() {
                 setPreloader(false);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Felicidades haz terminado el módulo'
+                    title: 'Felicidades has terminado el módulo'
                 }).then((r)=>{
                     if(r.isConfirmed){
                         navigate('/Lobby')
