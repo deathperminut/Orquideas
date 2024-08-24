@@ -57,6 +57,7 @@ export default function SelectClass() {
         });
   
         if(result){
+          console.log("USUARIOIS: ",result.data)
           setPreloader(false);
           setUsers(result.data);
           GetComentarios();
@@ -230,6 +231,7 @@ export default function SelectClass() {
             // VERIFICAMOS EL ORDEN Y EL TIPO DE ACTIVIDAD
             setSelectChoice(null);
             setTextData("");
+            Click_forum();
             // obtenemos el tipo de actividad en el que se encuentra
             let lista_actividades = userModulActivities?.activity_module_editable[selectActivityType];
             if(lista_actividades.length == selectActivityIndex+1){
@@ -524,6 +526,12 @@ export default function SelectClass() {
     }
 
 
+    const Click_forum =()=>{
+        let element_ = document.getElementById('product-tab1');
+        element_.click();
+    }
+
+
 
 
     return (
@@ -547,6 +555,19 @@ export default function SelectClass() {
                     
             </div>
             <div className='CourseContainer '>
+                    <div className='activityInstructionContainer'>
+                                        <div className='d-grid gap-2 pt-1' style={{'padding':'10px'}}>
+                                            <p className='fontSemiBold'>¿Qué vamos a realizar?</p>
+                                            {selectActivity?.hasOwnProperty("video") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.video?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("format_text") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: 'Sigue las instrucciones del apartado superior' }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("evidence") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("redaction") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("image") ?   <p className='fontLight'>{'Visualiza la imagen y response desarrolla las siguientes actividades'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   <p className='fontLight'>{'Actividad de selección múltiple'}</p> : <></>}
+                                        </div>
+                    </div>
                     <div className='activityCourseContainer bs-2-'>
                             <div className='activityV2'>
                                 {/*dependiendo de la actividad colocamos*/}
@@ -604,9 +625,14 @@ export default function SelectClass() {
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
                                             <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.cloud_forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                            {GetWordCloud().length !== 0 ? 
                                             <div className='containerCloud'>
                                                     <ReactWordcloud   words={GetWordCloud()}></ReactWordcloud>
                                             </div>
+                                            :
+                                            <></>
+                                            }
+                                            
                                             <span className='fontSemiBold color-purple'>Escribe las palabras que se veran reflejada en la nube</span>
                                             <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                                 <textarea type="text" onChange={ReadReflexion} defaultValue={selectActivity?.cloud_forum_participation?.response}  className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
@@ -705,7 +731,7 @@ export default function SelectClass() {
                                     <div className='col-12'>
                                     <ul className='nav nav-pills d-flex flex-row justify-content-between' role="tablist">
                                         <li className='nav-item' role="presentation">
-                                        <button onClick={()=>setState(1)} className='nav-link active rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="product-tab1" data-bs-toggle="pill" data-bs-target="#pills-product1" type="button" role="tab" aria-controls="pills-product1" aria-selected="true"> <span className='fontLight me-2'>Contexto</span></button>
+                                        <button onClick={()=>setState(1)} className='nav-link active rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="product-tab1" data-bs-toggle="pill" data-bs-target="#pills-product1" type="button" role="tab" aria-controls="pills-product1" aria-selected="true"> <span className='fontLight me-2'>Foro</span></button>
                                         </li>
                                         {/* <li className='nav-item' role="presentation">
                                         <button onClick={()=>setState(2)} className='nav-link rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="product-tab2" data-bs-toggle="pill" data-bs-target="#pills-product2" type="button" role="tab" aria-controls="pills-product2" aria-selected="true"> <span className='fontLight me-2'>Recursos</span></button>
@@ -721,21 +747,59 @@ export default function SelectClass() {
                             {state == 1 ? 
                                 <div className='tab-pane fade show' id='pills-product2' role="tabpanel" aria-labelledby="product-tab" tabIndex="0">
                                 <div className='row'>
-                                    <div className='col-12'>
-                                        <div className='d-grid gap-2 pt-1' style={{'padding':'10px'}}>
-                                            <p className='fontSemiBold'>¿Qué vamos a realizar?</p>
-                                            {selectActivity?.hasOwnProperty("video") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.video?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
-                                            {selectActivity?.hasOwnProperty("format_text") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: 'Sigue las instrucciones del apartado superior' }}/> : <></>}
-                                            {selectActivity?.hasOwnProperty("evidence") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
-                                            {selectActivity?.hasOwnProperty("redaction") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
-                                            {selectActivity?.hasOwnProperty("image") ?   <p className='fontLight'>{'Visualiza la imagen y response desarrolla las siguientes actividades'}</p> : <></>}
-                                            {selectActivity?.hasOwnProperty("forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
-                                            {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
-                                            {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   <p className='fontLight'>{'Actividad de selección múltiple'}</p> : <></>}
+                                    <div className='col-12' style={{'padding':'20px'}}>
+                                        <span className='fontSemiBold color-purple'>Foro</span>
+                                        {selectActivity.hasOwnProperty("forum_participation") ? 
+                                        <>
+                                        <div className='comentaryContainer'>
+                                            {modulHistorial?.map((obj,index)=>{
+                                                return(
+                                                    <>
+
+                                                    {obj.activity_module_editable[selectActivityType][selectActivityIndex]['forum_participation']['response'] !== "" ? 
+                                                    <>
+                                                        <div key={index} className='Comentario bs-2-'>
+                                                        <span className='Name fontSemiBold color-purple' >{ obj?.user }</span>
+                                                        <p className='Comment fontLight'>{obj.activity_module_editable[selectActivityType][selectActivityIndex]['forum_participation']['response']}</p>
+                                                        </div>
+                                                    </>
+                                                    :
+                                                    <>
+
+                                                    </>
+                                                    }
+
+                                                    </>
+                                                    
+                                                    
+                                                )
+                                            })}
                                         </div>
+                                        </>
+                                        :
+                                        <>
+                                        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                            <textarea value={inputComment} onChange={ReadInput} className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
+                                        </div>
+                                        <div onClick={generateComment} className='ButtonSend bs-2-'>
+                                                <IoMdSend></IoMdSend>
+                                        </div>
+                                        <div className='comentaryContainer'>
+                                            {comments?.map((obj,index)=>{
+                                                return(
+                                                    <div key={index} className='Comentario bs-2-'>
+                                                        <span className='Name fontSemiBold color-purple' >{ GetUserData(obj?.user)?.last_name }</span>
+                                                        <p className='Comment fontLight'>{obj?.content}</p>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                        </>
+                                        }
+                                        
                                     </div>
                                 </div>
-                            </div>
+                                </div>
                             :
                             <></>
                             }
@@ -747,16 +811,19 @@ export default function SelectClass() {
                                         <div className='d-grid gap-2 pt-1'>
                                         {userModulActivities?.activity_module_editable?.foundations.map((obj,index)=>{
                                             return(
-                                                    <div key={index} onClick={()=>{
+                                                    <>
+                                                    {selectActivityType == 'foundations' && selectActivityIndex == index  ? 
+                                                        <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
                                                             setTextData("");
+                                                            Click_forum();
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('foundations');
                                                             // Guardamos la actividad especifica
                                                             setSelectActivity(obj);
                                                             setState(1);
-                                                            }} className='divClass_3 bs-2-'>
+                                                            }} className='divClass_4 bs-2-'>
                                                             <div className='TextContainerClass'>
                                                                     {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  video orquídeas'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de discusión'}</span> : <></>}
@@ -768,15 +835,70 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos selección multiple'}</span> : <></>}
                                                                     <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                             </div>
-                                                    </div>
+                                                        </div>
+                                                    :
+                                                        <div key={index} onClick={()=>{
+                                                                setSelectChoice(null);
+                                                                setTextData("");
+                                                                Click_forum();
+                                                                // Guardamos el indice de la actividad
+                                                                setSelectActivityIndex(index);
+                                                                setSelectActivityType('foundations');
+                                                                // Guardamos la actividad especifica
+                                                                setSelectActivity(obj);
+                                                                setState(1);
+                                                                }} className='divClass_3 bs-2-'>
+                                                                <div className='TextContainerClass'>
+                                                                        {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  video orquídeas'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de discusión'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos adjunta tu respuesta'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos corta redacción'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  imagen reflexiva'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos participa en el foro'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos participa en el foro'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos selección multiple'}</span> : <></>}
+                                                                        <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                                </div>
+                                                        </div>
+                                                    }
+                                                    
+                                                    </>
+                                                    
                                             )
                                         })
                                         }
                                         {userModulActivities?.activity_module_editable?.engage.map((obj,index)=>{
                                             return(
+                                                    <>
+                                                    {selectActivityType == 'engage' && selectActivityIndex == index  ?
+                                                        <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
+                                                            setTextData("");
+                                                            Click_forum();
+                                                            // Guardamos el indice de la actividad
+                                                            setSelectActivityIndex(index);
+                                                            setSelectActivityType('engage');
+                                                            // Guardamos la actividad especifica
+                                                            setSelectActivity(obj);
+                                                            setState(1);
+                                                            }} className='divClass_4 bs-2-'>
+                                                            <div className='TextContainerClass'>
+                                                                    {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso Video orquídeas'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  momento de discusión'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso adjunta tu respuesta'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso corta redacción'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso selección multiple'}</span> : <></>}
+                                                                    <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                            </div>
+                                                    </div>
+                                                    :
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
                                                             setTextData("");
+                                                            Click_forum();
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('engage');
@@ -796,14 +918,47 @@ export default function SelectClass() {
                                                                     <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                             </div>
                                                     </div>
+
+                                                    }
+                                                    </>
+                                                    
                                             )
                                         })
                                         }
                                         {userModulActivities?.activity_module_editable?.co_create.map((obj,index)=>{
                                             return( 
+
+
+                                                    <>
+                                                    {selectActivityType == 'co_create' && selectActivityIndex == index  ?
+                                                        <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
+                                                            setTextData("");
+                                                            Click_forum();
+                                                            // Guardamos el indice de la actividad
+                                                            setSelectActivityIndex(index);
+                                                            setSelectActivityType('co_create');
+                                                            // Guardamos la actividad especifica
+                                                            setSelectActivity(obj);
+                                                            setState(1);
+                                                            }} className='divClass_4 bs-2-'>
+                                                            <div className='TextContainerClass'>
+                                                                    {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo video orquídeas'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo momento de discusión'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo adjunta tu respuesta'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo corta redacción'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo selección multiple'}</span> : <></>}
+                                                                    <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                            </div>
+                                                    </div>
+                                                    :
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
                                                             setTextData("");
+                                                            Click_forum();
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('co_create');
@@ -823,14 +978,45 @@ export default function SelectClass() {
                                                                     <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                             </div>
                                                     </div>
+                                                    
+                                                    }
+                                                    </>
+                                                    
                                             )
                                         })
                                         }
                                         {userModulActivities?.activity_module_editable?.reflection.map((obj,index)=>{
                                             return(
+                                                    <>
+                                                    {selectActivityType == 'reflection' && selectActivityIndex == index  ?
+                                                        <div key={index} onClick={()=>{
+                                                            setSelectChoice(null);
+                                                            setTextData("");
+                                                            Click_forum();
+                                                            // Guardamos el indice de la actividad
+                                                            setSelectActivityIndex(index);
+                                                            setSelectActivityType('reflection');
+                                                            // Guardamos la actividad especifica
+                                                            setSelectActivity(obj);
+                                                            setState(1);
+                                                            }} className='divClass_4 bs-2-'>
+                                                            <div className='TextContainerClass'>
+                                                                    {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión video orquídeas'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión momento de discusión'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión adjunta tu respuesta'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión corta redacción'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión selección multiple'}</span> : <></>}
+                                                                    <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                            </div>
+                                                    </div>
+                                                    :
                                                     <div key={index} onClick={()=>{
                                                             setSelectChoice(null);
                                                             setTextData("");
+                                                            Click_forum();
                                                             // Guardamos el indice de la actividad
                                                             setSelectActivityIndex(index);
                                                             setSelectActivityType('reflection');
@@ -850,6 +1036,9 @@ export default function SelectClass() {
                                                                     <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
                                                             </div>
                                                     </div>
+                                                    }
+                                                    </>
+                                                    
                                             )
                                         })
                                         }
@@ -860,48 +1049,19 @@ export default function SelectClass() {
                             :
                             <></>
                             }
-                            
                     </div>
                     <div className='chatCourseContainer bs-2-'>
-                        <span className='fontSemiBold color-purple'>Foro</span>
-                        {selectActivity.hasOwnProperty("forum_participation") ? 
-                        <>
-                        <div className='comentaryContainer'>
-                            {modulHistorial?.map((obj,index)=>{
-                                return(
-                                    <>
-
-                                    {obj.activity_module_editable[selectActivityType][selectActivityIndex]['forum_participation']['response'] !== "" ? 
-                                    <>
-                                        <div key={index} className='Comentario bs-2-'>
-                                        <span className='Name fontSemiBold color-purple' >{ obj?.user }</span>
-                                        <p className='Comment fontLight'>{obj.activity_module_editable[selectActivityType][selectActivityIndex]['forum_participation']['response']}</p>
+                                        <div className='d-grid gap-2 pt-1' style={{'padding':'10px'}}>
+                                            <p className='fontSemiBold'>¿Qué vamos a realizar?</p>
+                                            {selectActivity?.hasOwnProperty("video") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.video?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("format_text") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: 'Sigue las instrucciones del apartado superior' }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("evidence") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("redaction") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("image") ?   <p className='fontLight'>{'Visualiza la imagen y response desarrolla las siguientes actividades'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   <p className='fontLight'>{'Actividad de selección múltiple'}</p> : <></>}
                                         </div>
-                                    </>
-                                    :
-                                    <>
-
-                                    </>
-                                    }
-
-                                    </>
-                                    
-                                    
-                                )
-                            })}
-                        </div>
-                        </>
-                        :
-                        <>
-                        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
-                            <textarea value={inputComment} onChange={ReadInput} className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
-                        </div>
-                        <div onClick={generateComment} className='ButtonSend bs-2-'>
-                                <IoMdSend></IoMdSend>
-                        </div>
-                        
-                        </>
-                        }
                         
                         
                     </div>
