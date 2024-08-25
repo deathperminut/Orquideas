@@ -400,24 +400,30 @@ export default function Users() {
         }
 
       }
-      
+      if(selectInsti != null){
 
-      // UNA VEZ ACTUALIZADA, AHORA COLOCAMOS A LA INSTITUCIÓN QUE PERTENECE EL USUARIO
-      let instis = institution.filter((obj)=>obj?.id == selectInsti?.id);
-      let lista_usuarios = instis[0].users;
-      lista_usuarios.push(selectUser?.id);
-      // FILTRAMOS EL USUARIO Y ACTUALIZAMOS LA INFORMACIÓN DE LA INSTITUCIÓN.
-      let result =undefined;
-      console.log("ELEMENTO A ACTUALIZAR: ",{...selectInsti,['users']:lista_usuarios});
-      result = await  UpdateInstitution({...selectInsti,['users']:lista_usuarios}).catch((error)=>{
-        console.log("ERROR SEGUNDO ACTUALIZADO: ",error);
-        setPreloader(false);
-      })
-      if(result){
-        console.log("INSTITUCIÓN ACTUALIZADA CON ÉXITO",result.data);
-        GetInstitutionData();
+        // UNA VEZ ACTUALIZADA, AHORA COLOCAMOS A LA INSTITUCIÓN QUE PERTENECE EL USUARIO
+        let instis = institution.filter((obj)=>obj?.id == selectInsti?.id);
+        let lista_usuarios = instis[0].users;
+        lista_usuarios.push(selectUser?.id);
+        // FILTRAMOS EL USUARIO Y ACTUALIZAMOS LA INFORMACIÓN DE LA INSTITUCIÓN.
+        let result =undefined;
+        console.log("ELEMENTO A ACTUALIZAR: ",{...selectInsti,['users']:lista_usuarios});
+        result = await  UpdateInstitution({...selectInsti,['users']:lista_usuarios}).catch((error)=>{
+          console.log("ERROR SEGUNDO ACTUALIZADO: ",error);
+          setPreloader(false);
+        })
+        if(result){
+          console.log("INSTITUCIÓN ACTUALIZADA CON ÉXITO",result.data);
+          GetInstitutionData();
+        }
+        // NOS VEMOS A TRAER TODAS LAS INSTITUCIONES DE BASE DE DATOS
+
+      }else{
+        UPDATEUSER();
       }
-      // NOS VEMOS A TRAER TODAS LAS INSTITUCIONES DE BASE DE DATOS
+      
+      
       
       
     }
