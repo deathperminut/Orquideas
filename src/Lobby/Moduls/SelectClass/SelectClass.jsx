@@ -584,7 +584,20 @@ export default function SelectClass() {
                                 </div>
                                 </>
                                 :
-                                <ReactPlayer width={'100%'} height={'100%'} url={selectActivity?.video?.video_link} /> 
+                                <>
+                                    {selectActivity?.video?.video_link == "https://www.youtube.com/watch?v=PSkHjfcw0gM&list=PL3q3oo-8MJ7aBrGJUoCoZT7qjPpCnj2vF&index=32&t=7s" ? 
+                                    <div className='format_textActivity'>
+                                        <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Video feminicidio'}</span>
+                                        <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: 'Visita el sitio web mediante el siguiente botón y accede al video referenciado.'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                        <div onClick={()=>{window?.open(selectActivity?.video?.video_link)}}  className='Button_2' style={{'marginTop':'20px'}}>
+                                                        <span className='text_button_2'>Ver</span>
+                                        </div>
+                                    </div>
+                                    :
+                                    <ReactPlayer width={'100%'} height={'100%'} url={selectActivity?.video?.video_link} /> 
+                                    }
+                                </>
+                                
                                 }
                             </> 
                             
