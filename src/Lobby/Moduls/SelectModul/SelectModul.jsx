@@ -188,6 +188,7 @@ export default function SelectModul() {
                                                                 {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  participa en el foro'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de discusión'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de lectura'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos corta redacción'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos selección multiple'}</span> : <></>}
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
@@ -213,6 +214,7 @@ export default function SelectModul() {
                                                                 {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  momento de discusión'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso momento de lectura'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso corta redacción'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso selección multiple'}</span> : <></>}
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
@@ -238,6 +240,7 @@ export default function SelectModul() {
                                                                 {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo momento de discusión'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo momento de lectura'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo corta redacción'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo selección multiple'}</span> : <></>}
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
@@ -263,6 +266,7 @@ export default function SelectModul() {
                                                                 {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión momento de discusión'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión adjunta tu respuesta'}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión momento de lectura'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión corta redacción'}</span> : <></>}
                                                                 {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión selección multiple'}</span> : <></>}
                                                                 <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>

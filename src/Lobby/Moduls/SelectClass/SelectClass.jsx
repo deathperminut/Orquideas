@@ -571,8 +571,23 @@ export default function SelectClass() {
                     <div className='activityCourseContainer bs-2-'>
                             <div className='activityV2'>
                                 {/*dependiendo de la actividad colocamos*/}
-                            {selectActivity?.hasOwnProperty("video") ?   
-                            <ReactPlayer width={'100%'} height={'100%'} url={selectActivity?.video?.video_link} /> 
+                            {selectActivity?.hasOwnProperty("video") ?  
+                            <>
+                                {selectActivity?.video?.video_link == "https://www.tokyvideo.com/es/video/12-hombres-sin-piedad-1957-castellano" ? 
+                                <>
+                                <div className='format_textActivity'>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Pelicula 12 hombres sin piedad'}</span>
+                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: 'Visita algun sitio de web de preferencia y visualiza la pelicula recomendada, con el siguiente botón puedes acceder a una posible opción'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <div onClick={()=>{window?.open(selectActivity?.video?.video_link)}}  className='Button_2' style={{'marginTop':'20px'}}>
+                                                    <span className='text_button_2'>Ver</span>
+                                    </div>
+                                </div>
+                                </>
+                                :
+                                <ReactPlayer width={'100%'} height={'100%'} url={selectActivity?.video?.video_link} /> 
+                                }
+                            </> 
+                            
                             : 
                             <></>
                             }
@@ -583,6 +598,21 @@ export default function SelectClass() {
                             </div>  
                             :
                             <></>
+                            }
+                            {
+                                selectActivity?.hasOwnProperty("lecture") ? 
+
+                                <div className='format_textActivity'>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{selectActivity?.lecture?.title}</span>
+                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.lecture?.content?.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'pulsa el siguiente boton para abrir la lectura'}</span>
+                                    <div onClick={()=>{window?.open(selectActivity?.lecture?.link)}}  className='Button_2' style={{'marginTop':'20px'}}>
+                                                    <span className='text_button_2'>Ver</span>
+                                    </div>
+                                </div>
+                            :
+                            <>
+                            </>
                             }
                             {selectActivity?.hasOwnProperty("evidence") ?   
                             <div className='format_textActivity'>
@@ -607,8 +637,8 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("forum_participation") ?   
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                            <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
-                                            <span className='fontSemiBold color-purple'>Escribe tu reflexión</span>
+                                            <p style={{'textAlign':'center','fontSize':'20px','textAlign':'center'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                            <span className='fontSemiBold color-purple' style={{'textAlign':'center'}}>Escribe tu respuesta y guarda pulsando el botón que se encuentra al final, tu respuesta se vera reflejada en la parte inferior en el apartado de foro</span>
                                             <div  className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                                 <textarea onChange={ReadReflexion} defaultValue={selectActivity?.forum_participation?.response} style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                             </div>
@@ -633,7 +663,7 @@ export default function SelectClass() {
                                             <></>
                                             }
                                             
-                                            <span className='fontSemiBold color-purple'>Escribe las palabras que se veran reflejada en la nube</span>
+                                            <span className='fontSemiBold color-purple'>Escribe las palabras en el siguiente cuadro de texto y guarda con el botón del final del cuestionario para que se vean reflejadas en la nube </span>
                                             <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                                 <textarea type="text" onChange={ReadReflexion} defaultValue={selectActivity?.cloud_forum_participation?.response}  className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                             </div>
@@ -716,14 +746,14 @@ export default function SelectClass() {
                             <></>
                             }
                             </div>
-                            {selectActivity?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' Video orquídeas'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' Momento de discusión'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' Adjunta tu respuesta'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' Corta redacción'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' observa la imagen'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' participa en el foro'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' participa en el foro'}</span> : <></>}
-                            {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+(parseInt(selectActivityIndex)+1)+' selección multiple'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+' Video orquídeas'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+' Momento de discusión'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+' Adjunta tu respuesta'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'paddingLeft':'10px'}}>{'Actividad '+' Corta redacción'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+' observa la imagen'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+' participa en el foro'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+' participa en el foro'}</span> : <></>}
+                            {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Actividad '+' selección multiple'}</span> : <></>}
                             <span className='fontLight' style={{'paddingLeft':'10px'}}>{convertDate(selectModul?.created_at)}</span>
                             {/*Definimos las opciones*/}
                             <div className='card-header border-0 rounded-3'>
@@ -731,7 +761,13 @@ export default function SelectClass() {
                                     <div className='col-12'>
                                     <ul className='nav nav-pills d-flex flex-row justify-content-between' role="tablist">
                                         <li className='nav-item' role="presentation">
-                                        <button onClick={()=>setState(1)} className='nav-link active rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="product-tab1" data-bs-toggle="pill" data-bs-target="#pills-product1" type="button" role="tab" aria-controls="pills-product1" aria-selected="true"> <span className='fontLight me-2'>Foro</span></button>
+                                        <button onClick={()=>setState(1)} className='nav-link active rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="product-tab1" data-bs-toggle="pill" data-bs-target="#pills-product1" type="button" role="tab" aria-controls="pills-product1" aria-selected="true"> <span className='fontLight me-2'>
+                                            {selectActivity?.hasOwnProperty("forum_participation") ? 
+                                            <span>Foro</span>
+                                            :
+                                            <span>Comentarios</span>
+                                            }
+                                        </span></button>
                                         </li>
                                         {/* <li className='nav-item' role="presentation">
                                         <button onClick={()=>setState(2)} className='nav-link rounded-0 d-flex flex-row justify-content-center align-items-center align-self-center' id="product-tab2" data-bs-toggle="pill" data-bs-target="#pills-product2" type="button" role="tab" aria-controls="pills-product2" aria-selected="true"> <span className='fontLight me-2'>Recursos</span></button>
@@ -748,7 +784,6 @@ export default function SelectClass() {
                                 <div className='tab-pane fade show' id='pills-product2' role="tabpanel" aria-labelledby="product-tab" tabIndex="0">
                                 <div className='row'>
                                     <div className='col-12' style={{'padding':'20px'}}>
-                                        <span className='fontSemiBold color-purple'>Foro</span>
                                         {selectActivity.hasOwnProperty("forum_participation") ? 
                                         <>
                                         <div className='comentaryContainer'>
@@ -830,6 +865,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos selección multiple'}</span> : <></>}
@@ -854,6 +890,7 @@ export default function SelectClass() {
                                                                         {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos adjunta tu respuesta'}</span> : <></>}
                                                                         {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos corta redacción'}</span> : <></>}
                                                                         {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  imagen reflexiva'}</span> : <></>}
+                                                                        {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  momento de lectura'}</span> : <></>}
                                                                         {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos participa en el foro'}</span> : <></>}
                                                                         {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos participa en el foro'}</span> : <></>}
                                                                         {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos selección multiple'}</span> : <></>}
@@ -888,6 +925,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso selección multiple'}</span> : <></>}
@@ -912,6 +950,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso selección multiple'}</span> : <></>}
@@ -948,6 +987,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo selección multiple'}</span> : <></>}
@@ -972,6 +1012,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo selección multiple'}</span> : <></>}
@@ -1006,6 +1047,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión selección multiple'}</span> : <></>}
@@ -1030,6 +1072,7 @@ export default function SelectClass() {
                                                                     {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión adjunta tu respuesta'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión corta redacción'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión imagen reflexiva'}</span> : <></>}
+                                                                    {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión  momento de lectura'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
                                                                     {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión selección multiple'}</span> : <></>}
@@ -1054,10 +1097,11 @@ export default function SelectClass() {
                                         <div className='d-grid gap-2 pt-1' style={{'padding':'10px'}}>
                                             <p className='fontSemiBold'>¿Qué vamos a realizar?</p>
                                             {selectActivity?.hasOwnProperty("video") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.video?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
-                                            {selectActivity?.hasOwnProperty("format_text") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: 'Sigue las instrucciones del apartado superior' }}/> : <></>}
+                                            {selectActivity?.hasOwnProperty("format_text") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: 'Sigue la descripción de la actividad presente' }}/> : <></>}
                                             {selectActivity?.hasOwnProperty("evidence") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
                                             {selectActivity?.hasOwnProperty("redaction") ?   <p className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/> : <></>}
                                             {selectActivity?.hasOwnProperty("image") ?   <p className='fontLight'>{'Visualiza la imagen y response desarrolla las siguientes actividades'}</p> : <></>}
+                                            {selectActivity?.hasOwnProperty("lecture") ?   <p className='fontLight'>{'Momento de lectura, pulsa el botón de ver y realiza la lectura que se abrira en la pestaña nueva'}</p> : <></>}
                                             {selectActivity?.hasOwnProperty("forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
                                             {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   <p className='fontLight'>{'Momento de participación'}</p> : <></>}
                                             {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   <p className='fontLight'>{'Actividad de selección múltiple'}</p> : <></>}
