@@ -322,7 +322,12 @@ export default function Users() {
 
     const GetInsti=(idUser)=>{
       let filter_ = institution.filter((obj)=> obj.users.includes(idUser))
-      return filter_[0]
+      if (filter_.length == 0){
+        return null
+      }else{
+        return filter_[0]
+      }
+      
     }
 
     const TraducirRol=(idRol)=>{
@@ -371,26 +376,31 @@ export default function Users() {
       // PRIMERO OBTENEMOS LAS INSTITUCIONES QUE TIENEN ASOCIADO AL USUARIO EN ESTE MOMENTO
       setPreloader(true);
       let insti_filter = [...institution].filter((obj)=>obj.users.includes(selectUser?.id))
-      console.log("OBTENEMOS LA INSTITUCIÓN: ",selectUser?.id,insti_filter);
-      // ELIMINAMOS EL USUARIO DE CADA LISTA
-      for (var i = 0; i<insti_filter.length;i++){
-          const valueToRemove = selectUser?.id;
-          let lista_copia = [...insti_filter[i].users]
-          const index = [...insti_filter[i].users].indexOf(valueToRemove);
-          if (index > -1) {
-              lista_copia.splice(index, 1);
-          }
-          // FILTRAMOS EL USUARIO Y ACTUALIZAMOS LA INFORMACIÓN DE LA INSTITUCIÓN.
-          console.log("RESULTADOS: ",lista_copia);
-          let result =undefined;
-          result = await UpdateInstitution({...insti_filter[i],['users']:lista_copia}).catch((error)=>{
-            console.log("PROBLEMAS AL ACTUALIZAR DATOS: ",error);
-          })
-          if(result){
-            console.log("INSTITUCIÓN ACTUALIZADA CON ÉXITO",result.data);
-          }
-          
+      if(insti_filter.length != 0){
+
+        console.log("OBTENEMOS LA INSTITUCIÓN: ",selectUser?.id,insti_filter);
+        // ELIMINAMOS EL USUARIO DE CADA LISTA
+        for (var i = 0; i<insti_filter.length;i++){
+            const valueToRemove = selectUser?.id;
+            let lista_copia = [...insti_filter[i].users]
+            const index = [...insti_filter[i].users].indexOf(valueToRemove);
+            if (index > -1) {
+                lista_copia.splice(index, 1);
+            }
+            // FILTRAMOS EL USUARIO Y ACTUALIZAMOS LA INFORMACIÓN DE LA INSTITUCIÓN.
+            console.log("RESULTADOS: ",lista_copia);
+            let result =undefined;
+            result = await UpdateInstitution({...insti_filter[i],['users']:lista_copia}).catch((error)=>{
+              console.log("PROBLEMAS AL ACTUALIZAR DATOS: ",error);
+            })
+            if(result){
+              console.log("INSTITUCIÓN ACTUALIZADA CON ÉXITO",result.data);
+            }
+            
+        }
+
       }
+      
 
       // UNA VEZ ACTUALIZADA, AHORA COLOCAMOS A LA INSTITUCIÓN QUE PERTENECE EL USUARIO
       let instis = institution.filter((obj)=>obj?.id == selectInsti?.id);
@@ -541,7 +551,7 @@ export default function Users() {
                                     <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.first_name}</p>
                                     </td>
                                     <td className='align-middle'>
-                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetInsti(obj?.id).name}</p>
+                                    <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{GetInsti(obj?.id)?.name}</p>
                                     </td>
                                     <td className='align-middle'>
                                     <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{TraducirRol(obj?.role).name}</p>

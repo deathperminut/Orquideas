@@ -171,6 +171,12 @@ export default function Home() {
                   title: 'Tu institución no tiene acceso al módulo respectivo'
                 })
               }
+        }else{
+          Swal.fire({
+            icon: 'info',
+            title: 'No estas vinculado a una institución en estos momento',
+            'text':'Valida con alguien del equipo de orquideas para que te de una asignación manual en el panel de administración'
+          })
         }
       }
 

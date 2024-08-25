@@ -310,7 +310,12 @@ export default function Profile() {
 
     const GetIns=()=>{
       let filter_ = institution.filter((obj)=> obj.users.includes(userData?.id))
-      return filter_[0]
+      if(filter_.length == 0){
+        return null;
+      }else{
+        return filter_[0];
+      }
+      
     }
 
     const UpdateAccount=async()=>{
@@ -350,17 +355,26 @@ export default function Profile() {
 
       let insti =  GetIns();
       console.log("INSTITUCIÓN: ",insti)
-      let moduls_ = insti?.allowed_modules
-      if(moduls_.length !== 0){
+      if(insti == null){
 
-        let modulId =  moduls_[0];
-
-        console.log("ALLOWED dSELECCIONADA: ",modulId)
-        return moduls.filter((obj)=> obj.id == modulId)[0];
+        return null
 
       }else{
-        return null
+        let moduls_ = insti?.allowed_modules
+        if(moduls_.length !== 0){
+
+          let modulId =  moduls_[0];
+  
+          console.log("ALLOWED dSELECCIONADA: ",modulId)
+          return moduls.filter((obj)=> obj.id == modulId)[0];
+  
+        }else{
+          return null
+        }
+
       }
+      
+      
       
 
     }
@@ -521,7 +535,7 @@ export default function Profile() {
                                                           <p className='fontLight description_moduls'>{ObtainModulInstitution()?.description}</p>
                                                   </div>
                                         </div>
-                                        {ObtainModulInstitution() !== null ? 
+                                        {/* {ObtainModulInstitution() !== null ? 
                                           <div onClick={()=>{
                                           setSelectModul(ObtainModulInstitution());
                                           navigate('/Lobby/SelectModul')
@@ -535,7 +549,7 @@ export default function Profile() {
                                         </div>
                                         :
                                         <></>
-                                        }
+                                        } */}
                                         
                                 </div>
                               </div>

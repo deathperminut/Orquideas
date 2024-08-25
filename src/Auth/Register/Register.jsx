@@ -359,37 +359,46 @@ export default function Register() {
         if(result){
           
             console.log("USUARIO REGISTRADO: ",result.data);
-            setPreloader(false);
             // ACTUALIZAMOS LAS CARACTERISTICAS DE LA INSTITUCIÓN AGREGANDO EL ID DEL NUEVO USUARIO
-            
-            let users = [...institution['users']];
-            users.push(result.data.id) // AGREGAMOS EL ID DEL USUARIO
-            setPreloader(true);
-            let answer =  await UpdateInstitution({...institution,['users']:users}).catch((error)=>{
-              console.log(error);
+            if(result.data.id){
+
+              let users = [...institution['users']];
+              users.push(result.data.id) // AGREGAMOS EL ID DEL USUARIO
+              let answer =  await UpdateInstitution({...institution,['users']:users}).catch((error)=>{
+                console.log(error);
+                setPreloader(false);
+                Swal.fire({
+                  icon: 'info',
+                  title: 'Error al completar registro 2'
+                })
+              })
+              if(answer){
+                console.log("actualizado: ",answer.data);
+                setPreloader(false);
+                Swal.fire({
+                  icon: 'success',
+                  title: 'El registro fue éxitoso'
+                }).then(
+                  (response)=>{
+                    if(response?.isConfirmed){
+                      navigate('/Auth/AuthLogin')
+                    }else{
+                      navigate('/Auth/AuthLogin')
+                    }
+                  }
+                )
+
+              }
+              
+            }else{
               setPreloader(false);
               Swal.fire({
                 icon: 'info',
-                title: 'Error al completar registro 2'
+                title: 'El usuario fue creado, pero no se pudo vincular a la institución respectiva',
+                text:'Pidele al lider de la plataforma que te vincule manualmente en el panel de administración'
               })
-            })
-            if(answer){
-              console.log("actualizado: ",answer.data);
-              setPreloader(false);
-              Swal.fire({
-                icon: 'success',
-                title: 'El registro fue éxitoso'
-              }).then(
-                (response)=>{
-                  if(response?.isConfirmed){
-                    navigate('/Auth/AuthLogin')
-                  }else{
-                    navigate('/Auth/AuthLogin')
-                  }
-                }
-              )
-
             }
+            
             
         }
         
