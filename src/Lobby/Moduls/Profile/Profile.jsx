@@ -11,14 +11,14 @@ import { AppContext } from '../../../Context';
 import Swal from 'sweetalert2';
 import Preloader from '../../../Components/Shared/Preloader/Preloader';
 import { UpdateUser } from '../../../Services/Users/Users';
-import Violeta from '../../../assets/images/Violeta2.png';
-import Azul from '../../../assets/images/Azul22.png';
-import Rojo from '../../../assets/images/Magenta22.png';
-import Verde from '../../../assets/images/Verde2.png';
-import Naranja from '../../../assets/images/Naranja2.png';
-import Amarillo from '../../../assets/images/Amarillo2.png';
-import Cafe from '../../../assets/images/Cafe22.png';
-import Aguamarina from '../../../assets/images/AguaMarina2.png';
+import Violeta from '../../../assets/images/Violeta4.png';
+import Azul from '../../../assets/images/Azul4.png';
+import Rojo from '../../../assets/images/Magenta4.png';
+import Verde from '../../../assets/images/Verde4.png';
+import Naranja from '../../../assets/images/Naranja4.png';
+import Amarillo from '../../../assets/images/Amarillo4.png';
+import Cafe from '../../../assets/images/Cafe4.png';
+import Aguamarina from '../../../assets/images/AguaMarina4.png';
 
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
