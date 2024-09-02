@@ -8,11 +8,13 @@ import Swal from 'sweetalert2';
 import Preloader from '../../Components/Shared/Preloader/Preloader';
 import { GetInstitutions, UpdateInstitution } from '../../Services/Institutions/Institutions';
 import { RegisterUser } from '../../Services/Users/Users';
-
+import { IoEyeOffOutline } from "react-icons/io5";
+import { IoEyeOutline } from "react-icons/io5";
 
 /**
- * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
- */
+* MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
+**/
+
 
 const { NoOptionsMessage } = components;
 
@@ -263,7 +265,8 @@ export default function Register() {
         "email":"",
         "name":"",
         "identification":"",
-        "password":""
+        "password":"",
+        "same_password":""
       }
     )
 
@@ -326,7 +329,7 @@ export default function Register() {
           title: 'Debes seleccionar la institución a la cual perteneces'
         })
         
-      }else if(userInfo?.email == "" || userInfo?.identification == "" || userInfo?.name == "" || userInfo?.password == "" ){
+      }else if(userInfo?.email == "" || userInfo?.identification == "" || userInfo?.name == "" || userInfo?.password == "" || userInfo?.same_password == "" ){
 
         //TODOS LOS CAMPOS SON OBLIGATORIOS
         Swal.fire({
@@ -335,75 +338,123 @@ export default function Register() {
         })
 
       }else{
-        // REALIZAMOS EL REGISTRO
-        let result =  undefined;
-        setPreloader(true);
-        result =  await RegisterUser({'email':userInfo['email'],'first_name':userInfo['identification'],'last_name':userInfo['name'],'password':userInfo['password'],'role':2}).catch((error)=>{
-          console.log(error);
-          if(error?.response?.data?.email?.length !== 0 ){
-            setPreloader(false);
+
+        // REVISAMOS QUE LAS CONTRASEÑAS COINCIDAN
+        // REVISAMOS LA CONTRASEÑA
+        if (userInfo?.password !== userInfo?.same_password){
+
             Swal.fire({
               icon: 'info',
-              title: 'El correo ya se encuentra en uso, no es posible crear una cuenta con dicho email'
+              title: 'Las contraseñas no coinciden valida tu información'
             })
-          }else{
-            setPreloader(false);
-            Swal.fire({
-              icon: 'info',
-              title: 'Error al generar el registro'
-            })
-          }
-          
-        })
 
-        if(result){
-          
-            console.log("USUARIO REGISTRADO: ",result.data);
-            // ACTUALIZAMOS LAS CARACTERISTICAS DE LA INSTITUCIÓN AGREGANDO EL ID DEL NUEVO USUARIO
-            if(result.data.id){
+        }else{
 
-              let users = [...institution['users']];
-              users.push(result.data.id) // AGREGAMOS EL ID DEL USUARIO
-              let answer =  await UpdateInstitution({...institution,['users']:users}).catch((error)=>{
-                console.log(error);
+            // REALIZAMOS EL REGISTRO
+            let result =  undefined;
+            setPreloader(true);
+            result =  await RegisterUser({'email':userInfo['email'],'first_name':userInfo['identification'],'last_name':userInfo['name'],'password':userInfo['password'],'role':2}).catch((error)=>{
+              console.log(error);
+              if(error?.response?.data?.email?.length !== 0 ){
                 setPreloader(false);
                 Swal.fire({
                   icon: 'info',
-                  title: 'Error al completar registro 2'
+                  title: 'El correo ya se encuentra en uso, no es posible crear una cuenta con dicho email'
                 })
-              })
-              if(answer){
-                console.log("actualizado: ",answer.data);
+              }else{
                 setPreloader(false);
                 Swal.fire({
-                  icon: 'success',
-                  title: 'El registro fue éxitoso'
-                }).then(
-                  (response)=>{
-                    if(response?.isConfirmed){
-                      navigate('/Auth/AuthLogin')
-                    }else{
-                      navigate('/Auth/AuthLogin')
-                    }
-                  }
-                )
-
+                  icon: 'info',
+                  title: 'Error al generar el registro'
+                })
               }
               
-            }else{
-              setPreloader(false);
-              Swal.fire({
-                icon: 'info',
-                title: 'El usuario fue creado, pero no se pudo vincular a la institución respectiva',
-                text:'Pidele al lider de la plataforma que te vincule manualmente en el panel de administración'
-              })
+            })
+
+            if(result){
+              
+                console.log("USUARIO REGISTRADO: ",result.data);
+                // ACTUALIZAMOS LAS CARACTERISTICAS DE LA INSTITUCIÓN AGREGANDO EL ID DEL NUEVO USUARIO
+                if(result.data.id){
+
+                  let users = [...institution['users']];
+                  users.push(result.data.id) // AGREGAMOS EL ID DEL USUARIO
+                  let answer =  await UpdateInstitution({...institution,['users']:users}).catch((error)=>{
+                    console.log(error);
+                    setPreloader(false);
+                    Swal.fire({
+                      icon: 'info',
+                      title: 'Error al completar registro 2'
+                    })
+                  })
+                  if(answer){
+                    console.log("actualizado: ",answer.data);
+                    setPreloader(false);
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'El registro fue éxitoso'
+                    }).then(
+                      (response)=>{
+                        if(response?.isConfirmed){
+                          navigate('/Auth/AuthLogin')
+                        }else{
+                          navigate('/Auth/AuthLogin')
+                        }
+                      }
+                    )
+
+                  }
+                  
+                }else{
+                  setPreloader(false);
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'El usuario fue creado, pero no se pudo vincular a la institución respectiva',
+                    text:'Pidele al lider de la plataforma que te vincule manualmente en el panel de administración'
+                  })
+                }
+                
+                
             }
-            
-            
+          
         }
+        
         
       }
           
+    }
+
+    // USE STATES PASSWORDS
+
+    let [pass,setPass] =  React.useState(true);
+    let [pass2,setPass2] =  React.useState(true);
+
+    const SeePassword=()=>{
+      setPass(false);
+      const input = document.querySelector("#passwordV1");
+      // When an input is checked, or whatever...
+      input.setAttribute("type", "text");
+    }
+
+    const HidePassword=()=>{
+      setPass(true);
+      const input = document.querySelector("#passwordV1");
+      // When an input is checked, or whatever...
+      input.setAttribute("type", "password");
+    }
+
+    const SeePassword2=()=>{
+      setPass2(false);
+      const input = document.querySelector("#passwordV2");
+      // When an input is checked, or whatever...
+      input.setAttribute("type", "text");
+    }
+
+    const HidePassword2=()=>{
+      setPass2(true);
+      const input = document.querySelector("#passwordV2");
+      // When an input is checked, or whatever...
+      input.setAttribute("type", "password");
     }
 
     return (
@@ -448,8 +499,30 @@ export default function Register() {
                           <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                           <div className='col-12'>
                               <div className='form-floating inner-addon- right-addon-'>
-                              <input type="password" value={userInfo?.password} onChange={(event)=>ReadInput(event,'password')}  className='form-control' id='password' placeholder="Ingrese su contraseña" />
+                              <input type="password" value={userInfo?.password} onChange={(event)=>ReadInput(event,'password')}  className='form-control' id='passwordV1' placeholder="Ingrese su contraseña" />
                               </div>
+                              {
+                                pass ? 
+                                <IoEyeOutline onClick={SeePassword} className='LockPassword' ></IoEyeOutline>
+                                :
+                                <IoEyeOffOutline onClick={HidePassword} className='LockPassword'></IoEyeOffOutline>
+                              }
+                              
+                          </div>
+                          </div>
+                          <span className='fs-10- fontLight'>Repite la contraseña</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                          <div className='col-12'>
+                              <div className='form-floating inner-addon- right-addon-'>
+                              <input type="password" value={userInfo?.same_password} onChange={(event)=>ReadInput(event,'same_password')}  className='form-control' id='passwordV2' placeholder="Repite la contraseña" />
+                              </div>
+
+                              {
+                                pass2 ? 
+                                <IoEyeOutline onClick={SeePassword2} className='LockPassword' ></IoEyeOutline>
+                                :
+                                <IoEyeOffOutline onClick={HidePassword2} className='LockPassword'></IoEyeOffOutline>
+                              }
                           </div>
                           </div>
                           <span className='fs-10- fontLight' >Institución</span>

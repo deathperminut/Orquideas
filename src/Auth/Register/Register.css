@@ -17,3 +17,10 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.LockPassword{
+    position: relative;
+    bottom: 33px;
+    left: 15px;
+    cursor: pointer;
+}
