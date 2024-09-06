@@ -515,7 +515,7 @@ export default function LandingPage() {
                 <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose2} size={30} className='fa icon-close'></IoIosClose>
                 </div>
                 <div className='offcanvas-body '>
-                <div className='container-fluid pt-0 pb-0 padding-40-'>
+                <div className='container-fluid pt-0 pb-0'>
                 <div className='dataModulContainer'>
                 <div className='DataInfoModulContainer' style={{'backgroundColor':FilterModul()?.color}}>
                         <div className='ContainerImageModul_2'>
