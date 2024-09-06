@@ -573,11 +573,11 @@ export default function SelectClass() {
                                 {/*dependiendo de la actividad colocamos*/}
                             {selectActivity?.hasOwnProperty("video") ?  
                             <>
-                                {selectActivity?.video?.video_link == "https://www.tokyvideo.com/es/video/12-hombres-sin-piedad-1957-castellano" ? 
+                                {selectActivity?.video?.video_link == "https://www.youtube.com/watch?v=jO3kJ8w_1L8" ? 
                                 <>
                                 <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Pelicula 12 hombres sin piedad'}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: 'Visita algun sitio de web de preferencia y visualiza la pelicula recomendada, con el siguiente botón puedes acceder a una posible opción'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: 'Visita algun sitio de web de preferencia y visualiza la pelicula recomendada, con el siguiente botón puedes acceder a una posible opción'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div onClick={()=>{window?.open(selectActivity?.video?.video_link)}}  className='Button_2' style={{'marginTop':'20px'}}>
                                                     <span className='text_button_2'>Ver</span>
                                     </div>
@@ -588,7 +588,7 @@ export default function SelectClass() {
                                     {selectActivity?.video?.video_link == "https://www.youtube.com/watch?v=PSkHjfcw0gM&list=PL3q3oo-8MJ7aBrGJUoCoZT7qjPpCnj2vF&index=32&t=7s" ? 
                                     <div className='format_textActivity'>
                                         <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Video feminicidio'}</span>
-                                        <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: 'Visita el sitio web mediante el siguiente botón y accede al video referenciado.'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                        <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: 'Visita el sitio web mediante el siguiente botón y accede al video referenciado.'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                         <div onClick={()=>{window?.open(selectActivity?.video?.video_link)}}  className='Button_2' style={{'marginTop':'20px'}}>
                                                         <span className='text_button_2'>Ver</span>
                                         </div>
@@ -607,7 +607,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("format_text") ?  
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.format_text?.text.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.format_text?.text.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                             </div>  
                             :
                             <></>
@@ -617,7 +617,7 @@ export default function SelectClass() {
 
                                 <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{selectActivity?.lecture?.title}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.lecture?.content?.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.lecture?.content?.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'pulsa el siguiente boton para abrir la lectura'}</span>
                                     <div onClick={()=>{window?.open(selectActivity?.lecture?.link)}}  className='Button_2' style={{'marginTop':'20px'}}>
                                                     <span className='text_button_2'>Ver</span>
@@ -630,7 +630,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("evidence") ?   
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.evidence?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div class="custom-input-file col-md-6 col-sm-6 col-xs-6">
                                             <input onChange={(event)=>ReadFileData(event,'evidence','upload')}  type="file" id="fichero-tarifas" class="input-file" value=""></input>
                                             <span className='fontSemiBold'>Subir archivo</span>
@@ -650,7 +650,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("forum_participation") ?   
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                            <p style={{'textAlign':'center','fontSize':'20px','textAlign':'center'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                            <p style={{'textAlign':'center','fontSize':'20px','textAlign':'center','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                             <span className='fontSemiBold color-purple' style={{'textAlign':'center'}}>Escribe tu respuesta y guarda pulsando el botón que se encuentra al final, tu respuesta se vera reflejada en la parte inferior en el apartado de foro</span>
                                             <div  className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                                 <textarea onChange={ReadReflexion} defaultValue={selectActivity?.forum_participation?.response} style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
@@ -667,7 +667,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("cloud_forum_participation") ?   
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                            <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.cloud_forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                            <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.cloud_forum_participation?.question.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                             {GetWordCloud().length !== 0 ? 
                                             <div className='containerCloud'>
                                                     <ReactWordcloud   words={GetWordCloud()}></ReactWordcloud>
@@ -692,7 +692,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("image") ?   
                                 <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.image?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.image?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div className='imageContainerClass'>
                                         <img className='imageContainerClass' src={selectActivity?.image?.image}>
 
@@ -706,7 +706,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("selection_multiple_questionary") ?   
                                 <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Responde a la pregunta'}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.selection_multiple_questionary?.question_text.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.selection_multiple_questionary?.question_text.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <div className='imageContainerClass'>
                                         {/* MAPEAMOS LAS OPCIONES */}
                                         {
@@ -745,7 +745,7 @@ export default function SelectClass() {
                             {selectActivity?.hasOwnProperty("redaction") ?   
                             <div className='format_textActivity'>
                                     <span style={{'fontSize':'20px'}} className='fontSemiBold'>{'Instrucciones'}</span>
-                                    <p style={{'textAlign':'center','fontSize':'20px'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
+                                    <p style={{'textAlign':'center','fontSize':'20px','width':'100%'}} className='fontLight' dangerouslySetInnerHTML={{ __html: selectActivity?.redaction?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }}/>
                                     <span className='fontSemiBold color-purple'>Contenido</span>
                                     <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                         <textarea onChange={ReadReflexion} defaultValue={selectActivity?.redaction?.text}  style={{'height':'300px'}} className='form-control fontLight heightImportant' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
