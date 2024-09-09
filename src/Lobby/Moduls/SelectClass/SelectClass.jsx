@@ -224,11 +224,14 @@ export default function SelectClass() {
             }
             
         }
+
+        let [random,setRandom] = React.useState(false);
         
         
 
         const NextActivity=()=>{
             // VERIFICAMOS EL ORDEN Y EL TIPO DE ACTIVIDAD
+            setRandom(false);
             setSelectChoice(null);
             setTextData("");
             Click_forum();
@@ -533,9 +536,15 @@ export default function SelectClass() {
 
 
     const SortArray=(DataArray)=>{
-
-        const shuffledArray = DataArray.sort(() => Math.random() - 0.5);
-        return shuffledArray
+        if(random ==  false){
+            const shuffledArray = DataArray.sort(() => Math.random() - 0.5);
+            setRandom(true);
+            return shuffledArray
+        }else{
+            return DataArray;
+        }
+        
+        
 
     }
 
