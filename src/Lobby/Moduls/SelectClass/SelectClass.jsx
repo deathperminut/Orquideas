@@ -532,6 +532,14 @@ export default function SelectClass() {
     }
 
 
+    const SortArray=(DataArray)=>{
+
+        const shuffledArray = DataArray.sort(() => Math.random() - 0.5);
+        return shuffledArray
+
+    }
+
+
 
 
     return (
@@ -710,7 +718,7 @@ export default function SelectClass() {
                                     <div className='imageContainerClass'>
                                         {/* MAPEAMOS LAS OPCIONES */}
                                         {
-                                            selectActivity?.selection_multiple_questionary?.choices.map((obj,index)=>{
+                                            SortArray(selectActivity?.selection_multiple_questionary?.choices).map((obj,index)=>{
                                                 return(
                                                     <div className='containerOption'>
                                                             <div className='optionCheckBoxContainer'>

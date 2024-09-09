@@ -84,6 +84,47 @@
     background-color: rgba(233, 232, 232, 0.209);
     /* background-color: #e0c0ef25; */
 }
+.datainfoContainer{
+    width: 100%;
+    max-width: 900px;
+    height: 220px;
+    background-color: #011140;
+    background-color: rgba(246, 246, 244, 0.622);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+.imageInfoContainer{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items:start;
+    justify-content: start;
+}
+.imageLanding{
+    position: relative;
+    bottom: 40px;
+    right: 40px;
+}
+.textInfoContainer{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.dataModulContainerV4{
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    background-color: rgba(238, 201, 245, 0.434);
+    /* background-color: #e0c0ef25; */
+}
 .Footer{
     width: 100%;
     background:linear-gradient(to right, #a51ed6, #b78fd9);
@@ -431,6 +472,18 @@
      0% { border-color: transparent}
     }
 
+
+
+.ContainerInfoModul2{
+    width: 80%;
+    max-width: 600px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 60px;
+    justify-content: center;
+    align-items: center;
+}
 /*MEDIA QUERIES*/
 
 @media (max-width:1024px) and (min-height:600px) {
@@ -469,9 +522,9 @@
         flex-direction: column;
         font-size: 10px !important;
     }
-    .landingImageContainer{
+    /* .landingImageContainer{
         display: none !important;
-    }
+    } */
     .carouselBody{
 
         width: 100vw;
@@ -527,9 +580,9 @@
         position: relative;
         top: 20px;
     }
-    .landingImageContainer{
+    /* .landingImageContainer{
         display: none !important;
-    }
+    } */
     .carouselBody{
 
         width: 100vw;
@@ -547,16 +600,43 @@
 
 /* movile screens */
 
-@media (max-width:700px) {
-    .offcanvas-body{
-        padding: 0px !important;
+@media (min-width: 0px) and (max-width: 730.98px){
+    .datainfoContainer{
+        width: 100%;
+        max-width: 900px;
+        min-height: 420px;
+        background-color: #011140;
+        background-color: rgba(246, 246, 244, 0.622);
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
     }
-    .ContainerInfoModul{
-        padding-left: 0px !important;
+    
+    .imageInfoContainer{
+        width: 100%;
+        height: 200px;
+        display: flex;
+        align-items:center;
+        justify-content: center;
     }
-    .ContainerImageModul_2{
-        padding-top: 10px !important;
+    .textInfoContainer{
+        width: 100%;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
+    .imageLanding{
+        bottom: 0px !important;
+        right: 0px !important;
+    }
+}
+
+@media (max-width:400px){
+
+    
     .LandingModule{
         width: 200px !important;
         height: 435px;
@@ -577,6 +657,19 @@
         cursor:pointer
         /* box-shadow: 10px 10px 10px rgba(0.1, 0.5, 0.1, 0.1); */
     }
+}
+
+@media (max-width:700px) {
+    .offcanvas-body{
+        padding: 0px !important;
+    }
+    .ContainerInfoModul{
+        padding-left: 0px !important;
+    }
+    .ContainerImageModul_2{
+        padding-top: 10px !important;
+    }
+    
     .titleLobby{
         color: white;
         width: 100%;
@@ -606,9 +699,9 @@
         display: flex;
         flex-direction: column;
     }
-    .landingImageContainer{
+    /* .landingImageContainer{
         display: none !important;
-    }
+    } */
     .carouselBody{
 
         width: 100vw;
@@ -620,5 +713,35 @@
         padding: 20px;
         flex-direction: column;
         padding-top: 6%;
+    }
+}
+
+
+@media (min-width: 0px) and (max-width: 359.98px){
+
+    .ContainerInfoModul2{
+        width: 80%;
+        max-width: 600px;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 60px;
+        justify-content: center;
+        align-items: center;
+      }
+  
+
+}
+
+@media (min-width: 360px) and (max-width: 705.98px){
+    .ContainerInfoModul2{
+        width: 80%;
+        max-width: 600px;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 60px;
+        justify-content: center;
+        align-items: center;
     }
 }
