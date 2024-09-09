@@ -150,6 +150,7 @@ export default function LandingPage() {
     let [stories,setStories] = React.useState([]);
     let [moduls,setModuls]  = React.useState([]);
     let [selectModul,setSelectModul] = React.useState(null);
+    let [partners,setPartners] = React.useState([]);
     // REACT USE EFFECT
 
     React.useEffect(()=>{
@@ -194,6 +195,7 @@ export default function LandingPage() {
             setPreloader(false);
             setNews(result.data.filter((obj)=>obj.category == "Noticia"))
             setStories(result.data.filter((obj)=>obj.category == "Historia"))
+            setPartners(result.data.filter((obj)=>obj.category == "Partner"))
         }
     }
 
@@ -317,6 +319,56 @@ export default function LandingPage() {
                                     </div>
 
                             </div>
+                    </div>
+                    {/* Relaciones */}
+                    <div className='NoticeContainer'>
+                        {partners?.length !== 0 ? 
+                        <span className={`fontSemiBold fade-in ${isVisible ? 'visible' : ''}`} style={{'marginTop':'30px','color':'#85558c'}}>Conoce algunos de nuestros casos de éxito</span>
+                        :
+                        <></>
+                        }
+                        
+                        <Swiper
+                            spaceBetween={50}
+                            slidesPerView={3}
+                            breakpoints={{
+                                320: {
+                                slidesPerView: 2,
+                                spaceBetween: 20,
+                                },
+                                640: {
+                                slidesPerView: 3,
+                                spaceBetween: 30,
+                                },
+                                1024: {
+                                slidesPerView: 4,
+                                spaceBetween: 40,
+                                },
+                                1440: {
+                                slidesPerView: 4,
+                                spaceBetween: 50,
+                                },
+                            }}  
+                            >
+                            {partners.map((obj,index)=>{
+                                return(
+                                    <SwiperSlide className='NewsSwiper2'>
+                                        <div className='NewsSwiper2'>
+                                            <div className='SwiperImage2'>
+                                                    <img src={obj?.image} className='ImageLanding'></img>
+                                            </div>
+                                            <div className='SwiperText'>
+                                                    <p className='TitleNews fontSemiBold color-purple'>
+                                                        {obj?.title}
+                                                    </p>
+                                            </div>
+                                        </div>
+                                        
+                                    </SwiperSlide>
+                                )
+                            })}
+                            
+                        </Swiper>
                     </div>
                     {/* Moduls */}
                     <div className='containerIconV2'>
