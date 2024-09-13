@@ -212,6 +212,9 @@
     background-color: #fff;
     
 }
+.justify{
+    text-align: justify !important;
+}
 .ListData{
     width: 100%;
     display: flex;

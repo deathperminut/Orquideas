@@ -749,7 +749,7 @@ export default function LandingPage() {
                         <div className='ContainerInfoModul2'>
                                 <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>{'Objetivo General'}</span>
                                 <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{''}</span>
-                                <p className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: FilterModul()?.general_objective.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                                <p className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: FilterModul()?.general_objective.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
                         </div>
                 </div>
                 
@@ -786,19 +786,19 @@ export default function LandingPage() {
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>{DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.name_presencial}</span>
                 <div className=''>
                     
-                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_presencial.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_presencial.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
 
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>{DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.name_virtual}</span>
                 <div className=''>
                     
-                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_virtual.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_virtual.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
 
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>{DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.name_trans}</span>
                 <div className=''>
                     
-                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_trans.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                    <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_trans.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
 
                 </div>
         </div>

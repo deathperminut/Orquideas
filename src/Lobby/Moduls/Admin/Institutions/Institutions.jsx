@@ -583,6 +583,11 @@ export default function Institutions() {
                                                         <tr>
                                                             <th scope="col" className='th-width-md-'>
                                                             <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                                                <span className='fs-5- fontSemiBold fw-bold color-purple'>identificador</span>
+                                                            </div>
+                                                            </th>
+                                                            <th scope="col" className='th-width-md-'>
+                                                            <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
                                                                 <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
                                                             </div>
                                                             </th>
@@ -597,6 +602,9 @@ export default function Institutions() {
                                                             {institution.map((obj,index)=>{
                                                                 return(
                                                                     <tr key={index}>
+                                                                        <td className='align-middle'>
+                                                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.id}</p>
+                                                                        </td>
                                                                         <td className='align-middle'>
                                                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.name}</p>
                                                                         </td>

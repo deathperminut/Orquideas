@@ -136,7 +136,7 @@ export default function SelectModul() {
                         <div className='ContainerInfoModul'>
                                 <span className='fontSemiBold ' style={{'fontSize':'30px'}}>{selectModul?.module_name}</span>
                                 <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{convertDate(selectModul?.created_at)}</span>
-                                <p className='fontLight description_moduls' dangerouslySetInnerHTML={{ __html: selectModul?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                                <p className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: selectModul?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
                         </div>
                 </div>
                 <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Objetivos especificos</span>
@@ -147,7 +147,7 @@ export default function SelectModul() {
                                                 <div className='col-auto'>
                                                 <CiBookmark />
                                                 </div>
-                                                <span className='fontLight'>{obj?.description}</span>
+                                                <span className='fontLight justify'>{obj?.description}</span>
                                           </div>
                                         )
                                       })
@@ -162,7 +162,7 @@ export default function SelectModul() {
                                                 <div className='col-auto'>
                                                 <CiBookmark />
                                                 </div>
-                                                <span className='fontLight'>{obj?.description}</span>
+                                                <span className='fontLight justify'>{obj?.description}</span>
                                           </div>
                                         )
                                       })

@@ -272,7 +272,7 @@ export default function Register() {
 
     let [institutions,setInstitutions] = React.useState([]);
     let [preloader,setPreloader] = React.useState(false);
-    let [institution,setInstitution] = React.useState({"value":"","label":""});
+    let [institution,setInstitution] = React.useState("");
 
 
     React.useEffect(()=>{
@@ -313,7 +313,7 @@ export default function Register() {
 
     const ReadSelect=(event)=>{
 
-      setInstitution(event);
+      setInstitution(event.target.value);
 
     }
 
@@ -322,13 +322,20 @@ export default function Register() {
       console.log("USUARIO A REGISTRAR: ",userInfo,institution)
 
       // PRIMERO VALIDAMOS QUE LA INSTITUCIÓN NO SEA ORQUIDEAS
-      if (institution.label == '' && institution.value == ''){
+      if (institution == ''){
 
         Swal.fire({
           icon: 'info',
-          title: 'Debes seleccionar la institución a la cual perteneces'
+          title: 'Debes ingresar el código unico de tu institución solicitala a los administradores de la plataforma'
         })
         
+      }else if(institutions.filter((obj=> (obj.id+'') == (institution+'') ) ).length == 0  ){
+
+        Swal.fire({
+          icon: 'info',
+          title: 'El código suministrado de la institución no es valido'
+        })
+
       }else if(userInfo?.email == "" || userInfo?.identification == "" || userInfo?.name == "" || userInfo?.password == "" || userInfo?.same_password == "" ){
 
         //TODOS LOS CAMPOS SON OBLIGATORIOS
@@ -338,7 +345,10 @@ export default function Register() {
         })
 
       }else{
+        
 
+        // seteamos la institución
+        let Insti = institutions.filter((obj=> (obj.id+'') == (institution+'') ) )[0]
         // REVISAMOS QUE LAS CONTRASEÑAS COINCIDAN
         // REVISAMOS LA CONTRASEÑA
         if (userInfo?.password !== userInfo?.same_password){
@@ -376,10 +386,10 @@ export default function Register() {
                 console.log("USUARIO REGISTRADO: ",result.data);
                 // ACTUALIZAMOS LAS CARACTERISTICAS DE LA INSTITUCIÓN AGREGANDO EL ID DEL NUEVO USUARIO
                 if(result.data.id){
-
-                  let users = [...institution['users']];
+                  
+                  let users = [...Insti['users']];
                   users.push(result.data.id) // AGREGAMOS EL ID DEL USUARIO
-                  let answer =  await UpdateInstitution({...institution,['users']:users}).catch((error)=>{
+                  let answer =  await UpdateInstitution({...Insti,['users']:users}).catch((error)=>{
                     console.log(error);
                     setPreloader(false);
                     Swal.fire({
@@ -525,9 +535,13 @@ export default function Register() {
                               }
                           </div>
                           </div>
-                          <span className='fs-10- fontLight' >Institución</span>
-                          <div className='inner-addon- left-addon-'>
-                              <Select options={institutions} value={institution} onChange={ReadSelect} components={{ ValueContainer: CustomValueContainer, animatedComponents, NoOptionsMessage: customNoOptionsMessage, LoadingMessage: customLoadingMessage }} placeholder="" styles={selectStyles}/>
+                          <span className='fs-10- fontLight' >Identificador institución</span>
+                          <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
+                              <div className='col-12'>
+                                  <div className='form-floating inner-addon- left-addon-'>
+                                  <input type="number" value={institution} onChange={ReadSelect} className='form-control' id='user' placeholder="Ingrese el identificador de su institución" />
+                                  </div>
+                              </div>
                           </div>
                           <div className='ContainerButton_2'>
                               <div onClick={GenerateRegister} className='Button_2' style={{'marginTop':'20px'}}>
