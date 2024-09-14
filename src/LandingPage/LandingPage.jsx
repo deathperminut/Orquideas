@@ -206,6 +206,10 @@ export default function LandingPage() {
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
+    const [show3, setShow3] = React.useState(false);
+    const handleClose3 = () => setShow3(false);
+    const handleShow3 = () => setShow3(true);
+
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -263,6 +267,8 @@ export default function LandingPage() {
             return null;
         }
     }
+
+    let [selectNew,setSelectNew] = React.useState(null);
 
 
     return (
@@ -329,30 +335,30 @@ export default function LandingPage() {
                         }
                         
                         <Swiper
-                            spaceBetween={50}
-                            slidesPerView={3}
+                            spaceBetween={10}
+                            slidesPerView={1}
                             breakpoints={{
                                 320: {
-                                slidesPerView: 2,
-                                spaceBetween: 20,
+                                slidesPerView: 1,
+                                spaceBetween: 10,
                                 },
                                 640: {
-                                slidesPerView: 3,
-                                spaceBetween: 30,
+                                slidesPerView: 1,
+                                spaceBetween: 10,
                                 },
                                 1024: {
-                                slidesPerView: 4,
-                                spaceBetween: 40,
+                                slidesPerView: 3,
+                                spaceBetween: 20,
                                 },
                                 1440: {
                                 slidesPerView: 4,
-                                spaceBetween: 50,
+                                spaceBetween: 20,
                                 },
                             }}  
                             >
                             {partners.map((obj,index)=>{
                                 return(
-                                    <SwiperSlide className='NewsSwiper2'>
+                                    <SwiperSlide key={index} className='NewsSwiper2'>
                                         <div className='NewsSwiper2'>
                                             <div className='SwiperImage2'>
                                                     <img src={obj?.image} className='ImageLanding'></img>
@@ -363,7 +369,6 @@ export default function LandingPage() {
                                                     </p>
                                             </div>
                                         </div>
-                                        
                                     </SwiperSlide>
                                 )
                             })}
@@ -590,24 +595,19 @@ export default function LandingPage() {
                                                     <p className='TitleNews fontSemiBold color-purple'>
                                                         {obj?.title}
                                                     </p>
-                                                    <p className='InfoNews fontLight'>
-                                                        {obj?.content}
-                                                    </p>
                                             </div>
                                             <div className='divsContainer'>
                                                     <div onClick={()=>{
-                                                        window.open(obj?.LINK, '_blank');
+                                                        handleShow3();
+                                                        setSelectNew(obj);
                                                     }}  className='buttonElement'>
                                                         <span className='white fontLight'> Ver mas</span>
                                                     </div>
                                             </div>
                                         </div>
-                                        
                                     </SwiperSlide>
                                 )
                             })}
-                            
-                            
                         </Swiper>
                     </div>
                     {/* Stories */}
@@ -647,13 +647,11 @@ export default function LandingPage() {
                                                     <p className='TitleNews fontSemiBold color-purple'>
                                                         {obj?.title}
                                                     </p>
-                                                    <p className='InfoNews fontLight'>
-                                                        {obj?.content}
-                                                    </p>
                                             </div>
                                             <div className='divsContainer'>
                                                     <div onClick={()=>{
-                                                        window.open(obj?.LINK, '_blank');
+                                                        handleShow3();
+                                                        setSelectNew(obj);
                                                     }}  className='buttonElement'>
                                                         <span className='white fontLight'> Ver mas</span>
                                                     </div>
@@ -801,6 +799,32 @@ export default function LandingPage() {
                     <p style={{'marginTop':'20px','backgroundColor':FilterModul()?.color,'padding':'5px'}} className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: DataModuls.filter((obj)=> obj?.id == FilterModul()?.id)[0]?.description_trans.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
 
                 </div>
+        </div>
+                </div>
+                </div>
+        </Offcanvas>
+        <Offcanvas className="offcanvasBodyV2" show={show3} onHide={handleClose3}>
+                <div className='offcanvas-header pb-4 padding-40-'>
+                <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>{selectNew?.title}</h2>
+                <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose3} size={30} className='fa icon-close'></IoIosClose>
+                </div>
+                <div className='offcanvas-body '>
+                <div className='container-fluid pt-0 pb-0'>
+                <div className='dataModulContainer'>
+                <div className='SwiperImageV3'>
+                                                    <img src={selectNew?.image} className='ImageLanding'></img>
+                </div>
+                <div className=''>
+                    <p style={{'marginTop':'20px','backgroundColor':'rgba(222, 128, 253, 0.21)','padding':'5px'}} className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: selectNew?.content.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                </div>
+                <div className='divsContainer'>
+                                                    <div onClick={()=>{
+                                                        window.open(selectNew?.LINK,'_blank')
+                                                    }}  className='buttonElement'>
+                                                        <span className='white fontLight'> Profundizar</span>
+                                                    </div>
+                </div>
+
         </div>
                 </div>
                 </div>
