@@ -795,7 +795,7 @@ export default function SelectClass() {
                                             {selectActivity?.hasOwnProperty("forum_participation") ? 
                                             <span>Foro</span>
                                             :
-                                            <span>Comentarios</span>
+                                            <></>
                                             }
                                         </span></button>
                                         </li>
@@ -843,7 +843,7 @@ export default function SelectClass() {
                                         </>
                                         :
                                         <>
-                                        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
+                                        {/* <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12 mb-3 mb-sm-3 mb-md-4 mb-lg-4 mb-xl-4 mb-xxl-4'>
                                             <textarea value={inputComment} onChange={ReadInput} className='form-control fontLight ' rows="4" placeholder='Ingrese el comentario deseado'></textarea>
                                         </div>
                                         <div onClick={generateComment} className='ButtonSend bs-2-'>
@@ -858,7 +858,7 @@ export default function SelectClass() {
                                                     </div>
                                                 )
                                             })}
-                                        </div>
+                                        </div> */}
                                         </>
                                         }
                                         
