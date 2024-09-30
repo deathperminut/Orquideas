@@ -6,6 +6,7 @@ import { AiOutlineFileExcel } from "react-icons/ai";
 import makeAnimated from 'react-select/animated';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FaRegPlusSquare } from "react-icons/fa";
+import { CiBookmark } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
 import { CiCircleMore } from "react-icons/ci";
 import Accordion from 'react-bootstrap/Accordion';
@@ -15,6 +16,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { ImEnter } from "react-icons/im";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as echarts from 'echarts';
+import { FaRegEye } from "react-icons/fa";
 import $ from "jquery"
 import { AppContext } from '../../../../Context';
 import Swal from 'sweetalert2';
@@ -273,16 +275,37 @@ export default function IndexModuls(props) {
     let {usersHistorial,setUsersHistorial,userData,selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
 
     const [show2, setShow2] = React.useState(false);
+    const [show3, setShow3] = React.useState(false);
+    let [data,setData] = React.useState(null);
     let [preloader,setPreloader] = React.useState(false);
     let [lista_modulo,setLista_modulo] =React.useState([]);
     let [filter,setFilter] = React.useState("");
     let [selectUser,setSelectUser] = React.useState(null);
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
+
+    const handleClose3 = () => setShow3(false);
+    const handleShow3 = () => setShow3(true);
     
     const GetInsti=(idUser)=>{
       let filter_ = institution.filter((obj)=> obj.users.includes(idUser))
       return filter_[0]
+    }
+
+    function esperar(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function scrollToBottom() {
+      // HACEMOS UNA ESPERA DE UNOS CUANTOS SEGUNDOS
+      await esperar(2000); // Espera 2 segundos
+      var container = document.getElementById("BodyContainerV2");
+      if (container?.scrollHeight) {
+        container.scrollTo({
+          top: container.scrollHeight - container.clientHeight,
+          behavior: 'smooth' // Desplazamiento suave
+        });
+      }
     }
 
     let [supportList,setSupportList] = React.useState([]);
@@ -1035,7 +1058,7 @@ export default function IndexModuls(props) {
                           :
                           <></>
           }
-          <div className='dataModulContainer'>
+          <div className='dataModulContainer' id='BodyContainerV2'>
 
             <div className='ContainerNameModul'>
                 <p className='fontSemiBold color-purple' style={{'marginTop':'30px','fontSize':'30px'}}>{selectModulAdmin?.module_name}</p>
@@ -1117,7 +1140,10 @@ export default function IndexModuls(props) {
                                             <div className='w-auto d-flex flex-row justify-content-center align-items-center align-self-center'>
                                             <div className='checks-radios-'>
                                                 <label>
-                                                <CiCircleMore size={30} onClick={()=>setSelectUser(obj)} type="radio" name="radio"/>
+                                                <CiCircleMore size={30} onClick={()=>{
+                                                  setSelectUser(obj)
+                                                  scrollToBottom();
+                                                  }} type="radio" name="radio"/>
                                                 
                                                 </label>
                                             </div>
@@ -1374,19 +1400,19 @@ export default function IndexModuls(props) {
                         <thead>
                             <tr>
                                 <th scope="col" className='th-width-md-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Categoria</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Categoria</span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Tipo actividad</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Tipo actividad</span>
+                                  </div>
                                 </th>
                                 <th scope="col" className='th-width-sm-'>
-                                <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                    <span className='fs-5- fontSemiBold fw-bold color-purple'>Respuesta</span>
-                                </div>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Ver</span>
+                                  </div>
                                 </th>
                             </tr>
                             </thead>
@@ -1403,12 +1429,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
-                                          obj?.evidence.upload == null ? 
-                                          <></>
-                                          :
-                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
-                                        }</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                                <FaRegEye  cursor={'pointer'} onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description,
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1423,7 +1453,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                                <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question,
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1438,7 +1477,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question,
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1459,12 +1507,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
-                                          obj?.evidence.upload == null ? 
-                                          <></>
-                                          :
-                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
-                                        }</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye  cursor={'pointer'} onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description,
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1479,7 +1531,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question,
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1494,7 +1555,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question,
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1515,12 +1585,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
-                                          obj?.evidence.upload == null ? 
-                                          <></>
-                                          :
-                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
-                                        }</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description,
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1535,7 +1609,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question,
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1550,7 +1633,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'} onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question,
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1571,12 +1663,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{
-                                          obj?.evidence.upload == null ? 
-                                          <></>
-                                          :
-                                          <span className='fontSemiBold linked' onClick={()=>window.open(obj?.evidence.upload)}>Ver soporte</span>
-                                        }</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description,
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1591,7 +1687,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question,
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1606,7 +1711,16 @@ export default function IndexModuls(props) {
                                             <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
                                         </td>
                                         <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{obj?.cloud_forum_participation.response}</p>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question,
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
                                         </td>
                                     </tr>
                                     :
@@ -1672,6 +1786,51 @@ export default function IndexModuls(props) {
                   </div>
                   </div>
           </Offcanvas>
+          <Offcanvas className="offcanvasBodyV2" show={show3} onHide={handleClose3}>
+                <div className='offcanvas-header pb-4 padding-40-'>
+                <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Información de la actividad</h2>
+                <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose3} size={30} className='fa icon-close'></IoIosClose>
+                </div>
+                <div className='offcanvas-body '>
+                  <div className='container-fluid pt-0 pb-0'>
+                    <div className='dataModulContainer'>
+                    <div className='DataInfoModulContainer' style={{'backgroundColor':'rgba(222, 128, 253, 0.21)'}}>
+                            <div className='ContainerInfoModul2'>
+                                    <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>{'Objetivo General'}</span>
+                                    <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{''}</span>
+                                    <p className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: data?.description.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                            </div>
+                    </div>
+                    <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Respuesta</span>
+                    <div className='listInstitucions' style={{'marginTop':'30px'}}>
+                                              <div className='ListData'>
+                                                    <div className='col-auto'>
+                                                    <CiBookmark />
+                                                    </div>
+                                                    {data?.type == 'cloud_forum_participation' ? 
+                                                    <span className='fontLight'>{data?.answer}</span>
+                                                    :
+                                                    <></>
+                                                    }
+                                                    {data?.type == 'forum_participation' ? 
+                                                    <span className='fontLight'>{data?.answer}</span>
+                                                    :
+                                                    <></>
+                                                    }
+                                                    {data?.type == 'evidence' ? 
+                                                    <span className='fontSemiBold linked' onClick={()=>window.open(data?.answer)}>Ver soporte</span>
+                                                    :
+                                                    <></>
+                                                    }
+                                                    
+                                              </div>
+                                          
+                    </div>
+                    
+                    </div>
+                  </div>
+                </div>
+        </Offcanvas>
         </>
     )
 }
