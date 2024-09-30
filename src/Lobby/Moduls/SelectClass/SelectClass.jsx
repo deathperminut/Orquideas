@@ -457,21 +457,16 @@ export default function SelectClass() {
                     let answer =  undefined;
                     answer =  await getUserModulActivities(userModulActivitiesLink).catch((error)=>{
                         console.log(error);
-                        setPreloader(true);
+                        setPreloader(false);
                         Swal.fire({
                             icon: 'info',
                             title: 'Problemas para cargar datos',
                         })
                     })
                     if(answer){
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Reflexión cargada con éxito',
-                            text:'continua con la siguiente actividad'
-                        })
+                        
                         setUserModulActivities(answer.data);
-                        GetDataModuls();
-                        setPreloader(false);
+                        await GetDataModuls();
                         // actualizamos la clase actual
                         setSelectActivity(answer.data['activity_module_editable'][selectActivityType][selectActivityIndex])
                     }
@@ -488,14 +483,18 @@ export default function SelectClass() {
             setPreloader(true);
             result  = await loadActivitiesUsers().catch((error)=>{
             console.log(error);
-            setPreloader(false);
             Swal.fire({
             icon: 'info',
             title: 'Problemas al cargar información'
             })
             })
             if(result){
-            console.log("ACTIVIDADES MODULO: ",result.data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Reflexión cargada con éxito',
+                text:'continua con la siguiente actividad'
+            })
+            console.log("ACTIVIDADES MODULO V2: ",result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
             setPreloader(false);
             setModulHistorial(result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
             }

@@ -488,11 +488,11 @@ export default function Register() {
                               </div>
                           </div>
                           </div>
-                          <span className='fs-10- fontLight' >Nombre</span>
+                          <span className='fs-10- fontLight' >Nombre (20 Caracteres máximo)</span>
                           <div className='row g-0 g-sm-0 g-md-2 g-lg-2 g-xl-2 g-xxl-2 mb-3'>
                               <div className='col-12'>
                                   <div className='form-floating inner-addon- left-addon-'>
-                                  <input type="text" value={userInfo?.name} onChange={(event)=>ReadInput(event,'name')} className='form-control' id='user' placeholder="Ingrese su usuario" />
+                                  <input maxLength={20} type="text" value={userInfo?.name} onChange={(event)=>ReadInput(event,'name')} className='form-control' id='user' placeholder="Ingrese su usuario" />
                                   </div>
                               </div>
                           </div>

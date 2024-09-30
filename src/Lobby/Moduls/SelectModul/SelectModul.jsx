@@ -43,7 +43,7 @@ export default function SelectModul() {
                 })
                 })
                 if(result){
-                console.log("ACTIVIDADES MODULO: ",result.data);
+                console.log("ACTIVIDADES MODULO: ",result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
                 setPreloader(false);
                 setModulHistorial(result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
                 }
