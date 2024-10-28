@@ -49,6 +49,11 @@ const UpdateUser=async (body,id)=>{
 
 }
 
+const generateCertificate=async(id)=>{
+    const path =  environment.api + environment.generateCertificate+id+'/';
+    return await axios.get(path, { responseType: 'blob' });
+}
 
 
-export {RegisterUser,LoginUser,GetUser,UpdateUser,GetSpecificUser,GetUserInfo}
+
+export {generateCertificate,RegisterUser,LoginUser,GetUser,UpdateUser,GetSpecificUser,GetUserInfo}

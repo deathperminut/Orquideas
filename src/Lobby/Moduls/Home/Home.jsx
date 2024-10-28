@@ -193,7 +193,7 @@ export default function Home() {
                           :
 
                           <></>
-          }
+        }
         <div className='row gx-4 d-flex flex-wrap flex-row justify-content-between align-items-start align-self-start align-self-xxl-center'>
           <div className='col-auto'>
             <h2 className='m-0 p-0 lh-sm fs-3- fontSemiBold color-purple'>Lobby</h2>

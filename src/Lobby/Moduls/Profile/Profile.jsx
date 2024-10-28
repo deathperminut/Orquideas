@@ -10,7 +10,7 @@ import Flores from '../../../assets/images/circleVioleta.png';
 import { AppContext } from '../../../Context';
 import Swal from 'sweetalert2';
 import Preloader from '../../../Components/Shared/Preloader/Preloader';
-import { UpdateUser } from '../../../Services/Users/Users';
+import { generateCertificate, UpdateUser } from '../../../Services/Users/Users';
 import Violeta from '../../../assets/images/Violeta4.png';
 import Azul from '../../../assets/images/Azul4.png';
 import Rojo from '../../../assets/images/Magenta4.png';
@@ -19,6 +19,8 @@ import Naranja from '../../../assets/images/Naranja4.png';
 import Amarillo from '../../../assets/images/Amarillo4.png';
 import Cafe from '../../../assets/images/Cafe4.png';
 import Aguamarina from '../../../assets/images/AguaMarina4.png';
+import { PiCertificate } from "react-icons/pi";
+
 
 /**
  * MENSAJES PERSONALIZADOS AL BUSCAR O CARGAR OPCIONES EN REACT SELECT
@@ -379,6 +381,33 @@ export default function Profile() {
 
     }
 
+    const Certification=async()=>{
+
+      setPreloader(true);
+      let result =  undefined;
+      result =  await generateCertificate(userData?.id).catch((error)=>{
+        console.log(error);
+        setPreloader(false);
+        Swal.fire({
+          icon: 'info',
+          title: 'Problemas para generar el certificado'
+        })
+      })
+
+      if(result){
+            setPreloader(false);
+            const url = window.URL.createObjectURL(new Blob([result.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `formacion_orquideas.pdf`; // Nombre del archivo
+            document.body.appendChild(a); // Añadir el enlace al DOM
+            a.click(); // Simular clic para iniciar la descarga
+            a.remove(); // Limpiar el DOM
+            window.URL.revokeObjectURL(url); // Liberar el objeto URL
+      }
+
+    }
+
     return (
         <React.Fragment>
           {
@@ -535,22 +564,17 @@ export default function Profile() {
                                                           <p className='fontLight description_moduls'>{ObtainModulInstitution()?.description}</p>
                                                   </div>
                                         </div>
-                                        {/* {ObtainModulInstitution() !== null ? 
-                                          <div onClick={()=>{
-                                          setSelectModul(ObtainModulInstitution());
-                                          navigate('/Lobby/SelectModul')
-                                        }} className='classroomContainer'>
-                                                  <div className='ContainerButton' >
-                                                    <div className='Button_1' >
-                                                                <span className='text_button_1'>Ver</span>
-                                                    </div>
+                                        <div className='ContainerCertificate'>
+                                              <div className='CertificateContainer'>
+                                                      <PiCertificate color='white' size={40}></PiCertificate>
+                                              </div>
+                                              <span className='textCertificate'>Descarga tu certificado de participación , para validar tu vinculación al programa orquídeas</span>
+                                              <div  className='ContainerButton_2'>
+                                                  <div onClick={Certification} className='Button_2' style={{'marginTop':'20px'}}>
+                                                              <span className='text_button_2'>Generar</span>
                                                   </div>
-                                                  
+                                              </div>
                                         </div>
-                                        :
-                                        <></>
-                                        } */}
-                                        
                                 </div>
                               </div>
                             </div>

@@ -48,6 +48,10 @@ export const environment = {
     // COMMENTS
     getComments:'community/comments/',
     createComment:'community/comments/',
+
+    // CERTIFICATRE
+
+    generateCertificate:'users/certificate/'
     
 
 

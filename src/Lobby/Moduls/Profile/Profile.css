@@ -474,6 +474,29 @@
     max-height: 800px;
     overflow-x: auto !important;
   }
+
+  .ContainerCertificate{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .CertificateContainer{
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+    background-color: #5F3473;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .textCertificate{
+    max-width: 330px;
+    text-align: center;
+    margin-top: 30px;
+    color: #5F3473;
+  }
   
   /* ---------------------------------------------------
         MEDIAQUERIES
