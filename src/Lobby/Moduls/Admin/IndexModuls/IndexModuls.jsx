@@ -274,18 +274,22 @@ export default function IndexModuls(props) {
     // REACT USE CONTEXT
     let {usersHistorial,setUsersHistorial,userData,selectModulInstiAdmin,setSelectModulInstiAdmin,selectModulAdmin,setInstitution,institution} = React.useContext(AppContext);
 
-    const [show2, setShow2] = React.useState(false);
-    const [show3, setShow3] = React.useState(false);
     let [data,setData] = React.useState(null);
     let [preloader,setPreloader] = React.useState(false);
     let [lista_modulo,setLista_modulo] =React.useState([]);
     let [filter,setFilter] = React.useState("");
     let [selectUser,setSelectUser] = React.useState(null);
+    const [show2, setShow2] = React.useState(false);
+    const [show3, setShow3] = React.useState(false);
+    const [show4, setShow4] = React.useState(false);
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
     const handleClose3 = () => setShow3(false);
     const handleShow3 = () => setShow3(true);
+
+    const handleClose4 = () => setShow4(false);
+    const handleShow4 = () => setShow4(true);
     
     const GetInsti=(idUser)=>{
       let filter_ = institution.filter((obj)=> obj.users.includes(idUser))
@@ -298,14 +302,20 @@ export default function IndexModuls(props) {
 
     async function scrollToBottom() {
       // HACEMOS UNA ESPERA DE UNOS CUANTOS SEGUNDOS
-      await esperar(2000); // Espera 2 segundos
-      var container = document.getElementById("BodyContainerV2");
-      if (container?.scrollHeight) {
-        container.scrollTo({
-          top: container.scrollHeight - container.clientHeight,
-          behavior: 'smooth' // Desplazamiento suave
-        });
+      let result = undefined
+      result = await esperar(2000); // Espera 2 segundos
+      if(result){
+
+        var container = document.getElementById("BodyContainerV2");
+        if (container?.scrollHeight) {
+          container.scrollTo({
+            top: container.scrollHeight - container.clientHeight,
+            behavior: 'smooth' // Desplazamiento suave
+          });
+        }
+
       }
+      
     }
 
     let [supportList,setSupportList] = React.useState([]);
@@ -1089,11 +1099,11 @@ export default function IndexModuls(props) {
                         </div>
                       </div>
             </div>
-            <div  className='StadisticsContainer'>
+            {/* <div  className='StadisticsContainer'>
                   <div onClick={downloadExcel} className='excelContainer'>
                             <AiOutlineFileExcel color='white' size={25}></AiOutlineFileExcel>
                   </div>
-            </div>
+            </div> */}
             <div className='TableUsersContainer bs-2-'>
                 <div className='row mt-4 mb-4'>
                         <div className='table-responsive table-general-'>
@@ -1125,11 +1135,6 @@ export default function IndexModuls(props) {
                                       <span className='fs-5- fontSemiBold fw-bold color-purple'>Institución</span>
                                   </div>
                                 </th>
-                                {/* <th scope="col" className='th-width-sm-'>
-                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Porcentaje (%)</span>
-                                  </div>
-                                </th> */}
                             </tr>
                             </thead>
                             <tbody>
@@ -1142,7 +1147,7 @@ export default function IndexModuls(props) {
                                                 <label>
                                                 <CiCircleMore size={30} onClick={()=>{
                                                   setSelectUser(obj)
-                                                  scrollToBottom();
+                                                  handleShow4();
                                                   }} type="radio" name="radio"/>
                                                 
                                                 </label>
@@ -1170,577 +1175,7 @@ export default function IndexModuls(props) {
                         </div>
                 </div> 
             </div>
-            {/* <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>Estadísticas</p>
-            <div className='row row-cols-auto g-4'>
-                <div className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6'>
-                    <div id='card-indicator-large-' className='card border-0 rounded-3 w-100 bs-2- position-relative overflow-hidden'>
-                    <div className='card-header border-0 bg-transparent p-4 pb-0'>
-                        <div className='d-flex flex-row justify-content-between align-items-center align-self-center mb-1'>
-                        <h1 className='m-0 p-0 lh-sm fs-4- fontSemiBold fw-bold tx-dark-purple-'>
-                        Balance general
-                        </h1>
-                        <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center button-open- btn-dark-purple- bs-1- ms-2'  onClick={() => toggleOverlay('card1')}>
-                        <CiCircleMore />
-                        </button>
-                        </div>
-                        <div className='w-75'>
-                        </div>
-                    </div>
-                    <div className='card-body p-4 w-100'>
-                        <div className='w-100 h-100 mx-auto' id='chart-medical-history-one-'></div>
-                    </div>
-                    {showOverlay === 'card1' && (
-                        <div className={`overlay-wrapper${hiddenOverlay ? ' hidden' : ''}`} onAnimationEnd={() => hiddenOverlay && setHiddenOverlay(true)}>
-                        <div className={`overlay-content${hiddenOverlay ? ' hidden' : ''}`} onAnimationEnd={() => hiddenOverlay && setHiddenOverlay(true)}>
-                            <div id='wrapper-data-table' className='card border-0 rounded-3 w-100 position-relative'>
-                            <div className='card-header border-0 bg-transparent p-4'>
-                                <div className='d-flex flex-row justify-content-between align-items-center align-self-center'>
-                                <h1 className='m-0 p-0 lh-sm fs-4- fontSemiBold fw-bold tx-dark-purple-'>
-                                    Tabla de datos
-                                </h1>
-                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center button-close- btn-bone-white- bs-1- ms-2' onClick={() => toggleOverlay(null)}>
-                                <CiCircleMore />
-                                </button>
-                                </div>
-                            </div>
-                            <div className='card-body p-4 pt-0 pb-0 w-100'>
-                                <div className='table-responsive table-general-'>
-                                <table className='table table-sm table-striped table-no-border- align-middle'>
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" className='th-width-sm-'>
-                                        <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                            <span className='fs-5- fontSemiBold fw-bold tx-dark-purple-'>Estado</span>
-                                        </div>
-                                        </th>
-                                        <th scope="col" className='th-width-sm-'>
-                                        <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                            <span className='fs-5- fontSemiBold fw-bold tx-dark-purple-'>Porcentaje</span>
-                                        </div>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>200</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>80%</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>100</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20%</p>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    )}
-                    {showOverlay === 'card1' && <div className="overlay-backdrop" onClick={() => toggleOverlay(null)} />}
-                    </div>
-                </div>
-                <div className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6'>
-                    <div id='card-indicator-large-' className='card border-0 rounded-3 w-100 bs-2- position-relative overflow-hidden'>
-                    <div className='card-header border-0 bg-transparent p-4 pb-0'>
-                        <div className='d-flex flex-row justify-content-between align-items-center align-self-center mb-1'>
-                        <h1 className='m-0 p-0 lh-sm fs-4- fontSemiBold fw-bold tx-dark-purple-'>
-                            Balance instituciones
-                        </h1>
-                        <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center button-open- btn-dark-purple- bs-1- ms-2'  onClick={() => toggleOverlay('card2')}>
-                        <CiCircleMore />
-                        </button>
-                        </div>
-                    </div>
-                    <div className='card-body p-4 w-100'> 
-                        <div className='w-100 h-100 mx-auto' id='chart-medical-history-two-'></div>
-                    </div>
-                    {showOverlay === 'card2' && (
-                    <div className={`overlay-wrapper${hiddenOverlay ? ' hidden' : ''}`} onAnimationEnd={() => hiddenOverlay && setHiddenOverlay(true)}>
-                        <div className={`overlay-content${hiddenOverlay ? ' hidden' : ''}`} onAnimationEnd={() => hiddenOverlay && setHiddenOverlay(true)}>
-                        <div id='wrapper-data-table' className='card border-0 rounded-3 w-100 position-relative'>
-                            <div className='card-header border-0 bg-transparent p-4'>
-                            <div className='d-flex flex-row justify-content-between align-items-center align-self-center'>
-                                <h1 className='m-0 p-0 lh-sm fs-4- fontSemiBold fw-bold tx-dark-purple-'>
-                                    Tabla de datos
-                                </h1>
-                                <button className='btn rounded-pill p-2 d-flex flex-row justify-content-center align-items-center align-self-center button-close- btn-bone-white- bs-1- ms-2' onClick={() => toggleOverlay(null)}>
-                                <CiCircleMore />
-                                </button>
-                            </div>
-                            </div>
-                            <div className='card-body p-4 pt-0 pb-0 w-100'>
-                            <div className='table-responsive table-general-'>
-                                <table className='table table-sm table-striped table-no-border- align-middle'>
-                                <thead>
-                                    <tr>
-                                    <th scope="col" className='th-width-sm-'>
-                                        <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold tx-dark-purple-'>Institución</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" className='th-width-sm-'>
-                                        <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold tx-dark-purple-'>Completado</span>
-                                        </div>
-                                    </th>
-                                    <th scope="col" className='th-width-sm-'>
-                                        <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                        <span className='fs-5- fontSemiBold fw-bold tx-dark-purple-'>Pendiente</span>
-                                        </div>
-                                    </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>Empresa 1</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>120</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>Empresa 1</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>120</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>Empresa 1</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>120</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>Empresa 1</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>120</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>Empresa 1</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>120</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>Empresa 1</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>120</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontSemiBold fw-normal text-center'>20</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                </table>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    )}
-                    {showOverlay === 'card2' && <div className="overlay-backdrop" onClick={() => toggleOverlay(null)} />}
-                    </div>
-                </div>
-            </div> */}
-            {selectUser == null ? 
-            <>
-              
-            </>
-            :
-            <>
-            <p className='fontSemiBold color-purple' style={{'marginTop':'30px'}}>{GetUserData(selectUser)?.last_name}</p>
-            <Accordion >
-                <Accordion.Item className='bs-2- classColaps' eventKey="0">
-                    <Accordion.Header className='fontSemiBold'>
-                            <div className='TextContainerClass'>
-                                    <span className='fontSemiBold' style={{'textAlign':'center'}}>¡Da click en el boton para poder observar las actividades del usuario!</span>
-                            </div>
-                    </Accordion.Header>
-                    <Accordion.Body>
-                    <div className='ContainerClassColapse'>
-                    <div className='row mt-4 mb-4'>
-                        <div className='table-responsive table-general-'>
-                        <table className='table table-sm table-striped table-no-border- align-middle'>
-                        <thead>
-                            <tr>
-                                <th scope="col" className='th-width-md-'>
-                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Categoria</span>
-                                  </div>
-                                </th>
-                                <th scope="col" className='th-width-sm-'>
-                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Tipo actividad</span>
-                                  </div>
-                                </th>
-                                <th scope="col" className='th-width-sm-'>
-                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
-                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Ver</span>
-                                  </div>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                {selectUser?.activity_module_editable?.foundations.map((obj,index)=>{
-                                  return(
-                                    <>
-                                    {obj?.hasOwnProperty("evidence") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                                <FaRegEye  cursor={'pointer'} onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.evidence?.description,
-                                                    'answer':obj?.evidence?.upload,
-                                                    'type':'evidence'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                                <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.forum_participation?.question,
-                                                    'answer':obj?.forum_participation?.response,
-                                                    'type':'forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.cloud_forum_participation?.question,
-                                                    'answer':obj?.cloud_forum_participation?.response,
-                                                    'type':'cloud_forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    </>
-                                  )
-                                })}
-                                {selectUser?.activity_module_editable?.engage.map((obj,index)=>{
-                                  return(
-                                    <>
-                                    {obj?.hasOwnProperty("evidence") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Compromiso'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye  cursor={'pointer'} onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.evidence?.description,
-                                                    'answer':obj?.evidence?.upload,
-                                                    'type':'evidence'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.forum_participation?.question,
-                                                    'answer':obj?.forum_participation?.response,
-                                                    'type':'forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.cloud_forum_participation?.question,
-                                                    'answer':obj?.cloud_forum_participation?.response,
-                                                    'type':'cloud_forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    </>
-                                  )
-                                })}
-                                {selectUser?.activity_module_editable?.co_create.map((obj,index)=>{
-                                  return(
-                                    <>
-                                    {obj?.hasOwnProperty("evidence") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cooperación'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.evidence?.description,
-                                                    'answer':obj?.evidence?.upload,
-                                                    'type':'evidence'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.forum_participation?.question,
-                                                    'answer':obj?.forum_participation?.response,
-                                                    'type':'forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'} onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.cloud_forum_participation?.question,
-                                                    'answer':obj?.cloud_forum_participation?.response,
-                                                    'type':'cloud_forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    </>
-                                  )
-                                })}
-                                {selectUser?.activity_module_editable?.reflection.map((obj,index)=>{
-                                  return(
-                                    <>
-                                    {obj?.hasOwnProperty("evidence") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cooperación'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.evidence?.description,
-                                                    'answer':obj?.evidence?.upload,
-                                                    'type':'evidence'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.forum_participation?.question,
-                                                    'answer':obj?.forum_participation?.response,
-                                                    'type':'forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
-                                    <tr key={index}>
-                                        <td className='align-middle'>
-                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
-                                        </td>
-                                        <td className='align-middle'>
-                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
-                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
-                                                  setData({
-                                                    'description':obj?.cloud_forum_participation?.question,
-                                                    'answer':obj?.cloud_forum_participation?.response,
-                                                    'type':'cloud_forum_participation'
-                                                  })
-                                                  setShow3(true);
-                                                }}/>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    :
-                                    <></>
-                                    }
-                                    </>
-                                  )
-                                })}
-                                
-                            </tbody>
-                        </table>
-                        </div>
-                </div> 
-                    </div>
-                    </Accordion.Body>
-                </Accordion.Item>
-                
-            </Accordion>
-            </>
-            }
+           
             
           </div>
           <Offcanvas className="offcanvasBodyV2" show={show2} onHide={handleClose2}>
@@ -1803,7 +1238,7 @@ export default function IndexModuls(props) {
                     </div>
                     <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Respuesta</span>
                     <div className='listInstitucions' style={{'marginTop':'30px'}}>
-                                              <div className='ListData'>
+                                              <div className='ListDataV2'>
                                                     <div className='col-auto'>
                                                     <CiBookmark />
                                                     </div>
@@ -1822,6 +1257,31 @@ export default function IndexModuls(props) {
                                                     :
                                                     <></>
                                                     }
+                                                    {data?.type == 'selection_multiple_questionary' ? 
+                                                    <>
+                                                    {data?.answer.map((obj,index)=>{
+                                                return(
+                                                    <div key={index} className='containerOption'>
+                                                            <div className='optionCheckBoxContainer'>
+                                                                <div className='checks-radios- me-1'>
+                                                                    <label>
+                                                                    <input disabled={true} checked={obj?.is_correct}  type="radio" name="radio"/>
+                                                                    <span className='lh-sm fs-5- fontLight- tx-dark-purple-'></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className='optionLabelContainer'>
+                                                                    {obj?.choice_text}
+                                                            </div>
+                                                    </div>
+                                                )
+                                                    })}
+
+                                            
+                                                    </>
+                                                    :
+                                                    <></>
+                                                    }
                                                     
                                               </div>
                                           
@@ -1830,7 +1290,471 @@ export default function IndexModuls(props) {
                     </div>
                   </div>
                 </div>
-        </Offcanvas>
+          </Offcanvas>
+          <Offcanvas className="offcanvasBodyV2" show={show4} onHide={handleClose4}>
+                <div className='offcanvas-header pb-4 padding-40-'>
+                <h2 className='m-0 p-0 lh-sm fs-4-  fw-bold fontSemiBold color-purple'>Información de las actividades</h2>
+                <IoIosClose style={{'cursor':'pointer'}} onClick={handleClose4} size={30} className='fa icon-close'></IoIosClose>
+                </div>
+                <div className='offcanvas-body '>
+                  <div className='container-fluid pt-0 pb-0'>
+                    <div className='dataModulContainer'>
+                    <div className='DataInfoModulContainer' style={{'backgroundColor':'rgba(222, 128, 253, 0.21)'}}>
+                            <div className='ContainerInfoModul2'>
+                                    <span className='fontSemiBold color-purple' style={{'fontSize':'30px'}}>{'Listado'}</span>
+                                    <span className='fontLight' style={{'fontSize':'20px','marginBottom':'20px'}}>{''}</span>
+                                    <p className='fontLight description_moduls justify' dangerouslySetInnerHTML={{ __html: 'Aquí podras ver el listado de las actividades que requieren interacción del estudiante y cual ha sido la solución del mismo'.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '') }} />
+                            </div>
+                    </div>
+                    <span className='fontSemiBold color-purple' style={{'fontSize':'20px','marginTop':'20px'}}>Actividades</span>
+                    <div className='listInstitucions' style={{'marginTop':'30px'}}>
+                    <div className='ContainerClassColapse'>
+                    <div className='row mt-4 mb-4'>
+                        <div className='table-responsive table-general-'>
+                        <table className='table table-sm table-striped table-no-border- align-middle'>
+                        <thead>
+                            <tr>
+                                <th scope="col" className='th-width-md-'>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Categoria</span>
+                                  </div>
+                                </th>
+                                <th scope="col" className='th-width-sm-'>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Tipo actividad</span>
+                                  </div>
+                                </th>
+                                <th scope="col" className='th-width-sm-'>
+                                  <div className='d-flex flex-row justify-content-center align-items-center align-self-center w-100'>
+                                      <span className='fs-5- fontSemiBold fw-bold color-purple'>Ver</span>
+                                  </div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {selectUser?.activity_module_editable?.foundations.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                                <FaRegEye  cursor={'pointer'} onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description?.split('-')[2],
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                                <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question.split('-')[2],
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Nube de palabras'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Cimientos'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Selección'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.selection_multiple_questionary?.question_text?.split('-')[3],
+                                                    'answer':obj?.selection_multiple_questionary?.choices,
+                                                    'type':'selection_multiple_questionary'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                {selectUser?.activity_module_editable?.engage.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Engachar'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye  cursor={'pointer'} onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description?.split('-')[2],
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Enganchar'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Enganchar'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Nube de palabras'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Enganchar'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Selección'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.selection_multiple_questionary?.question_text?.split('-')[3],
+                                                    'answer':obj?.selection_multiple_questionary?.choices,
+                                                    'type':'selection_multiple_questionary'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                {selectUser?.activity_module_editable?.co_create.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Co-Crear'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description?.split('-')[2],
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Co-Crear'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Co-Crear'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'} onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Co-Crear'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Selección'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.selection_multiple_questionary?.question_text?.split('-')[3],
+                                                    'answer':obj?.selection_multiple_questionary?.choices,
+                                                    'type':'selection_multiple_questionary'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    </>
+                                  )
+                                })}
+                                {selectUser?.activity_module_editable?.reflection.map((obj,index)=>{
+                                  return(
+                                    <>
+                                    {obj?.hasOwnProperty("evidence") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Reflexión'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Evidencia'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.evidence?.description?.split('-')[2],
+                                                    'answer':obj?.evidence?.upload,
+                                                    'type':'evidence'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Reflexión'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Participación foro'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.forum_participation?.response,
+                                                    'type':'forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("cloud_forum_participation") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Reflexión'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Nube de palabras'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.cloud_forum_participation?.question?.split('-')[2],
+                                                    'answer':obj?.cloud_forum_participation?.response,
+                                                    'type':'cloud_forum_participation'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+                                    {obj?.hasOwnProperty("selection_multiple_questionary") ?   
+                                    <tr key={index}>
+                                        <td className='align-middle'>
+                                        <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Reflexión'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>{'Selección'}</p>
+                                        </td>
+                                        <td className='align-middle'>
+                                            <p className='m-0 lh-sm fs-5- fontLight fw-normal text-center'>
+                                            <FaRegEye cursor={'pointer'}  onClick={()=>{
+                                                  setData({
+                                                    'description':obj?.selection_multiple_questionary?.question_text?.split('-')[3],
+                                                    'answer':obj?.selection_multiple_questionary?.choices,
+                                                    'type':'selection_multiple_questionary'
+                                                  })
+                                                  setShow3(true);
+                                                }}/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    :
+                                    <></>
+                                    }
+
+                                    
+                                    </>
+                                  )
+                                })}
+
+                                
+                            </tbody>
+                        </table>
+                        </div>
+                </div> 
+                    </div>
+                    </div>
+                    
+                    </div>
+                  </div>
+                </div>
+          </Offcanvas>
         </>
     )
 }

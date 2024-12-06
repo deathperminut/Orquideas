@@ -43,7 +43,7 @@ export default function SelectModul() {
                 })
                 })
                 if(result){
-                console.log("ACTIVIDADES MODULO: ",result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
+                console.log("ACTIVIDADES MODULO: ",userModulActivities,result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
                 setPreloader(false);
                 setModulHistorial(result.data.filter((obj,index)=> obj?.module_name == userModulActivities?.module_name));
                 }
@@ -182,16 +182,15 @@ export default function SelectModul() {
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  video orquídeas'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  imagen reflexiva'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos  participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de discusión'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos adjunta tu respuesta'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos momento de lectura'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos corta redacción'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Cimientos selección multiple'}</span> : <></>}
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.video?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.image?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.cloud_forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.format_text?.text?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.evidence?.description.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.lecture?.title}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{''}</span> : <></>}
+                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.selection_multiple_questionary?.question_text?.split('-')[1]}</span> : <></>}
                                                         </div>
                                                 </div>
                                         )
@@ -208,16 +207,15 @@ export default function SelectModul() {
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso Video orquídeas'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  imagen reflexiva'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso  momento de discusión'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso adjunta tu respuesta'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso momento de lectura'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso corta redacción'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Compromiso selección multiple'}</span> : <></>}
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                        {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.video?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.image?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.cloud_forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.format_text?.text?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.evidence?.description.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.lecture?.title}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{''}</span> : <></>}
+                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.selection_multiple_questionary?.question_text?.split('-')[1]}</span> : <></>}
                                                         </div>
                                                 </div>
                                         )
@@ -234,16 +232,15 @@ export default function SelectModul() {
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo video orquídeas'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo  imagen reflexiva'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo momento de discusión'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo adjunta tu respuesta'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo momento de lectura'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo colaborativo corta redacción'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Trabajo selección multiple'}</span> : <></>}
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                        {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.video?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.image?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.cloud_forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.format_text?.text?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.evidence?.description.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.lecture?.title}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{''}</span> : <></>}
+                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.selection_multiple_questionary?.question_text?.split('-')[1]}</span> : <></>}
                                                         </div>
                                                 </div>
                                         )
@@ -260,16 +257,15 @@ export default function SelectModul() {
                                                         navigate('/Lobby/SelectClass')
                                                         }} className='divClass_2 bs-2-'>
                                                         <div className='TextContainerClass'>
-                                                                {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión video orquídeas'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión  imagen reflexiva'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión participa en el foro'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión momento de discusión'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión adjunta tu respuesta'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión momento de lectura'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión corta redacción'}</span> : <></>}
-                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{'Reflexión selección multiple'}</span> : <></>}
-                                                                <span className='fontLight dateClass' style={{'textAlign':'center'}}>{convertDate(selectModul?.created_at)}</span>
+                                                        {obj?.hasOwnProperty("video") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.video?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("image") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.image?.description?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("cloud_forum_participation") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.cloud_forum_participation?.question?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("format_text") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.format_text?.text?.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("evidence") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.evidence?.description.split('-')[1]}</span> : <></>}
+                                                                {obj?.hasOwnProperty("lecture") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.lecture?.title}</span> : <></>}
+                                                                {obj?.hasOwnProperty("redaction") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{''}</span> : <></>}
+                                                                {obj?.hasOwnProperty("selection_multiple_questionary") ?   <span className='fontSemiBold' style={{'textAlign':'center'}}>{obj?.selection_multiple_questionary?.question_text?.split('-')[1]}</span> : <></>}
                                                         </div>
                                                 </div>
                                         )

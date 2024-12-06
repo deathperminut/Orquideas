@@ -87,7 +87,7 @@ export default function Home() {
                       setPreloader(false);
                       console.log("INFORMACIÓN USUARIO: ",result.data);
                       let info_user = result.data;
-                      let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj.module_name == specificModul.module_name);
+                      let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj?.module_name == specificModul?.module_name);
                       
                       if(modulo_usuario.length !== 0){
                         console.log("VALIDACIONES USUARIO: ",modulo_usuario,result.data,specificModul);
@@ -139,7 +139,7 @@ export default function Home() {
                             setPreloader(false);
                             console.log("INFORMACIÓN USUARIO: ",result.data);
                             let info_user = result.data;
-                            let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj.module_name == specificModul.module_name);
+                            let modulo_usuario = result.data.usermodule_set.filter((obj)=>obj?.module_name == specificModul?.module_name);
                             setPreloader(true);
                             setUserModulActivitiesLink(modulo_usuario[0].endpoint);
                             let resultV1 =  await getUserModulActivities(modulo_usuario[0].endpoint).catch((error)=>{

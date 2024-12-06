@@ -36,6 +36,6 @@ export default function Lobby() {
             </div>
             </div>
         </div>
-    </React.Fragment>
+        </React.Fragment>
     )
 }
