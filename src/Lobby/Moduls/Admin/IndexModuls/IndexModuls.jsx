@@ -1047,10 +1047,8 @@ export default function IndexModuls(props) {
               let question = questions_list[a]?.open_questionary_optional?.question?.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/g, "").trim();
               object_[question] = questions_list[a]?.open_questionary_optional?.response;
             }
-            
           }
           array_survey.push(object_);
-
       }
       // YA CON ESTOS ELEMENTOS CARGADOS GENERAMOS EL EXCEL
       exportToCSV(array_survey,'Evaluacion_modulo.csv')
@@ -1099,11 +1097,11 @@ export default function IndexModuls(props) {
                         </div>
                       </div>
             </div>
-            {/* <div  className='StadisticsContainer'>
+            <div  className='StadisticsContainer'>
                   <div onClick={downloadExcel} className='excelContainer'>
                             <AiOutlineFileExcel color='white' size={25}></AiOutlineFileExcel>
                   </div>
-            </div> */}
+            </div>
             <div className='TableUsersContainer bs-2-'>
                 <div className='row mt-4 mb-4'>
                         <div className='table-responsive table-general-'>
